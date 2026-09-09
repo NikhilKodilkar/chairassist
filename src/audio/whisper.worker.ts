@@ -1,0 +1,52 @@
+import { pipeline } from "@huggingface/transformers";
+
+type AsrPipeline = (audio: { array: Float32Array; sampling_rate: number }) => Promise<{ text: string }>;
+
+let transcriber: AsrPipeline | undefined;
+
+function resample(samples: Float32Array, inputRate: number, outputRate: number): Float32Array {
+  if (inputRate === outputRate) {
+    return samples;
+  }
+  const ratio = inputRate / outputRate;
+  const length = Math.max(1, Math.round(samples.length / ratio));
+  const next = new Float32Array(length);
+  for (let i = 0; i < length; i += 1) {
+    const source = i * ratio;
+    const left = Math.floor(source);
+    const right = Math.min(left + 1, samples.length - 1);
+    const mix = source - left;
+    next[i] = samples[left] * (1 - mix) + samples[right] * mix;
+  }
+  return next;
+}
+
+self.onmessage = async (event: MessageEvent) => {
+  const data = event.data as {
+    type: "load" | "transcribe";
+    model?: string;
+    dtype?: string;
+    samples?: Float32Array;
+    sampleRate?: number;
+  };
+
+  try {
+    if (data.type === "load") {
+      transcriber = (await pipeline("automatic-speech-recognition", data.model, {
+        device: "webgpu",
+        dtype: data.dtype,
+      })) as unknown as AsrPipeline;
+      self.postMessage({ type: "ready" });
+      return;
+    }
+
+    if (data.type === "transcribe" && data.samples && data.sampleRate && transcriber) {
+      const audio = resample(data.samples, data.sampleRate, 16000);
+      const result = await transcriber({ array: audio, sampling_rate: 16000 });
+      self.postMessage({ type: "text", text: result.text.trim() });
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Whisper failed";
+    self.postMessage({ type: "error", message });
+  }
+};
