@@ -1,6 +1,6 @@
 import { BUCCAL_SITES, LINGUAL_SITES } from "./types";
 import type { ChartEvent, Side, Site } from "./types";
-import { indexOfPhrase, phraseHas, tokenize, tokenToNumber } from "./numbers";
+import { indexOfPhrase, numberAt, phraseHas, tokenize, tokenToNumber } from "./numbers";
 
 export interface ParserContext {
   tooth?: number;
@@ -14,7 +14,7 @@ export interface ParseResult {
   context: ParserContext;
 }
 
-const TOOTH_CUES = ["tooth", "number", "on", "to"];
+const TOOTH_CUES = ["tooth", "number", "on", "to", "canine", "molar", "wisdom", "premolar", "incisor"];
 
 function sitesForSide(side: Side): Site[] {
   return side === "lingual" ? LINGUAL_SITES : BUCCAL_SITES;
@@ -51,15 +51,21 @@ function detectTooth(tokens: string[]): number | undefined {
     const token = tokens[i];
     const next = tokens[i + 1];
     if (TOOTH_CUES.includes(token) && next) {
-      const value = tokenToNumber(next);
-      if (value !== undefined && value >= 1 && value <= 32) {
-        return value;
+      if (token === "to") {
+        const previous = i > 0 ? tokenToNumber(tokens[i - 1]) : undefined;
+        if (previous !== undefined) {
+          continue;
+        }
+      }
+      const parsed = numberAt(tokens, i + 1);
+      if (parsed && parsed.value >= 1 && parsed.value <= 32) {
+        return parsed.value;
       }
     }
     if (token === "moving" && next === "to" && tokens[i + 2]) {
-      const value = tokenToNumber(tokens[i + 2]);
-      if (value !== undefined && value >= 1 && value <= 32) {
-        return value;
+      const parsed = numberAt(tokens, i + 2);
+      if (parsed && parsed.value >= 1 && parsed.value <= 32) {
+        return parsed.value;
       }
     }
   }
@@ -239,7 +245,7 @@ export function parseUtterance(raw: string, incoming: ParserContext): ParseResul
     }
   }
 
-  const singleNames = ["distal", "mesial", "buccal", "facial", "lingual", "palatal"];
+  const singleNames = ["distal", "mesial"];
   for (const name of singleNames) {
     const idx = tokens.indexOf(name);
     if (idx >= 0) {

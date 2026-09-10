@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { applyEvent } from "../domain/exam";
 import { createPatientFile, createTodayExam } from "../domain/seed";
 import { captionForEvent, summarySentences } from "../domain/translator";
-import type { ChartEvent, Exam } from "../domain/types";
+import type { ChartEvent, Exam, Site } from "../domain/types";
 
 const patient = createPatientFile();
 
@@ -16,10 +16,22 @@ export interface WritebackItem {
   payload: unknown;
 }
 
+export interface LastMention {
+  id: number;
+  tooth: number;
+  sites: Site[];
+  readings?: number[];
+  bopSites?: Site[];
+  rec?: number;
+  note?: string;
+  kind: ChartEvent["kind"];
+}
+
 interface ExamStore {
   lastVisit: Exam;
   current: Exam;
   activeTooth?: number;
+  lastMention?: LastMention;
   caption?: string;
   summary?: string[];
   heard: HeardItem[];
@@ -61,9 +73,24 @@ export const useExamStore = create<ExamStore>((set, get) => ({
       });
     }
 
+    const lastMention =
+      event.tooth && event.confidence === "high"
+        ? {
+            id: (state.lastMention?.id ?? 0) + 1,
+            tooth: event.tooth,
+            sites: event.sites ?? event.bopSites ?? [],
+            readings: event.readings,
+            bopSites: event.bopSites,
+            rec: event.rec,
+            note: event.note,
+            kind: event.kind,
+          }
+        : state.lastMention;
+
     set({
       current,
       activeTooth: event.tooth ?? state.activeTooth,
+      lastMention,
       caption: caption ?? state.caption,
       heard: nextHeard,
       writebacks: writebacks.slice(0, 20),
@@ -85,6 +112,8 @@ export const useExamStore = create<ExamStore>((set, get) => ({
       heard: [],
       writebacks: [],
       timeline: 1,
+      activeTooth: undefined,
+      lastMention: undefined,
     }),
   setTimeline: (value) => set({ timeline: value }),
 }));

@@ -38,9 +38,15 @@ export function PatientView() {
           </div>
         </div>
       </header>
-      <HeroTooth current={store.current} lastVisit={store.lastVisit} timeline={store.timeline} />
+      <HeroTooth
+        current={store.current}
+        lastVisit={store.lastVisit}
+        timeline={store.timeline}
+        activeTooth={store.activeTooth}
+        lastMention={store.lastMention}
+      />
       <CaptionBand text={store.caption} />
-      <ArchStrip exam={store.current} />
+      <ArchStrip exam={store.current} activeTooth={store.activeTooth} />
       <TimelineScrubber value={store.timeline} onChange={store.setTimeline} />
       {parserResults ? (
         <div className="parser-overlay">

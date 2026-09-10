@@ -1,4 +1,5 @@
 import { statusColor } from "./exam";
+import { toothArch } from "./teeth";
 import { HERO_TOOTH, SITES } from "./types";
 import type { Exam, Site, SiteReading, ToothState } from "./types";
 
@@ -13,14 +14,25 @@ export const SITE_ANCHORS: Record<Site, { x: number; y: number }> = {
 
 export const FURCATION_ANCHOR = { x: 50, y: 59 };
 
-const SITE_TITLES: Record<Site, string> = {
-  MB: "Mesial",
-  B: "Cheek side",
-  DB: "Distal",
-  ML: "Palate mesial",
-  L: "Palate",
-  DL: "Palate distal",
-};
+function siteTitle(site: Site, tooth: number): string {
+  const tongue = toothArch(tooth) === "lower";
+  if (site === "MB") {
+    return "Mesial";
+  }
+  if (site === "B") {
+    return "Cheek side";
+  }
+  if (site === "DB") {
+    return "Distal";
+  }
+  if (site === "ML") {
+    return tongue ? "Tongue mesial" : "Palate mesial";
+  }
+  if (site === "L") {
+    return tongue ? "Tongue side" : "Palate";
+  }
+  return tongue ? "Tongue distal" : "Palate distal";
+}
 
 export interface HeroSiteView {
   site: Site;
@@ -82,9 +94,14 @@ function hasWatch(tooth: ToothState | undefined): boolean {
   return Boolean(tooth?.notes.includes("watch"));
 }
 
-export function heroToothView(current: Exam, lastVisit: Exam, timeline: number): HeroToothView {
-  const lastTooth = lastVisit.teeth[HERO_TOOTH];
-  const nowTooth = current.teeth[HERO_TOOTH];
+export function heroToothView(
+  current: Exam,
+  lastVisit: Exam,
+  timeline: number,
+  tooth: number = HERO_TOOTH,
+): HeroToothView {
+  const lastTooth = lastVisit.teeth[tooth];
+  const nowTooth = current.teeth[tooth];
   const sites: HeroSiteView[] = SITES.map((site) => {
     const mixed = mixSite(lastTooth?.sites[site], nowTooth?.sites[site], timeline);
     const pd = mixed.pd === undefined ? undefined : Math.round(mixed.pd);
@@ -92,7 +109,7 @@ export function heroToothView(current: Exam, lastVisit: Exam, timeline: number):
     const anchor = SITE_ANCHORS[site];
     return {
       site,
-      title: SITE_TITLES[site],
+      title: siteTitle(site, tooth),
       pd,
       previousPd: lastTooth?.sites[site]?.pd,
       bop: Boolean(mixed.bop),

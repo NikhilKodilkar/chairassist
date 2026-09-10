@@ -3,7 +3,7 @@ import { listMics, openMic, pickPreferredMic } from "../audio/devices";
 import type { MicDevice } from "../audio/devices";
 import { createWhisperSession } from "../audio/stt";
 import type { SttStatus } from "../audio/stt";
-import { attachEnergyVad } from "../audio/vad";
+import { isUsableTranscript } from "../audio/transcript";
 import { createBus } from "../bus/channel";
 import { parseUtterance, createParserContext } from "../domain/parser";
 import type { ParserContext } from "../domain/parser";
@@ -116,9 +116,9 @@ export function ClinicianView() {
     streamRef.current = stream;
     setListening(true);
     vadRef.current = attachEnergyVad(stream, {
-      silenceMs: 300,
-      minSpeechMs: 250,
-      threshold: 0.02,
+      silenceMs: 700,
+      minSpeechMs: 450,
+      threshold: 0.035,
       onLevel: (nextLevel, nextSpeaking) => {
         setLevel(nextLevel);
         setSpeaking(nextSpeaking);
@@ -131,9 +131,14 @@ export function ClinicianView() {
         void session
           .transcribe(samples, sampleRate)
           .then((text) => {
-            if (text) {
-              publishUtterance(text);
+            if (!text) {
+              return;
             }
+            if (isUsableTranscript(text)) {
+              publishUtterance(text);
+              return;
+            }
+            useExamStore.getState().setHeard({ text, confidence: "low" });
           })
           .catch((error: unknown) => {
             setStatus("error");
@@ -194,6 +199,8 @@ export function ClinicianView() {
         statusDetail={statusDetail}
       />
 
+      <HeardTicker items={store.heard} />
+
       <HygienistScript
         onUtterance={publishUtterance}
         onNarration={(text) => useExamStore.getState().setHeard({ text, confidence: "high" })}
@@ -209,7 +216,6 @@ export function ClinicianView() {
       {parserResults ? <ParserResults results={parserResults} onClose={() => setParserResults(undefined)} /> : null}
 
       <div className="heard">
-        <HeardTicker items={store.heard} />
         <WritebackDrawer items={store.writebacks} />
       </div>
     </main>

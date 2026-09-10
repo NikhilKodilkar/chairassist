@@ -251,6 +251,28 @@ export const PARSER_CASES: ParserCase[] = [
     lines: ["three two three"],
     check: (events) => expectEqual(events[0].confidence, "low", "confidence"),
   },
+  {
+    name: "reads canine 27 with a facial triplet",
+    lines: ["canine 27, facial 2 2 2"],
+    check: (events) =>
+      firstFailure([
+        expectEqual(events[0].kind, "reading", "kind"),
+        expectEqual(events[0].tooth, 27, "tooth"),
+        expectEqual(events[0].side, "buccal", "side"),
+        expectList(events[0].sites, ["MB", "B", "DB"], "sites"),
+        expectList(events[0].readings, [2, 2, 2], "readings"),
+      ]),
+  },
+  {
+    name: "reads tooth twenty seven as 27",
+    lines: ["tooth twenty seven", "facial two two two"],
+    check: (events) => firstFailure([expectEqual(events[0].tooth, 27, "tooth"), expectList(events[1].readings, [2, 2, 2], "readings")]),
+  },
+  {
+    name: "keeps facial plus three numbers as a triplet",
+    lines: ["tooth fourteen", "facial 3 2 3"],
+    check: (events) => firstFailure([expectList(events[1].sites, ["MB", "B", "DB"], "sites"), expectList(events[1].readings, [3, 2, 3], "readings")]),
+  },
 ];
 
 export function runParserCase(parserCase: ParserCase): ParserCaseResult {

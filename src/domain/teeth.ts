@@ -31,7 +31,7 @@ const SHORT_FROM_POSTERIOR = [
   "central",
 ] as const;
 
-function roleIndex(tooth: number): number {
+export function roleIndex(tooth: number): number {
   if (tooth >= 1 && tooth <= 8) {
     return tooth - 1;
   }
@@ -42,6 +42,24 @@ function roleIndex(tooth: number): number {
     return tooth - 17;
   }
   return 32 - tooth;
+}
+
+export function toothScreenSlot(tooth: number): { row: "upper" | "lower"; column: number } {
+  if (tooth <= 16) {
+    return { row: "upper", column: tooth - 1 };
+  }
+  return { row: "lower", column: 32 - tooth };
+}
+
+export function toothFocusPose(tooth?: number): { x: number; y: number; yaw: number } {
+  if (!tooth) {
+    return { x: 0, y: 0, yaw: -16 };
+  }
+  const slot = toothScreenSlot(tooth);
+  const x = (slot.column / 15 - 0.5) * 320;
+  const y = slot.row === "upper" ? -28 : 42;
+  const yaw = toothSide(tooth) === "right" ? 20 : -24;
+  return { x, y, yaw };
 }
 
 export function toothRole(tooth: number): string {

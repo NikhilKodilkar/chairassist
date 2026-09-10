@@ -1,6 +1,6 @@
 import { pipeline } from "@huggingface/transformers";
 
-type AsrPipeline = (audio: { array: Float32Array; sampling_rate: number }) => Promise<{ text: string }>;
+type AsrPipeline = (audio: Float32Array, options?: { temperature?: number }) => Promise<{ text: string }>;
 type WhisperDtype = "q4" | "q8" | "fp16" | "fp32";
 
 function asDtype(value: string | undefined): WhisperDtype {
@@ -11,6 +11,13 @@ function asDtype(value: string | undefined): WhisperDtype {
 }
 
 let transcriber: AsrPipeline | undefined;
+
+function toFloat32(samples: Float32Array | ArrayLike<number>): Float32Array {
+  if (samples instanceof Float32Array) {
+    return new Float32Array(samples);
+  }
+  return Float32Array.from(samples);
+}
 
 function resample(samples: Float32Array, inputRate: number, outputRate: number): Float32Array {
   if (inputRate === outputRate) {
@@ -49,9 +56,9 @@ self.onmessage = async (event: MessageEvent) => {
     }
 
     if (data.type === "transcribe" && data.samples && data.sampleRate && transcriber) {
-      const audio = resample(data.samples, data.sampleRate, 16000);
-      const result = await transcriber({ array: audio, sampling_rate: 16000 });
-      self.postMessage({ type: "text", text: result.text.trim() });
+      const audio = resample(toFloat32(data.samples), data.sampleRate, 16000);
+      const result = await transcriber(audio, { temperature: 0 });
+      self.postMessage({ type: "text", text: (result.text ?? "").trim() });
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Whisper failed";

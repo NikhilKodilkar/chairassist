@@ -46,7 +46,12 @@ export function tokenize(text: string): string[] {
     const isDigit = ch >= "0" && ch <= "9";
     if (isLetter || isDigit) {
       current += ch;
-    } else if (current.length > 0) {
+      continue;
+    }
+    if (ch === "-") {
+      continue;
+    }
+    if (current.length > 0) {
       tokens.push(current);
       current = "";
     }
@@ -77,6 +82,33 @@ export function tokenToNumber(token: string): number | undefined {
   }
 
   return WORD_TO_NUMBER[token];
+}
+
+export function numberAt(tokens: string[], index: number): { value: number; width: number } | undefined {
+  const token = tokens[index];
+  if (!token) {
+    return undefined;
+  }
+
+  const next = tokens[index + 1];
+  if (token === "twenty" && next) {
+    const ones = tokenToNumber(next);
+    if (ones !== undefined && ones >= 1 && ones <= 9) {
+      return { value: 20 + ones, width: 2 };
+    }
+  }
+  if (token === "thirty" && next) {
+    const ones = tokenToNumber(next);
+    if (ones !== undefined && ones >= 1 && ones <= 2) {
+      return { value: 30 + ones, width: 2 };
+    }
+  }
+
+  const value = tokenToNumber(token);
+  if (value === undefined) {
+    return undefined;
+  }
+  return { value, width: 1 };
 }
 
 export function phraseHas(tokens: string[], words: string[]): boolean {
