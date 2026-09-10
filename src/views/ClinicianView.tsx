@@ -7,10 +7,14 @@ import { attachEnergyVad } from "../audio/vad";
 import { createBus } from "../bus/channel";
 import { parseUtterance, createParserContext } from "../domain/parser";
 import type { ParserContext } from "../domain/parser";
+import { PARSER_CASES, runAllParserCases } from "../domain/parser.cases";
+import type { ParserCaseResult } from "../domain/parser.cases";
 import { DEMO1_LINES } from "../rehearsal/demo1";
 import { useExamStore } from "../store/examStore";
 import { HeardTicker } from "./HeardTicker";
+import { HygienistScript } from "./HygienistScript";
 import { MicBar } from "./MicBar";
+import { ParserResults } from "./ParserResults";
 import { PerioGrid } from "./PerioGrid";
 import { WritebackDrawer } from "./WritebackDrawer";
 
@@ -33,6 +37,7 @@ export function ClinicianView() {
   const [speaking, setSpeaking] = useState(false);
   const [status, setStatus] = useState<SttStatus>("idle");
   const [statusDetail, setStatusDetail] = useState<string>();
+  const [parserResults, setParserResults] = useState<ParserCaseResult[]>();
   const sessionRef = useRef<ReturnType<typeof createWhisperSession> | null>(null);
   const vadRef = useRef<{ stop: () => void } | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -170,6 +175,9 @@ export function ClinicianView() {
           <button type="button" onClick={() => publishUtterance(DEMO1_LINES[step.current++] ?? "let's wrap up")}>
             Next script line
           </button>
+          <button className="primary" type="button" onClick={() => setParserResults(runAllParserCases())}>
+            Run {PARSER_CASES.length} parser cases
+          </button>
         </div>
       </header>
 
@@ -186,7 +194,19 @@ export function ClinicianView() {
         statusDetail={statusDetail}
       />
 
+      <HygienistScript
+        onUtterance={publishUtterance}
+        onNarration={(text) => useExamStore.getState().setHeard({ text, confidence: "high" })}
+        onReset={() => {
+          parser.current = createParserContext();
+          useExamStore.getState().resetExam();
+          step.current = 0;
+        }}
+      />
+
       <PerioGrid exam={store.current} lastVisit={store.lastVisit} activeTooth={store.activeTooth} />
+
+      {parserResults ? <ParserResults results={parserResults} onClose={() => setParserResults(undefined)} /> : null}
 
       <div className="heard">
         <HeardTicker items={store.heard} />

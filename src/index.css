@@ -125,6 +125,75 @@ h1 {
   font-size: 13px;
 }
 
+.script-panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.script-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+}
+
+.script-toggle {
+  background: #1f3d4d;
+  color: var(--text);
+  border: 1px solid #2d5d73;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.script-now {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.script-list {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 220px;
+  overflow: auto;
+  border-top: 1px solid #24303a;
+}
+
+.script-list li {
+  display: flex;
+  gap: 10px;
+  padding: 10px 4px;
+  border-bottom: 1px solid #24303a;
+  color: var(--muted);
+}
+
+.script-list li.active {
+  color: var(--text);
+  background: rgba(126, 182, 214, 0.1);
+  margin: 0 -14px;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.script-list li.done {
+  color: #6f7d8a;
+}
+
+.script-index {
+  flex: 0 0 1.5em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .grid-wrap {
   overflow: auto;
   border: 1px solid var(--line);
@@ -144,12 +213,27 @@ h1 {
   border: 1px solid #24303a;
   text-align: center;
   padding: 4px 2px;
-  min-width: 28px;
+  min-width: 54px;
+  vertical-align: middle;
 }
 
 .perio-grid th {
   color: var(--muted);
   font-weight: 600;
+}
+
+.tooth-num {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.tooth-name {
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .perio-grid td.active {
@@ -200,8 +284,235 @@ h1 {
   color: #c6d4df;
 }
 
+.parser-results {
+  margin-top: 16px;
+}
+
+.parser-overlay {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 96px;
+  bottom: 24px;
+  z-index: 20;
+  overflow: auto;
+}
+
+.parser-overlay .parser-results {
+  margin-top: 0;
+}
+
+.parser-results-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.parser-results-head h2 {
+  margin: 0;
+  flex: 1;
+}
+
+.parser-results-head button {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.parser-case-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.parser-case-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #24303a;
+}
+
+.parser-case-list li.fail {
+  background: rgba(224, 91, 91, 0.08);
+  margin: 0 -14px;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.parser-case-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
 .hero-stage {
+  position: relative;
   height: 64vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  perspective-origin: 50% 42%;
+}
+
+.hero-molar {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(10deg) rotateY(-16deg);
+  will-change: transform;
+}
+
+.hero-molar img {
+  display: block;
+  height: min(68vh, 820px);
+  width: auto;
+}
+
+.hero-flare {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-flare.amber {
+  background: radial-gradient(circle, rgba(184, 134, 47, 0.55) 0%, rgba(184, 134, 47, 0) 70%);
+}
+
+.hero-flare.red {
+  background: radial-gradient(circle, rgba(176, 52, 58, 0.72) 0%, rgba(176, 52, 58, 0) 70%);
+}
+
+.hero-furcation {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-radius: 3px;
+  pointer-events: none;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+}
+
+.hero-furcation.amber {
+  background: #b8862f;
+}
+
+.hero-furcation.red {
+  background: #b64a4a;
+}
+
+.hero-pin {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.hero-pin.green { background: #2f8f66; }
+.hero-pin.amber { background: #b8862f; }
+.hero-pin.red { background: #b64a4a; }
+.hero-pin.grey { background: #3a4550; color: var(--muted); }
+
+.hero-pin.bleed::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #c23b3b;
+  box-shadow: 0 0 12px rgba(194, 59, 59, 0.9);
+  animation: bleed-pulse 1.1s ease-in-out infinite;
+}
+
+.hero-pin.receded::before {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid #e0a24a;
+}
+
+.hero-findings {
+  position: absolute;
+  left: 24px;
+  top: 28%;
+  width: min(280px, 32vw);
+  background: rgba(12, 16, 20, 0.78);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  backdrop-filter: blur(8px);
+}
+
+.hero-reading-line {
+  margin: 6px 0 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-finding-empty {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.hero-findings ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-findings li {
+  margin: 0 0 10px;
+  padding-left: 12px;
+  border-left: 3px solid var(--line);
+}
+
+.hero-findings li.amber { border-left-color: var(--amber); }
+.hero-findings li.red { border-left-color: var(--red); }
+
+.hero-findings li strong {
+  display: block;
+  font-size: 14px;
+}
+
+.hero-findings li span {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+@keyframes bleed-pulse {
+  0%,
+  100% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
 }
 
 .caption {

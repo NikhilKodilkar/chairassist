@@ -1,100 +1,6 @@
-import { OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
-import type { Group, Mesh } from "three";
-import { HERO_TOOTH } from "../domain/types";
+import { useEffect, useRef } from "react";
+import { FURCATION_ANCHOR, heroToothView } from "../domain/heroIssues";
 import type { Exam } from "../domain/types";
-
-function lerp(from: number, to: number, t: number): number {
-  return from + (to - from) * t;
-}
-
-function Molar({
-  current,
-  lastVisit,
-  timeline,
-}: {
-  current: Exam;
-  lastVisit: Exam;
-  timeline: number;
-}) {
-  const group = useRef<Group>(null);
-  const gum = useRef<Mesh>(null);
-  const bleed = useRef<Mesh>(null);
-
-  const lastDistal = lastVisit.teeth[HERO_TOOTH]?.sites.DB.pd ?? 3;
-  const nowDistal = current.teeth[HERO_TOOTH]?.sites.DB.pd ?? lastDistal;
-  const bleeding = Boolean(current.teeth[HERO_TOOTH]?.sites.DB.bop);
-  const pd = lerp(lastDistal, nowDistal, timeline);
-
-  const gumY = useMemo(() => 0.15 - (pd - 2) * 0.07, [pd]);
-
-  useFrame((_, delta) => {
-    if (group.current) {
-      group.current.rotation.y += delta * 0.18;
-    }
-    if (bleed.current) {
-      const pulse = bleeding ? 0.06 + Math.sin(performance.now() / 180) * 0.03 : 0;
-      bleed.current.scale.setScalar(pulse > 0 ? 1 + pulse : 0.0001);
-      bleed.current.visible = bleeding;
-    }
-    if (gum.current) {
-      gum.current.position.y += (gumY - gum.current.position.y) * 0.08;
-    }
-  });
-
-  return (
-    <group ref={group} position={[0, -0.15, 0]}>
-      <mesh position={[0, 0.55, 0]} castShadow>
-        <sphereGeometry args={[0.62, 48, 48]} />
-        <meshPhysicalMaterial
-          color="#f4efe6"
-          roughness={0.18}
-          clearcoat={1}
-          clearcoatRoughness={0.12}
-          transmission={0.08}
-          thickness={0.4}
-        />
-      </mesh>
-      <mesh position={[-0.22, 0.92, 0.18]}>
-        <sphereGeometry args={[0.2, 24, 24]} />
-        <meshPhysicalMaterial color="#f7f2ea" roughness={0.2} clearcoat={1} />
-      </mesh>
-      <mesh position={[0.22, 0.92, 0.18]}>
-        <sphereGeometry args={[0.2, 24, 24]} />
-        <meshPhysicalMaterial color="#f7f2ea" roughness={0.2} clearcoat={1} />
-      </mesh>
-      <mesh position={[-0.18, 0.88, -0.2]}>
-        <sphereGeometry args={[0.18, 24, 24]} />
-        <meshPhysicalMaterial color="#f7f2ea" roughness={0.2} clearcoat={1} />
-      </mesh>
-      <mesh position={[0.18, 0.88, -0.2]}>
-        <sphereGeometry args={[0.18, 24, 24]} />
-        <meshPhysicalMaterial color="#f7f2ea" roughness={0.2} clearcoat={1} />
-      </mesh>
-      <mesh position={[-0.16, -0.35, 0.08]} rotation={[0.2, 0, 0.12]}>
-        <cylinderGeometry args={[0.12, 0.07, 1.1, 24]} />
-        <meshPhysicalMaterial color="#f0e6d8" roughness={0.35} />
-      </mesh>
-      <mesh position={[0.16, -0.35, 0.08]} rotation={[0.2, 0, -0.12]}>
-        <cylinderGeometry args={[0.12, 0.07, 1.1, 24]} />
-        <meshPhysicalMaterial color="#f0e6d8" roughness={0.35} />
-      </mesh>
-      <mesh position={[0, -0.28, -0.14]} rotation={[-0.15, 0, 0]}>
-        <cylinderGeometry args={[0.11, 0.06, 1.0, 24]} />
-        <meshPhysicalMaterial color="#f0e6d8" roughness={0.35} />
-      </mesh>
-      <mesh ref={gum} position={[0, gumY, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.72, 0.22, 24, 64]} />
-        <meshPhysicalMaterial color="#d48b93" roughness={0.45} sheen={1} sheenColor="#f3c2c7" />
-      </mesh>
-      <mesh ref={bleed} position={[0.55, 0.05, 0.15]}>
-        <sphereGeometry args={[0.07, 16, 16]} />
-        <meshBasicMaterial color="#c23b3b" transparent opacity={0.7} />
-      </mesh>
-    </group>
-  );
-}
 
 export function HeroTooth({
   current,
@@ -105,23 +11,119 @@ export function HeroTooth({
   lastVisit: Exam;
   timeline: number;
 }) {
-  const lastDistal = lastVisit.teeth[HERO_TOOTH]?.sites.DB.pd ?? 3;
-  const nowDistal = current.teeth[HERO_TOOTH]?.sites.DB.pd ?? lastDistal;
-  const shown = Math.round(lerp(lastDistal, nowDistal, timeline));
+  const stageRef = useRef<HTMLDivElement>(null);
+  const molarRef = useRef<HTMLDivElement>(null);
+  const mobilityRef = useRef(0);
+  const view = heroToothView(current, lastVisit, timeline);
+  mobilityRef.current = view.mobility;
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const molar = molarRef.current;
+    if (!stage || !molar) {
+      return;
+    }
+
+    let frame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const onPointerMove = (event: PointerEvent) => {
+      const box = stage.getBoundingClientRect();
+      targetX = (event.clientX - box.left) / box.width - 0.5;
+      targetY = (event.clientY - box.top) / box.height - 0.5;
+    };
+
+    const onPointerLeave = () => {
+      targetX = 0;
+      targetY = 0;
+    };
+
+    const tick = (now: number) => {
+      const seconds = now / 1000;
+      pointerX += (targetX - pointerX) * 0.08;
+      pointerY += (targetY - pointerY) * 0.08;
+      const wobble = mobilityRef.current * 3.5;
+      const yaw = Math.sin(seconds * 0.32) * 22 + pointerX * 14 + Math.sin(seconds * 6) * wobble;
+      const pitch = 10 + Math.sin(seconds * 0.2) * 4 - pointerY * 8;
+      const lift = Math.sin(seconds * 0.7) * 8;
+      molar.style.transform = `translateY(${lift}px) rotateX(${pitch}deg) rotateY(${yaw}deg)`;
+      frame = requestAnimationFrame(tick);
+    };
+
+    stage.addEventListener("pointermove", onPointerMove);
+    stage.addEventListener("pointerleave", onPointerLeave);
+    frame = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      stage.removeEventListener("pointermove", onPointerMove);
+      stage.removeEventListener("pointerleave", onPointerLeave);
+    };
+  }, []);
 
   return (
-    <div className="hero-stage">
-      <Canvas camera={{ position: [1.8, 1.1, 2.4], fov: 40 }} shadows>
-        <color attach="background" args={["#090c10"]} />
-        <ambientLight intensity={0.35} />
-        <directionalLight position={[3, 4, 2]} intensity={1.4} castShadow />
-        <directionalLight position={[-3, 1, -2]} intensity={0.4} color="#8fb7d2" />
-        <Molar current={current} lastVisit={lastVisit} timeline={timeline} />
-        <OrbitControls enablePan={false} />
-      </Canvas>
-      <div className="timeline" style={{ top: "auto", bottom: "28%", left: "24px", right: "auto", width: "auto" }}>
-        {lastDistal} mm → {shown} mm
+    <div className="hero-stage" ref={stageRef}>
+      <div className="hero-molar" ref={molarRef}>
+        <img src="/hero-tooth.png?v=2" alt="Upper left first molar, tooth 14" />
+        {view.sites.map((site) => {
+          if (site.pd === undefined || site.pd < 4) {
+            return null;
+          }
+          const size = 70 + (site.pd - 3) * 28;
+          return (
+            <span
+              key={`${site.site}-flare`}
+              className={`hero-flare ${site.tone}`}
+              style={{
+                left: `${site.x}%`,
+                top: `${site.y}%`,
+                width: size,
+                height: size,
+                opacity: site.bop ? 0.9 : 0.55,
+              }}
+            />
+          );
+        })}
+        {view.furcation > 0 ? (
+          <span
+            className={`hero-furcation ${view.furcation >= 2 ? "red" : "amber"}`}
+            style={{ left: `${FURCATION_ANCHOR.x}%`, top: `${FURCATION_ANCHOR.y}%` }}
+          />
+        ) : null}
+        {view.sites.map((site) => (
+          <span
+            key={site.site}
+            className={`hero-pin ${site.tone}${site.bop ? " bleed" : ""}${site.rec ? " receded" : ""}`}
+            style={{ left: `${site.x}%`, top: `${site.y}%` }}
+            title={`${site.title}${site.pd !== undefined ? ` ${site.pd} mm` : ""}`}
+          >
+            {site.pd ?? "·"}
+          </span>
+        ))}
       </div>
+      <aside className="hero-findings">
+        <p className="eyebrow">Tooth 14 · upper left molar</p>
+        {view.distalPd !== undefined ? (
+          <div className="hero-reading-line">
+            Distal {view.distalPrevious ?? view.distalPd} mm → {view.distalPd} mm
+          </div>
+        ) : null}
+        {view.callouts.length === 0 ? (
+          <p className="hero-finding-empty">No trouble spots on this tooth yet.</p>
+        ) : (
+          <ul>
+            {view.callouts.map((callout) => (
+              <li key={callout.id} className={callout.tone}>
+                <strong>{callout.title}</strong>
+                <span>{callout.detail}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </aside>
     </div>
   );
 }

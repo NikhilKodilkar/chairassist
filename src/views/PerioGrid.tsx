@@ -1,4 +1,5 @@
 import { pdDelta, statusColor } from "../domain/exam";
+import { toothFullName, toothHeaderLabel } from "../domain/teeth";
 import { SITES } from "../domain/types";
 import type { Exam, Site } from "../domain/types";
 
@@ -62,7 +63,10 @@ function ArchTable({
         <tr>
           <th>{label}</th>
           {teeth.map((tooth) => (
-            <th key={tooth}>{tooth}</th>
+            <th key={tooth} title={toothFullName(tooth)}>
+              <div className="tooth-num">#{tooth}</div>
+              <div className="tooth-name">{toothHeaderLabel(tooth)}</div>
+            </th>
           ))}
         </tr>
       </thead>
