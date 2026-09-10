@@ -12,8 +12,12 @@ const JUNK = [
   "thank you",
   "thanks",
   "thanks for watching",
+  "thank you for watching",
   "subtitle",
   "subtitles",
+  "go to",
+  "music",
+  "applause",
 ];
 
 const PERIO_WORDS = [
@@ -36,6 +40,7 @@ const PERIO_WORDS = [
   "mobility",
   "furcation",
   "correction",
+  "on",
 ];
 
 function hasDigit(text: string): boolean {
@@ -47,13 +52,32 @@ function hasDigit(text: string): boolean {
   return false;
 }
 
+function lettersAndDigits(text: string): string {
+  let out = "";
+  let lastSpace = true;
+  for (const ch of text.toLowerCase()) {
+    const isLetter = ch >= "a" && ch <= "z";
+    const isDigit = ch >= "0" && ch <= "9";
+    if (isLetter || isDigit) {
+      out += ch;
+      lastSpace = false;
+      continue;
+    }
+    if (!lastSpace) {
+      out += " ";
+      lastSpace = true;
+    }
+  }
+  return out.trim();
+}
+
 export function isUsableTranscript(text: string): boolean {
   const trimmed = text.trim();
   if (trimmed.length < 3) {
     return false;
   }
 
-  const lower = trimmed.toLowerCase();
+  const lower = lettersAndDigits(trimmed);
   for (const junk of JUNK) {
     if (lower === junk) {
       return false;

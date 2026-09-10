@@ -34,6 +34,16 @@ export function isLikelyShokz(label: string): boolean {
   );
 }
 
+export function isLikelyIphone(label: string): boolean {
+  const lower = label.toLowerCase();
+  return (
+    lower.includes("iphone") ||
+    lower.includes("16 pro max") ||
+    lower.includes("16 pro-max") ||
+    (lower.includes("pro max") && lower.includes("microphone"))
+  );
+}
+
 export async function listMics(): Promise<MicDevice[]> {
   const devices = await navigator.mediaDevices.enumerateDevices();
   return devices
@@ -46,6 +56,10 @@ export async function listMics(): Promise<MicDevice[]> {
 }
 
 export function pickPreferredMic(devices: MicDevice[]): MicDevice | undefined {
+  const iphone = devices.find((device) => isLikelyIphone(device.label));
+  if (iphone) {
+    return iphone;
+  }
   const shokz = devices.find((device) => isLikelyShokz(device.label));
   if (shokz) {
     return shokz;
@@ -55,6 +69,18 @@ export function pickPreferredMic(devices: MicDevice[]): MicDevice | undefined {
     return headset;
   }
   return devices[0];
+}
+
+export function selectMicId(current: string | undefined, devices: MicDevice[]): string | undefined {
+  const preferred = pickPreferredMic(devices);
+  const currentDevice = devices.find((device) => device.id === current);
+  if (!currentDevice) {
+    return preferred?.id;
+  }
+  if (preferred && isLikelyIphone(preferred.label) && currentDevice.kind === "builtin") {
+    return preferred.id;
+  }
+  return currentDevice.id;
 }
 
 export async function openMic(deviceId?: string): Promise<MediaStream> {

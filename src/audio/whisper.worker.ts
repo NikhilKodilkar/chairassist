@@ -55,10 +55,21 @@ self.onmessage = async (event: MessageEvent) => {
       return;
     }
 
-    if (data.type === "transcribe" && data.samples && data.sampleRate && transcriber) {
+    if (data.type === "transcribe") {
+      if (!transcriber) {
+        self.postMessage({ type: "error", message: "Whisper still loading" });
+        return;
+      }
+      if (!data.samples || !data.sampleRate) {
+        self.postMessage({ type: "error", message: "No audio samples received" });
+        return;
+      }
       const audio = resample(toFloat32(data.samples), data.sampleRate, 16000);
+      console.log("[whisper-worker] transcribe", { length: audio.length, sampleRate: data.sampleRate });
       const result = await transcriber(audio, { temperature: 0 });
-      self.postMessage({ type: "text", text: (result.text ?? "").trim() });
+      const text = (result.text ?? "").trim();
+      console.log("[whisper-worker] text", text);
+      self.postMessage({ type: "text", text });
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Whisper failed";

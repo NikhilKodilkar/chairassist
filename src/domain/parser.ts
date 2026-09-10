@@ -14,7 +14,55 @@ export interface ParseResult {
   context: ParserContext;
 }
 
-const TOOTH_CUES = ["tooth", "number", "on", "to", "canine", "molar", "wisdom", "premolar", "incisor"];
+const TOOTH_CUES = [
+  "tooth",
+  "number",
+  "on",
+  "to",
+  "canine",
+  "molar",
+  "wisdom",
+  "premolar",
+  "incisor",
+  "upper",
+  "lower",
+];
+
+const SKIP_BEFORE_TOOTH = ["the", "left", "right", "upper", "lower"];
+
+function skipArchWords(tokens: string[], start: number): number {
+  let index = start;
+  while (index < tokens.length && SKIP_BEFORE_TOOTH.includes(tokens[index])) {
+    index += 1;
+  }
+  return index;
+}
+
+function toothFromCue(tokens: string[], index: number): { value: number; numberIndex: number; width: number } | undefined {
+  const token = tokens[index];
+  const next = tokens[index + 1];
+  if (TOOTH_CUES.includes(token) && next) {
+    if (token === "to") {
+      const previous = index > 0 ? tokenToNumber(tokens[index - 1]) : undefined;
+      if (previous !== undefined) {
+        return undefined;
+      }
+    }
+    const numberIndex = skipArchWords(tokens, index + 1);
+    const parsed = numberAt(tokens, numberIndex);
+    if (parsed && parsed.value >= 1 && parsed.value <= 32) {
+      return { value: parsed.value, numberIndex, width: parsed.width };
+    }
+  }
+  if (token === "moving" && next === "to") {
+    const numberIndex = skipArchWords(tokens, index + 2);
+    const parsed = numberAt(tokens, numberIndex);
+    if (parsed && parsed.value >= 1 && parsed.value <= 32) {
+      return { value: parsed.value, numberIndex, width: parsed.width };
+    }
+  }
+  return undefined;
+}
 
 function sitesForSide(side: Side): Site[] {
   return side === "lingual" ? LINGUAL_SITES : BUCCAL_SITES;
@@ -48,34 +96,43 @@ function detectSide(tokens: string[]): Side | undefined {
 
 function detectTooth(tokens: string[]): number | undefined {
   for (let i = 0; i < tokens.length; i += 1) {
-    const token = tokens[i];
-    const next = tokens[i + 1];
-    if (TOOTH_CUES.includes(token) && next) {
-      if (token === "to") {
-        const previous = i > 0 ? tokenToNumber(tokens[i - 1]) : undefined;
-        if (previous !== undefined) {
-          continue;
-        }
-      }
-      const parsed = numberAt(tokens, i + 1);
-      if (parsed && parsed.value >= 1 && parsed.value <= 32) {
-        return parsed.value;
-      }
+    const found = toothFromCue(tokens, i);
+    if (found) {
+      return found.value;
     }
-    if (token === "moving" && next === "to" && tokens[i + 2]) {
-      const parsed = numberAt(tokens, i + 2);
-      if (parsed && parsed.value >= 1 && parsed.value <= 32) {
-        return parsed.value;
-      }
+  }
+  for (let i = 0; i < tokens.length; i += 1) {
+    const parsed = numberAt(tokens, i);
+    if (parsed && parsed.value >= 13 && parsed.value <= 32) {
+      return parsed.value;
     }
   }
   return undefined;
 }
 
+function toothNumberIndexes(tokens: string[]): Set<number> {
+  const skipped = new Set<number>();
+  for (let i = 0; i < tokens.length; i += 1) {
+    const found = toothFromCue(tokens, i);
+    if (!found) {
+      continue;
+    }
+    skipped.add(found.numberIndex);
+    if (found.width === 2) {
+      skipped.add(found.numberIndex + 1);
+    }
+  }
+  return skipped;
+}
+
 function collectSmallInts(tokens: string[]): number[] {
+  const skipped = toothNumberIndexes(tokens);
   const values: number[] = [];
-  for (const token of tokens) {
-    const value = tokenToNumber(token);
+  for (let i = 0; i < tokens.length; i += 1) {
+    if (skipped.has(i)) {
+      continue;
+    }
+    const value = tokenToNumber(tokens[i]);
     if (value !== undefined && value >= 1 && value <= 12) {
       values.push(value);
     }

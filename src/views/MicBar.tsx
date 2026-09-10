@@ -1,4 +1,4 @@
-import { isLikelyShokz } from "../audio/devices";
+import { isLikelyIphone, isLikelyShokz } from "../audio/devices";
 import type { MicDevice } from "../audio/devices";
 import type { SttStatus } from "../audio/stt";
 
@@ -8,6 +8,7 @@ export function MicBar({
   onSelect,
   onStart,
   onStop,
+  onRefresh,
   listening,
   level,
   speaking,
@@ -19,6 +20,7 @@ export function MicBar({
   onSelect: (id: string) => void;
   onStart: () => void;
   onStop: () => void;
+  onRefresh: () => void;
   listening: boolean;
   level: number;
   speaking: boolean;
@@ -27,6 +29,7 @@ export function MicBar({
 }) {
   const selected = devices.find((device) => device.id === selectedId);
   const shokzReady = selected ? isLikelyShokz(selected.label) : false;
+  const iphoneReady = selected ? isLikelyIphone(selected.label) : false;
 
   return (
     <div className="mic-bar">
@@ -34,25 +37,32 @@ export function MicBar({
         {devices.length === 0 ? <option value="">No microphones yet</option> : null}
         {devices.map((device) => (
           <option key={device.id} value={device.id}>
-            {isLikelyShokz(device.label) ? `Shokz · ${device.label}` : device.label}
+            {isLikelyIphone(device.label)
+              ? `iPhone · ${device.label}`
+              : isLikelyShokz(device.label)
+                ? `Shokz · ${device.label}`
+                : device.label}
           </option>
         ))}
       </select>
       {listening ? (
         <button type="button" onClick={onStop}>
-          Stop mic
+          Stop
         </button>
       ) : (
         <button className="primary" type="button" onClick={onStart}>
           Listen
         </button>
       )}
+      <button type="button" onClick={onRefresh}>
+        Refresh
+      </button>
       <div className="level" aria-hidden="true">
         <span style={{ width: `${Math.min(100, Math.round(level * 400))}%` }} />
       </div>
       <span className="hint">
         {speaking ? "Hearing you…" : listening ? "Mic open" : "Mic idle"} · STT {status}
-        {shokzReady ? " · Shokz selected" : ""}
+        {iphoneReady ? " · iPhone selected" : shokzReady ? " · Shokz selected" : ""}
         {statusDetail ? ` · ${statusDetail}` : ""}
       </span>
     </div>

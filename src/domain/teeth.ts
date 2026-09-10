@@ -1,3 +1,5 @@
+import { numberToSpoken } from "./numbers";
+
 export function toothArch(tooth: number): "upper" | "lower" {
   return tooth <= 16 ? "upper" : "lower";
 }
@@ -78,4 +80,12 @@ export function toothHeaderLabel(tooth: number): string {
   const side = toothSide(tooth) === "right" ? "R" : "L";
   const arch = toothArch(tooth) === "upper" ? "U" : "L";
   return `${arch}${side} ${toothShortName(tooth)}`;
+}
+
+export function toothSpeakCue(tooth: number): string {
+  return `${toothArch(tooth)} ${tooth}`;
+}
+
+export function toothSpeakPhrase(tooth: number): string {
+  return `tooth ${numberToSpoken(tooth)}`;
 }

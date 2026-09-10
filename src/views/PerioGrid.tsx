@@ -1,5 +1,5 @@
 import { pdDelta, statusColor } from "../domain/exam";
-import { toothFullName, toothHeaderLabel } from "../domain/teeth";
+import { toothFullName, toothHeaderLabel, toothSpeakCue, toothSpeakPhrase } from "../domain/teeth";
 import { SITES } from "../domain/types";
 import type { Exam, Site } from "../domain/types";
 
@@ -63,9 +63,14 @@ function ArchTable({
         <tr>
           <th>{label}</th>
           {teeth.map((tooth) => (
-            <th key={tooth} title={toothFullName(tooth)}>
+            <th
+              key={tooth}
+              className={activeTooth === tooth ? "active" : undefined}
+              title={`${toothFullName(tooth)} · say ${toothSpeakPhrase(tooth)} or ${toothSpeakCue(tooth)}`}
+            >
               <div className="tooth-num">#{tooth}</div>
               <div className="tooth-name">{toothHeaderLabel(tooth)}</div>
+              <div className="tooth-say">{toothSpeakCue(tooth)}</div>
             </th>
           ))}
         </tr>

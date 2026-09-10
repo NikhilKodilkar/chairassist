@@ -273,6 +273,49 @@ export const PARSER_CASES: ParserCase[] = [
     lines: ["tooth fourteen", "facial 3 2 3"],
     check: (events) => firstFailure([expectList(events[1].sites, ["MB", "B", "DB"], "sites"), expectList(events[1].readings, [3, 2, 3], "readings")]),
   },
+  {
+    name: "reads palatal on one with a 2 2 2 triplet",
+    lines: ["palatal on one - 2, 2, 2"],
+    check: (events) =>
+      firstFailure([
+        expectEqual(events[0].kind, "reading", "kind"),
+        expectEqual(events[0].tooth, 1, "tooth"),
+        expectEqual(events[0].side, "lingual", "side"),
+        expectList(events[0].sites, ["ML", "L", "DL"], "sites"),
+        expectList(events[0].readings, [2, 2, 2], "readings"),
+      ]),
+  },
+  {
+    name: "reads palatal on one then the triplet on a second line",
+    lines: ["palatal on one", "two two two"],
+    check: (events) =>
+      firstFailure([
+        expectEqual(events[0].tooth, 1, "tooth"),
+        expectEqual(events[0].side, "lingual", "side"),
+        expectList(events[1].readings, [2, 2, 2], "readings"),
+        expectList(events[1].sites, ["ML", "L", "DL"], "sites"),
+      ]),
+  },
+  {
+    name: "reads lower 26 as tooth 26",
+    lines: ["lower 26"],
+    check: (events) => firstFailure([expectEqual(events[0].kind, "navigation", "kind"), expectEqual(events[0].tooth, 26, "tooth")]),
+  },
+  {
+    name: "reads lower twenty six as tooth 26",
+    lines: ["lower twenty six"],
+    check: (events) => expectEqual(events[0].tooth, 26, "tooth"),
+  },
+  {
+    name: "reads lower left 26 as tooth 26",
+    lines: ["lower left 26"],
+    check: (events) => expectEqual(events[0].tooth, 26, "tooth"),
+  },
+  {
+    name: "reads upper 14 as tooth 14",
+    lines: ["upper 14", "facial three two three"],
+    check: (events) => firstFailure([expectEqual(events[0].tooth, 14, "tooth"), expectList(events[1].readings, [3, 2, 3], "readings")]),
+  },
 ];
 
 export function runParserCase(parserCase: ParserCase): ParserCaseResult {

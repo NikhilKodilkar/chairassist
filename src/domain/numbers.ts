@@ -37,6 +37,45 @@ const WORD_TO_NUMBER: Record<string, number> = {
   thirtytwo: 32,
 };
 
+const SPOKEN_ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+const SPOKEN_TEENS = [
+  "ten",
+  "eleven",
+  "twelve",
+  "thirteen",
+  "fourteen",
+  "fifteen",
+  "sixteen",
+  "seventeen",
+  "eighteen",
+  "nineteen",
+];
+
+export function numberToSpoken(value: number): string {
+  if (value >= 0 && value <= 9) {
+    return SPOKEN_ONES[value];
+  }
+  if (value >= 10 && value <= 19) {
+    return SPOKEN_TEENS[value - 10];
+  }
+  if (value === 20) {
+    return "twenty";
+  }
+  if (value >= 21 && value <= 29) {
+    return `twenty ${SPOKEN_ONES[value - 20]}`;
+  }
+  if (value === 30) {
+    return "thirty";
+  }
+  if (value === 31) {
+    return "thirty one";
+  }
+  if (value === 32) {
+    return "thirty two";
+  }
+  return String(value);
+}
+
 export function tokenize(text: string): string[] {
   const tokens: string[] = [];
   let current = "";

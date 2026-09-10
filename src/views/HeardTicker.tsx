@@ -1,11 +1,18 @@
 import type { HeardItem } from "../store/examStore";
 
-export function HeardTicker({ items }: { items: HeardItem[] }) {
+export function HeardTicker({
+  items,
+  captureHint,
+}: {
+  items: HeardItem[];
+  captureHint?: string;
+}) {
   const latest = items[0];
 
   return (
     <section className="panel heard-live">
       <h2>Heard</h2>
+      {captureHint ? <p className="hint">{captureHint}</p> : null}
       {latest ? (
         <p className={`heard-latest ${latest.confidence}`}>{latest.text}</p>
       ) : (

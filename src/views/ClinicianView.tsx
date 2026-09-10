@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { listMics, openMic, pickPreferredMic } from "../audio/devices";
+import { listMics, openMic, selectMicId } from "../audio/devices";
 import type { MicDevice } from "../audio/devices";
 import { createWhisperSession } from "../audio/stt";
 import type { SttStatus } from "../audio/stt";
 import { isUsableTranscript } from "../audio/transcript";
+import { attachEnergyVad } from "../audio/vad";
 import { createBus } from "../bus/channel";
 import { parseUtterance, createParserContext } from "../domain/parser";
 import type { ParserContext } from "../domain/parser";
@@ -37,6 +38,7 @@ export function ClinicianView() {
   const [speaking, setSpeaking] = useState(false);
   const [status, setStatus] = useState<SttStatus>("idle");
   const [statusDetail, setStatusDetail] = useState<string>();
+  const [captureHint, setCaptureHint] = useState("Mic idle");
   const [parserResults, setParserResults] = useState<ParserCaseResult[]>();
   const sessionRef = useRef<ReturnType<typeof createWhisperSession> | null>(null);
   const vadRef = useRef<{ stop: () => void } | null>(null);
@@ -45,7 +47,17 @@ export function ClinicianView() {
   const publishUtterance = (raw: string) => {
     const parsed = parseUtterance(raw, parser.current);
     parser.current = parsed.context;
-    busRef.current?.publish({ type: "chart-event", event: parsed.event });
+    const event = parsed.event;
+    console.log("[clinician] parse", {
+      raw,
+      kind: event.kind,
+      tooth: event.tooth,
+      side: event.side,
+      sites: event.sites,
+      readings: event.readings,
+      confidence: event.confidence,
+    });
+    busRef.current?.publish({ type: "chart-event", event });
   };
 
   useEffect(() => {
@@ -90,8 +102,7 @@ export function ClinicianView() {
       stream.getTracks().forEach((track) => track.stop());
       const next = await listMics();
       setDevices(next);
-      const preferred = pickPreferredMic(next);
-      setSelectedId((current) => current ?? preferred?.id);
+      setSelectedId((current) => selectMicId(current, next));
     } catch (error) {
       setStatus("error");
       setStatusDetail(error instanceof Error ? error.message : "Mic permission denied");
@@ -103,7 +114,7 @@ export function ClinicianView() {
     const onChange = () => {
       void listMics().then((next) => {
         setDevices(next);
-        setSelectedId((current) => current ?? pickPreferredMic(next)?.id);
+        setSelectedId((current) => selectMicId(current, next));
       });
     };
     navigator.mediaDevices.addEventListener("devicechange", onChange);
@@ -111,41 +122,61 @@ export function ClinicianView() {
   }, []);
 
   const startMic = async () => {
-    sessionRef.current?.load();
-    const stream = await openMic(selectedId);
-    streamRef.current = stream;
-    setListening(true);
-    vadRef.current = attachEnergyVad(stream, {
-      silenceMs: 700,
-      minSpeechMs: 450,
-      threshold: 0.035,
-      onLevel: (nextLevel, nextSpeaking) => {
-        setLevel(nextLevel);
-        setSpeaking(nextSpeaking);
-      },
-      onUtterance: (samples, sampleRate) => {
-        const session = sessionRef.current;
-        if (!session) {
-          return;
-        }
-        void session
-          .transcribe(samples, sampleRate)
-          .then((text) => {
-            if (!text) {
-              return;
-            }
-            if (isUsableTranscript(text)) {
-              publishUtterance(text);
-              return;
-            }
-            useExamStore.getState().setHeard({ text, confidence: "low" });
-          })
-          .catch((error: unknown) => {
-            setStatus("error");
-            setStatusDetail(error instanceof Error ? error.message : "Transcription failed");
-          });
-      },
-    });
+    try {
+      sessionRef.current?.load();
+      const stream = await openMic(selectedId);
+      streamRef.current = stream;
+      setListening(true);
+      setCaptureHint("Mic open — waiting for speech");
+      vadRef.current = attachEnergyVad(stream, {
+        silenceMs: 550,
+        minSpeechMs: 700,
+        threshold: 0.012,
+        onLevel: (nextLevel, nextSpeaking, detail) => {
+          setLevel(nextLevel);
+          setSpeaking(nextSpeaking);
+          setCaptureHint(detail);
+        },
+        onUtterance: (samples, sampleRate) => {
+          const session = sessionRef.current;
+          if (!session) {
+            return;
+          }
+          useExamStore.getState().setHeard({ text: "Transcribing…", confidence: "low" });
+          void session
+            .transcribe(samples, sampleRate)
+            .then((text) => {
+              const usable = Boolean(text) && isUsableTranscript(text);
+              console.log("[clinician] transcript", {
+                text,
+                usable,
+                samples: samples.length,
+                sampleRate,
+              });
+              if (!text) {
+                useExamStore.getState().setHeard({ text: "(empty transcript)", confidence: "low" });
+                return;
+              }
+              if (usable) {
+                publishUtterance(text);
+                return;
+              }
+              console.log("[clinician] skip chart — transcript looks like junk, not a perio line");
+              useExamStore.getState().setHeard({ text, confidence: "low" });
+            })
+            .catch((error: unknown) => {
+              const message = error instanceof Error ? error.message : "Transcription failed";
+              console.log("[clinician] transcribe error", message);
+              useExamStore.getState().setHeard({ text: message, confidence: "low" });
+            });
+        },
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Mic failed to start";
+      setListening(false);
+      setCaptureHint(message);
+      useExamStore.getState().setHeard({ text: message, confidence: "low" });
+    }
   };
 
   const stopMic = () => {
@@ -159,17 +190,11 @@ export function ClinicianView() {
   return (
     <main className="screen clinician">
       <header className="topbar">
-        <div>
-          <p className="eyebrow">Clinician view</p>
-          <h1>{store.current.patientName}</h1>
-          <p className="hint">
-            {rehearsal ? "Rehearsal mode: spacebar advances the script." : "Live mic or push a test event."}
-          </p>
-        </div>
+        <h1>{store.current.patientName}</h1>
+        <p className="hint">
+          {rehearsal ? "Rehearsal · spacebar advances the script" : "Live mic"}
+        </p>
         <div className="controls">
-          <button type="button" onClick={() => void refreshDevices()}>
-            Refresh mics
-          </button>
           <button
             className="primary"
             type="button"
@@ -178,10 +203,10 @@ export function ClinicianView() {
             Test event
           </button>
           <button type="button" onClick={() => publishUtterance(DEMO1_LINES[step.current++] ?? "let's wrap up")}>
-            Next script line
+            Next line
           </button>
-          <button className="primary" type="button" onClick={() => setParserResults(runAllParserCases())}>
-            Run {PARSER_CASES.length} parser cases
+          <button type="button" onClick={() => setParserResults(runAllParserCases())}>
+            Parser {PARSER_CASES.length}
           </button>
         </div>
       </header>
@@ -192,6 +217,7 @@ export function ClinicianView() {
         onSelect={setSelectedId}
         onStart={() => void startMic()}
         onStop={stopMic}
+        onRefresh={() => void refreshDevices()}
         listening={listening}
         level={level}
         speaking={speaking}
@@ -199,25 +225,25 @@ export function ClinicianView() {
         statusDetail={statusDetail}
       />
 
-      <HeardTicker items={store.heard} />
+      <div className="heard-and-script">
+        <HeardTicker items={store.heard} captureHint={captureHint} />
+        <HygienistScript
+          onUtterance={publishUtterance}
+          onNarration={(text) => useExamStore.getState().setHeard({ text, confidence: "high" })}
+          onReset={() => {
+            parser.current = createParserContext();
+            useExamStore.getState().resetExam();
+            step.current = 0;
+          }}
+        />
+      </div>
 
-      <HygienistScript
-        onUtterance={publishUtterance}
-        onNarration={(text) => useExamStore.getState().setHeard({ text, confidence: "high" })}
-        onReset={() => {
-          parser.current = createParserContext();
-          useExamStore.getState().resetExam();
-          step.current = 0;
-        }}
-      />
-
-      <PerioGrid exam={store.current} lastVisit={store.lastVisit} activeTooth={store.activeTooth} />
-
-      {parserResults ? <ParserResults results={parserResults} onClose={() => setParserResults(undefined)} /> : null}
-
-      <div className="heard">
+      <div className="chart-and-writeback">
+        <PerioGrid exam={store.current} lastVisit={store.lastVisit} activeTooth={store.activeTooth} />
         <WritebackDrawer items={store.writebacks} />
       </div>
+
+      {parserResults ? <ParserResults results={parserResults} onClose={() => setParserResults(undefined)} /> : null}
     </main>
   );
 }

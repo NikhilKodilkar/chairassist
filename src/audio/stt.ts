@@ -49,17 +49,33 @@ export function createWhisperSession(onStatus: (status: SttStatus, detail?: stri
     },
     transcribe(samples: Float32Array, sampleRate: number): Promise<string> {
       return new Promise((resolve, reject) => {
+        if (status !== "ready") {
+          reject(new Error(`Whisper is ${status}, not ready yet`));
+          return;
+        }
+        let settled = false;
+        const finish = (fn: () => void) => {
+          if (settled) {
+            return;
+          }
+          settled = true;
+          window.clearTimeout(timer);
+          worker.removeEventListener("message", handle);
+          fn();
+        };
         const handle = (event: MessageEvent<WorkerOk | WorkerErr>) => {
           if (event.data.type === "text" && event.data.text !== undefined) {
-            worker.removeEventListener("message", handle);
-            resolve(event.data.text);
+            finish(() => resolve(event.data.text ?? ""));
           }
           if (event.data.type === "error") {
-            worker.removeEventListener("message", handle);
-            reject(new Error(event.data.message));
+            finish(() => reject(new Error(event.data.message)));
           }
         };
+        const timer = window.setTimeout(() => {
+          finish(() => reject(new Error("Whisper timed out")));
+        }, 20000);
         worker.addEventListener("message", handle);
+        console.log("[stt] transcribe", { status, length: samples.length, sampleRate });
         worker.postMessage({ type: "transcribe", samples, sampleRate }, [samples.buffer]);
       });
     },

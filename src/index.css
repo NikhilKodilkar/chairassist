@@ -42,7 +42,12 @@ button {
 
 .clinician {
   background: var(--bg-clinician);
-  padding: 20px 24px 28px;
+  padding: 8px 12px 12px;
+}
+
+.clinician button,
+.clinician select {
+  font-size: 12px;
 }
 
 .patient {
@@ -53,10 +58,21 @@ button {
 
 .topbar {
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: flex-start;
-  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.topbar .hint {
+  margin: 0;
+  font-size: 11px;
 }
 
 .eyebrow {
@@ -64,32 +80,36 @@ button {
   color: var(--muted);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 h1 {
-  margin: 4px 0 0;
-  font-size: 28px;
+  margin: 2px 0 0;
+  font-size: 22px;
   font-weight: 600;
 }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
+  margin-left: auto;
 }
 
 .controls button,
-.controls select {
+.controls select,
+.mic-bar button,
+.mic-bar select {
   background: var(--bg-elev);
   color: var(--text);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: 6px;
+  padding: 3px 8px;
 }
 
-.controls button.primary {
+.controls button.primary,
+.mic-bar button.primary {
   background: #1f3d4d;
   border-color: #2d5d73;
 }
@@ -97,18 +117,22 @@ h1 {
 .mic-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
-  padding: 12px 14px;
+  padding: 4px 8px;
   background: var(--bg-elev);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  margin-bottom: 16px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.mic-bar select {
+  max-width: 280px;
 }
 
 .level {
-  width: 120px;
-  height: 8px;
+  width: 88px;
+  height: 5px;
   background: #24303a;
   border-radius: 99px;
   overflow: hidden;
@@ -122,15 +146,28 @@ h1 {
 
 .hint {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 11px;
+}
+
+.mic-bar .hint {
+  font-size: 11px;
+}
+
+.heard-and-script {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(280px, 1.2fr);
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: stretch;
 }
 
 .script-panel {
   background: var(--bg-elev);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 16px;
+  padding: 8px 10px;
+  margin-bottom: 0;
+  min-width: 0;
 }
 
 .script-head {
@@ -149,24 +186,26 @@ h1 {
 }
 
 .script-now {
-  margin: 12px 0 0;
-  font-size: 16px;
-  line-height: 1.45;
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .script-list {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   padding: 0;
   list-style: none;
-  max-height: 220px;
+  max-height: 132px;
   overflow: auto;
   border-top: 1px solid #24303a;
 }
 
 .script-list li {
   display: flex;
-  gap: 10px;
-  padding: 10px 4px;
+  gap: 8px;
+  padding: 4px;
+  font-size: 12px;
+  line-height: 1.35;
   border-bottom: 1px solid #24303a;
   color: var(--muted);
 }
@@ -236,6 +275,21 @@ button:disabled {
   letter-spacing: 0.02em;
 }
 
+.tooth-say {
+  margin-top: 3px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.perio-grid th.active {
+  outline: 2px solid var(--accent);
+  background: rgba(126, 182, 214, 0.12);
+}
+
 .perio-grid td.active {
   outline: 2px solid var(--accent);
 }
@@ -246,19 +300,41 @@ button:disabled {
 .bop { color: var(--red); }
 
 .heard {
-  margin-top: 16px;
+  margin-top: 10px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 12px;
+}
+
+.chart-and-writeback {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  gap: 12px;
+  align-items: start;
 }
 
 .heard-live {
-  margin-bottom: 16px;
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.heard-live.panel {
+  padding: 8px 10px;
+}
+
+.heard-live h2 {
+  margin: 0 0 4px;
+  font-size: 11px;
+}
+
+.heard-live .hint {
+  margin: 0 0 4px;
+  font-size: 11px;
 }
 
 .heard-latest {
-  margin: 0 0 10px;
-  font-size: 28px;
+  margin: 4px 0 6px;
+  font-size: 16px;
   line-height: 1.3;
   font-weight: 600;
 }
@@ -266,11 +342,11 @@ button:disabled {
 .heard-latest.muted {
   color: var(--muted);
   font-weight: 500;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .heard-log {
-  max-height: 140px;
+  max-height: 88px;
   overflow: auto;
   border-top: 1px solid #24303a;
 }
@@ -293,18 +369,47 @@ button:disabled {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding: 6px 0;
+  padding: 3px 0;
   border-bottom: 1px solid #24303a;
+  font-size: 13px;
 }
 
 .low { color: var(--amber); }
 .high { color: var(--green); }
 
+.writeback-panel {
+  padding: 8px 10px;
+  max-height: min(420px, calc(100vh - 24px));
+  overflow: auto;
+  position: sticky;
+  top: 8px;
+}
+
+.writeback-panel h2 {
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+
+.writeback-panel .hint {
+  margin: 0;
+  font-size: 12px;
+}
+
 .writeback {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  white-space: pre-wrap;
+  font-size: 10px;
+  line-height: 1.35;
+  white-space: pre;
+  overflow-x: auto;
   color: #c6d4df;
+  margin: 0 0 8px;
+}
+
+.writeback-time {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-bottom: 4px;
 }
 
 .parser-results {
@@ -804,6 +909,16 @@ button:disabled {
 @media (max-width: 900px) {
   .heard {
     grid-template-columns: 1fr;
+  }
+  .heard-and-script {
+    grid-template-columns: 1fr;
+  }
+  .chart-and-writeback {
+    grid-template-columns: 1fr;
+  }
+  .writeback-panel {
+    position: static;
+    max-height: 240px;
   }
   .caption {
     font-size: 20px;

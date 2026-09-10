@@ -54,6 +54,27 @@ export const useExamStore = create<ExamStore>((set, get) => ({
   timeline: 1,
   applyChartEvent: (event) => {
     const state = get();
+    const willWritePd =
+      event.kind === "reading" && event.confidence === "high" && Boolean(event.tooth) && Boolean(event.readings?.length);
+    let skipReason: string | undefined;
+    if (!event.tooth) {
+      skipReason = "no-tooth";
+    } else if (event.confidence === "low") {
+      skipReason = "low-confidence";
+    } else if (event.kind !== "reading") {
+      skipReason = event.kind;
+    } else if (!event.readings?.length) {
+      skipReason = "no-readings";
+    }
+    console.log("[clinician] apply", {
+      kind: event.kind,
+      tooth: event.tooth,
+      sites: event.sites,
+      readings: event.readings,
+      confidence: event.confidence,
+      willWritePd,
+      skipReason,
+    });
     const current = applyEvent(state.current, event);
     const caption = captionForEvent(event, state.lastVisit);
     const nextHeard = [{ text: event.raw, confidence: event.confidence }, ...state.heard].slice(0, 6);
