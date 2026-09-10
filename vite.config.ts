@@ -1,5 +1,6 @@
-import { defineConfig, loadEnv } from "vitest/config";
 import react from "@vitejs/plugin-react";
+import { loadEnv } from "vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -13,7 +14,7 @@ export default defineConfig(({ mode }) => {
       port,
       headers: {
         "Cross-Origin-Opener-Policy": "same-origin",
-        "Cross-Origin-Embedder-Policy": "require-corp",
+        "Cross-Origin-Embedder-Policy": "credentialless",
       },
     },
     preview: {

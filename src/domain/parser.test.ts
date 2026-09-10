@@ -31,7 +31,8 @@ describe("perio parser", () => {
   });
 
   it("assigns a buccal triplet", () => {
-    const [event] = parseMany(["tooth fourteen", "buccal", "three two three"]);
+    const events = parseMany(["tooth fourteen", "buccal", "three two three"]);
+    const event = events[events.length - 1];
     expect(event.kind).toBe("reading");
     expect(event.sites).toEqual(["MB", "B", "DB"]);
     expect(event.readings).toEqual([3, 2, 3]);

@@ -1,6 +1,14 @@
 import { pipeline } from "@huggingface/transformers";
 
 type AsrPipeline = (audio: { array: Float32Array; sampling_rate: number }) => Promise<{ text: string }>;
+type WhisperDtype = "q4" | "q8" | "fp16" | "fp32";
+
+function asDtype(value: string | undefined): WhisperDtype {
+  if (value === "q4" || value === "q8" || value === "fp16" || value === "fp32") {
+    return value;
+  }
+  return "q8";
+}
 
 let transcriber: AsrPipeline | undefined;
 
@@ -34,7 +42,7 @@ self.onmessage = async (event: MessageEvent) => {
     if (data.type === "load") {
       transcriber = (await pipeline("automatic-speech-recognition", data.model, {
         device: "webgpu",
-        dtype: data.dtype,
+        dtype: asDtype(data.dtype),
       })) as unknown as AsrPipeline;
       self.postMessage({ type: "ready" });
       return;
