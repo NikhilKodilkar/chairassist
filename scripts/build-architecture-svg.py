@@ -8,13 +8,10 @@ OUT = Path(__file__).resolve().parents[1] / "public" / "architecture.svg"
 lines = []
 a = lines.append
 
-a('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" width="960" height="700">')
+a('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640">')
 a("  <defs>")
 a('    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">')
 a('      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>')
-a("    </marker>")
-a('    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">')
-a('      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>')
 a("    </marker>")
 a('    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">')
 a('      <polygon points="0 0, 10 3.5, 0 7" fill="#ea580c"/>')
@@ -29,7 +26,7 @@ a("  </defs>")
 a('  <style>')
 a("    text { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }")
 a("  </style>")
-a('  <rect width="960" height="700" fill="#ffffff"/>')
+a('  <rect width="960" height="640" fill="#ffffff"/>')
 a('  <text x="480" y="32" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">Chairside Agent architecture</text>')
 a('  <text x="480" y="52" text-anchor="middle" font-size="13" fill="#6b7280">Operatory speech becomes a perio chart, a detailed report, and patient language</text>')
 
@@ -80,6 +77,17 @@ def label(x, y, text, fill="#475569", side="above"):
 node(70, 96, 220, 60, "#ffffff", "#d1d5db", "Hygienist", "Hands-busy speech")
 node(370, 96, 220, 60, "#ffffff", "#d1d5db", "Patient", "Plain-language listen")
 
+# Legend — only the exceptions. Solid blue is just the pipeline.
+a('  <g transform="translate(660, 92)">')
+a('    <text x="0" y="0" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="0.06em">KEY</text>')
+a('    <line x1="0" y1="20" x2="24" y2="20" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>')
+a('    <text x="32" y="24" font-size="12" fill="#6b7280">Flow</text>')
+a('    <line x1="0" y1="42" x2="24" y2="42" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arrow-orange)"/>')
+a('    <text x="32" y="46" font-size="12" fill="#6b7280">Write-back</text>')
+a('    <line x1="0" y1="64" x2="24" y2="64" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-gray)"/>')
+a('    <text x="32" y="68" font-size="12" fill="#6b7280">Portal sync</text>')
+a("  </g>")
+
 # Layer 2 capture
 node(70, 226, 220, 60, "#ffffff", "#93c5fd", "Phone mic", "Default: iPhone")
 node(370, 226, 220, 60, "#ffffff", "#93c5fd", "Energy VAD", "Utterance cuts")
@@ -116,10 +124,10 @@ a('  <path d="M 590 396 H 660" fill="none" stroke="#2563eb" stroke-width="2" mar
 label(625, 396, "events", "#2563eb")
 
 # Store fans out from the bottom edge of Exam store
-a('  <path d="M 710 426 V 444 H 180 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
-label(300, 444, "chart", "#16a34a")
-a('  <path d="M 740 426 V 456 H 480 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
-label(560, 456, "captions", "#16a34a", side="below")
+a('  <path d="M 710 426 V 444 H 180 V 510" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>')
+label(300, 444, "chart", "#2563eb")
+a('  <path d="M 740 426 V 456 H 480 V 510" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>')
+label(560, 456, "captions", "#2563eb", side="below")
 a('  <path d="M 770 426 V 510" fill="none" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arrow-orange)"/>')
 label(770, 466, "write-back", "#ea580c", side="right")
 
@@ -128,22 +136,9 @@ a('  <path d="M 290 546 H 370" fill="none" stroke="#6b7280" stroke-width="1.5" s
 label(330, 546, "sync", "#6b7280")
 
 # Patient language back to the person — under surfaces, left margin, then over the top into Patient
-a('  <path d="M 420 582 V 618 H 22 V 62 H 480 V 96" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
-label(22, 300, "plain language", "#16a34a", side="right")
+a('  <path d="M 420 582 V 618 H 22 V 62 H 480 V 96" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>')
+label(22, 300, "plain language", "#2563eb", side="right")
 
-# Legend
-a('  <g transform="translate(56, 630)">')
-a('    <text x="0" y="0" font-size="12" font-weight="600" fill="#111827">Flows</text>')
-a('    <line x1="0" y1="18" x2="28" y2="18" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>')
-a('    <text x="36" y="22" font-size="12" fill="#6b7280">Speech to chart events</text>')
-a('    <line x1="220" y1="18" x2="248" y2="18" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
-a('    <text x="256" y="22" font-size="12" fill="#6b7280">State to screens</text>')
-a('    <line x1="400" y1="18" x2="428" y2="18" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arrow-orange)"/>')
-a('    <text x="436" y="22" font-size="12" fill="#6b7280">PMS write-back</text>')
-a('    <line x1="560" y1="18" x2="588" y2="18" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-gray)"/>')
-a('    <text x="596" y="22" font-size="12" fill="#6b7280">BroadcastChannel</text>')
-a('    <text x="0" y="48" font-size="12" fill="#6b7280">Nothing leaves the room for STT — Whisper runs in the clinician browser.</text>')
-a("  </g>")
 a("</svg>")
 
 OUT.write_text("\n".join(lines), encoding="utf-8")

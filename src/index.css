@@ -56,6 +56,8 @@ button {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 .patient-body {
@@ -65,6 +67,8 @@ button {
   gap: 16px;
   padding: 12px 24px 20px;
   min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
 }
 
 .app-logo {
@@ -147,24 +151,40 @@ h1 {
 
 .architecture {
   background: var(--bg-clinician);
-  padding: 12px 16px 24px;
+  padding: 12px 16px;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .architecture-panel {
   max-width: 1080px;
   margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .architecture-diagram {
   display: block;
   width: 100%;
   height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: top center;
   background: #ffffff;
   border-radius: 8px;
+  flex: 1;
+  min-height: 0;
 }
 
 .architecture-panel .hint {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
+  flex-shrink: 0;
 }
 
 .controls button,
@@ -201,6 +221,7 @@ h1 {
 
 .mic-bar select {
   max-width: 280px;
+  font-size: 11px;
 }
 
 .patient-topbar {
@@ -253,6 +274,7 @@ h1 {
   max-width: 168px;
   border-radius: 6px;
   padding: 3px 8px;
+  font-size: 10px;
 }
 
 .mic-bar.compact button:not(.mic-listen) {
@@ -981,6 +1003,8 @@ button:disabled {
 
 .jaw-map {
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: rgba(12, 16, 20, 0.55);
@@ -1001,8 +1025,10 @@ button:disabled {
   position: relative;
   margin: 0;
   min-height: 0;
+  height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
   border-radius: 14px;
   background: #000;
@@ -1010,13 +1036,18 @@ button:disabled {
 
 .jaw-arch-stage {
   position: relative;
-  width: 100%;
+  display: flex;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .jaw-arch img {
   display: block;
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
   height: auto;
+  object-fit: contain;
 }
 
 .jaw-arch figcaption {
@@ -1080,6 +1111,31 @@ button:disabled {
   text-overflow: ellipsis;
 }
 
+.jaw-resto {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 92%;
+  height: 72%;
+  transform: translate(-50%, -40%);
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+}
+
+.jaw-resto.filling {
+  top: 50%;
+  width: 70%;
+  height: 70%;
+  transform: translate(-50%, -50%);
+}
+
+.jaw-resto svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .jaw-hotspot-num {
   position: absolute;
   left: 50%;
@@ -1096,6 +1152,7 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 @keyframes jaw-focus {
@@ -1114,6 +1171,7 @@ button:disabled {
 
 .tooth-meaning {
   min-height: 0;
+  height: 100%;
   overflow: auto;
   background: rgba(12, 16, 20, 0.78);
   border: 1px solid var(--line);
@@ -1164,11 +1222,54 @@ button:disabled {
 .tooth-zoom.green { border-color: #3dbe86; }
 .tooth-zoom.amber { border-color: #e0a24a; }
 .tooth-zoom.red { border-color: #e05b5b; }
+.tooth-zoom.crown { border-color: #d4af37; }
+.tooth-zoom.filling { border-color: #8d959c; }
 
 .tooth-zoom img {
   position: absolute;
   max-width: none;
 }
+
+.tooth-zoom-mark {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  width: 42%;
+  height: 42%;
+  transform: translate(-50%, 0);
+  pointer-events: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+}
+
+.tooth-zoom-mark.filling {
+  top: 38%;
+  width: 36%;
+  height: 36%;
+}
+
+.tooth-zoom-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tooth-resto-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.resto-inline-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+
+.tooth-resto-copy.crown { color: #e6d08a; }
+.tooth-resto-copy.filling { color: #c5ccd3; }
 
 .tooth-meaning-copy {
   margin: 0 0 12px;
@@ -1196,6 +1297,32 @@ button:disabled {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.history-group {
+  margin: 14px 0 0;
+}
+
+.history-group .eyebrow {
+  margin-bottom: 8px;
+}
+
+.history-group.red .eyebrow { color: var(--red); }
+.history-group.amber .eyebrow { color: var(--amber); }
+.history-group.crown .eyebrow,
+.history-group.filling .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.history-group.crown .eyebrow { color: #d4af37; }
+.history-group.filling .eyebrow { color: #9aa3ab; }
+
+.history-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 
 .tooth-history-roster {
@@ -1299,6 +1426,19 @@ button:disabled {
 .arch-swatch.green { background: #3dbe86; }
 .arch-swatch.amber { background: #e0a24a; }
 .arch-swatch.red { background: #e05b5b; }
+
+.arch-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.arch-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  flex: 0 0 auto;
+}
 
 .arch-rows {
   display: flex;

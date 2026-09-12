@@ -1,4 +1,4 @@
-import { displayToothColor } from "../domain/exam";
+import { displayRestoration, displayToothColor } from "../domain/exam";
 import {
   LOWER_ARCH_SRC,
   UPPER_ARCH_SRC,
@@ -9,6 +9,7 @@ import type { ArchHotspot } from "../domain/archHotspots";
 import { toothEverydayName, toothFullName } from "../domain/teeth";
 import type { Exam } from "../domain/types";
 import type { LastMention } from "../store/examStore";
+import { RestorationIcon } from "./RestorationIcon";
 
 function ToothHighlight({
   spot,
@@ -24,6 +25,7 @@ function ToothHighlight({
   onSelect?: (tooth: number) => void;
 }) {
   const { color, fromHistory } = displayToothColor(exam, lastVisit, spot.tooth);
+  const restoration = displayRestoration(exam, lastVisit, spot.tooth);
   const classes = ["jaw-hotspot", color];
   if (active) {
     classes.push("focus");
@@ -31,6 +33,11 @@ function ToothHighlight({
   if (fromHistory) {
     classes.push("history");
   }
+  if (restoration) {
+    classes.push(restoration);
+  }
+  const labelExtra =
+    restoration === "crown" ? ", crown" : restoration === "filling" ? ", filled cavity" : "";
   return (
     <button
       type="button"
@@ -42,9 +49,14 @@ function ToothHighlight({
         height: `${spot.h + (active ? 2.8 : 1)}%`,
       }}
       title={`${toothFullName(spot.tooth)} (#${spot.tooth})`}
-      aria-label={`Tooth ${spot.tooth}, ${toothEverydayName(spot.tooth)}`}
+      aria-label={`Tooth ${spot.tooth}, ${toothEverydayName(spot.tooth)}${labelExtra}`}
       onClick={() => onSelect?.(spot.tooth)}
     >
+      {restoration ? (
+        <span className={`jaw-resto ${restoration}`} aria-hidden="true">
+          <RestorationIcon kind={restoration} />
+        </span>
+      ) : null}
       {active ? <span className="jaw-hotspot-num">{spot.tooth}</span> : null}
     </button>
   );
@@ -128,6 +140,14 @@ export function JawMap({
         <span className="arch-swatch green" /> Healthy
         <span className="arch-swatch amber" /> Watch
         <span className="arch-swatch red" /> Needs care
+        <span className="arch-legend-item">
+          <RestorationIcon kind="crown" className="arch-icon" />
+          Crown
+        </span>
+        <span className="arch-legend-item">
+          <RestorationIcon kind="filling" className="arch-icon" />
+          Filled cavity
+        </span>
       </div>
       <div className="jaw-arches">
         <ArchPhoto

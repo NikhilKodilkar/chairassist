@@ -66,6 +66,34 @@ export function toothHasBleeding(tooth: ToothState | undefined): boolean {
   return SITES.some((site) => tooth.sites[site].bop === true);
 }
 
+export type ToothRestoration = "crown" | "filling";
+
+function noteMentions(notes: string[], phrase: string): boolean {
+  const needle = phrase.toLowerCase();
+  return notes.some((note) => note.toLowerCase().includes(needle));
+}
+
+export function toothRestoration(tooth: ToothState | undefined): ToothRestoration | undefined {
+  if (!tooth || tooth.notes.length === 0) {
+    return undefined;
+  }
+  if (noteMentions(tooth.notes, "crown")) {
+    return "crown";
+  }
+  if (
+    noteMentions(tooth.notes, "composite") ||
+    noteMentions(tooth.notes, "filling") ||
+    noteMentions(tooth.notes, "filled")
+  ) {
+    return "filling";
+  }
+  return undefined;
+}
+
+export function displayRestoration(current: Exam, lastVisit: Exam, tooth: number): ToothRestoration | undefined {
+  return toothRestoration(current.teeth[tooth]) ?? toothRestoration(lastVisit.teeth[tooth]);
+}
+
 export function toothStatusColor(tooth: ToothState | undefined): "grey" | "green" | "amber" | "red" {
   if (!tooth) {
     return "grey";

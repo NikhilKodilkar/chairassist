@@ -16,12 +16,20 @@ describe("Andrew March history", () => {
     }
   });
 
-  it("keeps the demo watch spots on 3, 14, and 19", () => {
+  it("keeps watch spots and two needs-care teeth from March", () => {
     const march = createMarchExam();
     expect(march.teeth[14].sites.DB.pd).toBe(3);
+    expect(march.teeth[14].sites.DL.pd).toBe(4);
     expect(march.teeth[19].sites.MB.pd).toBe(4);
     expect(march.teeth[19].sites.DB.pd).toBe(4);
+    expect(march.teeth[3].sites.DB.pd).toBe(4);
+    expect(march.teeth[30].sites.DB.pd).toBe(4);
     expect(march.teeth[3].notes).toContain("watch");
+    expect(march.teeth[2].sites.DB.pd).toBe(5);
+    expect(march.teeth[31].sites.DB.pd).toBe(5);
+    expect(march.teeth[30].notes).toContain("existing crown");
+    expect(march.teeth[15].notes).toContain("occlusal composite");
+    expect(march.teeth[19].notes).toContain("MOD composite");
   });
 
   it("says a site moved the wrong way when it gets deeper", () => {

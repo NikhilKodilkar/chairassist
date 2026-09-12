@@ -21,7 +21,7 @@ export function PatientView() {
       <header className="topbar patient-topbar">
         <AppLogo compact />
         <div className="patient-title">
-          <p className="eyebrow">Patient view</p>
+          <p className="eyebrow">MolarMind</p>
           <h1>Your checkup, in plain language</h1>
         </div>
         <div className="controls">
