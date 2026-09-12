@@ -10,6 +10,8 @@ It is a two-screen chairside demo. One window is for the clinician. The other is
 
 The seeded patient is **Andrew**. His last visit was 12 March 2026. Today’s exam starts empty and fills only as speech (or the rehearsal script) lands.
 
+![Patient view for Andrew: upper and lower jaws with tooth numbers, plus last-visit notes for needs care, watch, and crown](docs/demo-patient.png)
+
 | Screen | Default path | Who it is for |
 | --- | --- | --- |
 | Clinician | `/clinician` | Hygienist: live grid, detailed report, Open Dental preview, hygienist script |
