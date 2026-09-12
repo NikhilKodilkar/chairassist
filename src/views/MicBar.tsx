@@ -47,15 +47,15 @@ export function MicBar({
           </option>
         ))}
       </select>
-      {listening ? (
-        <button type="button" onClick={onStop}>
-          Stop
-        </button>
-      ) : (
-        <button className="primary" type="button" onClick={onStart}>
-          Listen
-        </button>
-      )}
+      <button
+        className={`mic-listen${listening ? " on" : ""}${speaking ? " speaking" : ""}`}
+        type="button"
+        onClick={listening ? onStop : onStart}
+        aria-label={listening ? "Stop listening" : "Listen"}
+        title={listening ? "Stop" : "Listen"}
+      >
+        <img src={`${import.meta.env.BASE_URL}molarmind-favicon.png`} alt="" />
+      </button>
       {compact ? null : (
         <>
           <button type="button" onClick={onRefresh}>

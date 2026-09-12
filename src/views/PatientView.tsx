@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLiveMic } from "../audio/useLiveMic";
-import { PARSER_CASES, runAllParserCases } from "../domain/parser.cases";
+import { runAllParserCases } from "../domain/parser.cases";
 import type { ParserCaseResult } from "../domain/parser.cases";
 import { useExamStore } from "../store/examStore";
 import { AppLogo } from "./AppLogo";
@@ -25,10 +25,6 @@ export function PatientView() {
           <h1>Your checkup, in plain language</h1>
         </div>
         <div className="controls">
-          <ArchitectureLink />
-          <button className="primary" type="button" onClick={() => setParserResults(runAllParserCases())}>
-            Parser {PARSER_CASES.length}
-          </button>
           <MicBar
             compact
             devices={mic.devices}
@@ -45,6 +41,12 @@ export function PatientView() {
           />
           {store.helloName ? <p className="patient-hello">Hello {store.helloName}</p> : null}
         </div>
+        <div className="header-tools">
+          <ArchitectureLink />
+          <button className="primary" type="button" onClick={() => setParserResults(runAllParserCases())}>
+            Test suite
+          </button>
+        </div>
       </header>
       {store.heard[0] ? (
         <p className="patient-heard">
@@ -54,15 +56,20 @@ export function PatientView() {
       <div className="patient-body">
         <JawMap
           exam={store.current}
+          lastVisit={store.lastVisit}
           activeTooth={store.activeTooth}
           focusTeeth={store.focusTeeth}
           lastMention={store.lastMention}
+          onSelectTooth={store.selectTooth}
         />
         <ToothMeaning
           exam={store.current}
+          lastVisit={store.lastVisit}
           activeTooth={store.activeTooth}
           lastMention={store.lastMention}
           caption={store.caption}
+          onSelectTooth={store.selectTooth}
+          onShowAll={store.clearToothFocus}
         />
       </div>
       {parserResults ? (

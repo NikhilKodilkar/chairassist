@@ -15,7 +15,7 @@ export function ParserResults({
   return (
     <section className="panel parser-results">
       <div className="parser-results-head">
-        <h2>Parser cases</h2>
+        <h2>Test suite</h2>
         <span className={allPassed ? "high" : "low"}>
           {passed}/{total} passed
         </span>

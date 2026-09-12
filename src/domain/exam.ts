@@ -76,6 +76,25 @@ export function toothStatusColor(tooth: ToothState | undefined): "grey" | "green
   return statusColor(worstPd(tooth));
 }
 
+export function toothHasTodayReading(tooth: ToothState | undefined): boolean {
+  if (!tooth) {
+    return false;
+  }
+  return toothHasBleeding(tooth) || worstPd(tooth) !== undefined;
+}
+
+export function displayToothColor(
+  current: Exam,
+  lastVisit: Exam,
+  tooth: number,
+): { color: "grey" | "green" | "amber" | "red"; fromHistory: boolean } {
+  const today = current.teeth[tooth];
+  if (toothHasTodayReading(today)) {
+    return { color: toothStatusColor(today), fromHistory: false };
+  }
+  return { color: toothStatusColor(lastVisit.teeth[tooth]), fromHistory: true };
+}
+
 function mergeNotes(existing: string[] | undefined, incoming: string[] | undefined): string[] {
   const next = [...(existing ?? [])];
   if (!incoming) {

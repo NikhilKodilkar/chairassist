@@ -5,7 +5,7 @@ export interface HygienistBeat {
 
 export const HYGIENIST_CLEANING: HygienistBeat[] = [
   {
-    said: "Alright Rita, I'm going to clean and check the gums as I go. You'll feel a little water and a little poke — that's me measuring the pockets, not a shot.",
+    said: "Alright Andrew, I'm going to clean and check the gums as I go. You'll feel a little water and a little poke — that's me measuring the pockets, not a shot.",
     utterances: [],
   },
   {

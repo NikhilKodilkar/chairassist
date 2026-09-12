@@ -115,17 +115,13 @@ label(330, 396, "rewrite", "#2563eb")
 a('  <path d="M 590 396 H 660" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>')
 label(625, 396, "events", "#2563eb")
 
-# Store to Open Dental (same column)
+# Store fans out from the bottom edge of Exam store
+a('  <path d="M 710 426 V 444 H 180 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
+label(300, 444, "chart", "#16a34a")
+a('  <path d="M 740 426 V 456 H 480 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
+label(560, 456, "captions", "#16a34a", side="below")
 a('  <path d="M 770 426 V 510" fill="none" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arrow-orange)"/>')
 label(770, 466, "write-back", "#ea580c", side="right")
-
-# Store to Patient UI — gap under agent layer
-a('  <path d="M 660 426 V 456 H 480 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
-label(560, 456, "captions", "#16a34a", side="below")
-
-# Store to Clinician — slightly higher gap line
-a('  <path d="M 660 426 V 444 H 180 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>')
-label(300, 444, "chart", "#16a34a")
 
 # BroadcastChannel between portals
 a('  <path d="M 290 546 H 370" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-gray)"/>')

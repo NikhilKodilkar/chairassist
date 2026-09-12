@@ -1,4 +1,4 @@
-import { toothStatusColor } from "../domain/exam";
+import { displayToothColor } from "../domain/exam";
 import {
   LOWER_ARCH_SRC,
   UPPER_ARCH_SRC,
@@ -13,19 +13,27 @@ import type { LastMention } from "../store/examStore";
 function ToothHighlight({
   spot,
   exam,
+  lastVisit,
   active,
+  onSelect,
 }: {
   spot: ArchHotspot;
   exam: Exam;
+  lastVisit: Exam;
   active: boolean;
+  onSelect?: (tooth: number) => void;
 }) {
-  const color = toothStatusColor(exam.teeth[spot.tooth]);
+  const { color, fromHistory } = displayToothColor(exam, lastVisit, spot.tooth);
   const classes = ["jaw-hotspot", color];
   if (active) {
     classes.push("focus");
   }
+  if (fromHistory) {
+    classes.push("history");
+  }
   return (
-    <span
+    <button
+      type="button"
       className={classes.join(" ")}
       style={{
         left: `${spot.x}%`,
@@ -34,9 +42,11 @@ function ToothHighlight({
         height: `${spot.h + (active ? 2.8 : 1)}%`,
       }}
       title={`${toothFullName(spot.tooth)} (#${spot.tooth})`}
+      aria-label={`Tooth ${spot.tooth}, ${toothEverydayName(spot.tooth)}`}
+      onClick={() => onSelect?.(spot.tooth)}
     >
       {active ? <span className="jaw-hotspot-num">{spot.tooth}</span> : null}
-    </span>
+    </button>
   );
 }
 
@@ -45,15 +55,19 @@ function ArchPhoto({
   label,
   spots,
   exam,
+  lastVisit,
   focusTeeth,
   mentionId,
+  onSelectTooth,
 }: {
   src: string;
   label: string;
   spots: ArchHotspot[];
   exam: Exam;
+  lastVisit: Exam;
   focusTeeth: number[];
   mentionId?: number;
+  onSelectTooth?: (tooth: number) => void;
 }) {
   return (
     <figure className="jaw-arch">
@@ -66,7 +80,9 @@ function ArchPhoto({
               key={active ? `${spot.tooth}-${mentionId ?? "focus"}` : spot.tooth}
               spot={spot}
               exam={exam}
+              lastVisit={lastVisit}
               active={active}
+              onSelect={onSelectTooth}
             />
           );
         })}
@@ -78,14 +94,18 @@ function ArchPhoto({
 
 export function JawMap({
   exam,
+  lastVisit,
   activeTooth,
   focusTeeth,
   lastMention,
+  onSelectTooth,
 }: {
   exam: Exam;
+  lastVisit: Exam;
   activeTooth?: number;
   focusTeeth?: number[];
   lastMention?: LastMention;
+  onSelectTooth?: (tooth: number) => void;
 }) {
   const lit =
     focusTeeth && focusTeeth.length > 0
@@ -99,12 +119,12 @@ export function JawMap({
     ? `Looking at #${lit.join(", #")}`
     : lit.length === 1
       ? `Looking at #${lit[0]} · ${toothEverydayName(lit[0])}`
-      : "Teeth light up as they are checked";
+      : "Tap a tooth to see its March story";
 
   return (
     <section className="jaw-map">
       <div className="arch-legend">
-        <span className="arch-swatch grey" /> Not checked
+        <span className="arch-swatch grey" /> March history
         <span className="arch-swatch green" /> Healthy
         <span className="arch-swatch amber" /> Watch
         <span className="arch-swatch red" /> Needs care
@@ -115,16 +135,20 @@ export function JawMap({
           label="Upper jaw"
           spots={upperArchHotspots()}
           exam={exam}
+          lastVisit={lastVisit}
           focusTeeth={lit}
           mentionId={lastMention?.id}
+          onSelectTooth={onSelectTooth}
         />
         <ArchPhoto
           src={LOWER_ARCH_SRC}
           label="Lower jaw"
           spots={lowerArchHotspots()}
           exam={exam}
+          lastVisit={lastVisit}
           focusTeeth={lit}
           mentionId={lastMention?.id}
+          onSelectTooth={onSelectTooth}
         />
       </div>
       <p className="arch-focus-label">{headline}</p>

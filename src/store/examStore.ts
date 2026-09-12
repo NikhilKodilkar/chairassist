@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { applyEvent } from "../domain/exam";
-import { createPatientFile, createTodayExam } from "../domain/seed";
+import { DEMO_PATIENT_NAME, createPatientFile, createTodayExam } from "../domain/seed";
 import { captionForEvent, summarySentences } from "../domain/translator";
 import type { ChartEvent, Exam, Site } from "../domain/types";
 
@@ -41,6 +41,8 @@ interface ExamStore {
   writebacks: WritebackItem[];
   timeline: number;
   applyChartEvent: (event: ChartEvent) => void;
+  selectTooth: (tooth: number) => void;
+  clearToothFocus: () => void;
   setCaption: (text: string) => void;
   setSummary: (sentences: string[]) => void;
   setHeard: (item: HeardItem) => void;
@@ -53,9 +55,30 @@ export const useExamStore = create<ExamStore>((set, get) => ({
   lastVisit: patient.lastVisit,
   current: createTodayExam(patient),
   heard: [],
+  helloName: DEMO_PATIENT_NAME,
   writebacks: [],
   timeline: 1,
   focusTeeth: [],
+  selectTooth: (tooth) => {
+    const state = get();
+    set({
+      activeTooth: tooth,
+      focusTeeth: [tooth],
+      lastMention: {
+        id: (state.lastMention?.id ?? 0) + 1,
+        tooth,
+        teeth: [tooth],
+        sites: [],
+        kind: "navigation",
+      },
+    });
+  },
+  clearToothFocus: () =>
+    set({
+      activeTooth: undefined,
+      focusTeeth: [],
+      lastMention: undefined,
+    }),
   applyChartEvent: (event) => {
     if (event.kind === "set_name" && event.note) {
       const state = get();
@@ -184,6 +207,7 @@ export const useExamStore = create<ExamStore>((set, get) => ({
       activeTooth: undefined,
       focusTeeth: [],
       lastMention: undefined,
+      helloName: get().helloName ?? DEMO_PATIENT_NAME,
     }),
   setTimeline: (value) => set({ timeline: value }),
 }));

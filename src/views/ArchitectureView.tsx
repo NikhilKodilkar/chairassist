@@ -11,7 +11,7 @@ export function ArchitectureView() {
           <p className="eyebrow">System design</p>
           <h1>Architecture</h1>
         </div>
-        <div className="controls">
+        <div className="header-tools">
           <Link className="header-link" to={clinicianPath}>
             Clinician
           </Link>

@@ -98,10 +98,10 @@ export function HygienistScript({
   const done = beatIndex >= HYGIENIST_CLEANING.length;
 
   return (
-    <section className="script-panel">
+    <section className={open ? "script-panel" : "script-panel collapsed"}>
       <div className="script-head">
         <button type="button" className="script-toggle" onClick={() => setOpen((value) => !value)}>
-          {open ? "Hide" : "Show"} hygienist script
+          {open ? "Hide script" : "Show script"}
         </button>
         <strong>Cleaning visit — what she says</strong>
         <span className="hint">
@@ -126,30 +126,30 @@ export function HygienistScript({
         </div>
       </div>
 
-      <p className="script-now">{done ? "Exam complete." : current?.said}</p>
-
-      <div className="judge-lines">
-        <span className="hint">Speak-test lines</span>
-        {JUDGE_LINES.map((line) => (
-          <button key={line.label} type="button" onClick={() => onUtterance(line.said)}>
-            {line.label}
-          </button>
-        ))}
-      </div>
-
       {open ? (
-        <ol className="script-list">
-          {HYGIENIST_CLEANING.map((beat, index) => (
-            <li
-              key={beat.said}
-              ref={index === beatIndex ? activeRef : undefined}
-              className={index === beatIndex && !done ? "active" : index < beatIndex ? "done" : undefined}
-            >
-              <span className="script-index">{index + 1}</span>
-              <span>{beat.said}</span>
-            </li>
-          ))}
-        </ol>
+        <>
+          <p className="script-now">{done ? "Exam complete." : current?.said}</p>
+          <div className="judge-lines">
+            <span className="hint">Speak-test lines</span>
+            {JUDGE_LINES.map((line) => (
+              <button key={line.label} type="button" onClick={() => onUtterance(line.said)}>
+                {line.label}
+              </button>
+            ))}
+          </div>
+          <ol className="script-list">
+            {HYGIENIST_CLEANING.map((beat, index) => (
+              <li
+                key={beat.said}
+                ref={index === beatIndex ? activeRef : undefined}
+                className={index === beatIndex && !done ? "active" : index < beatIndex ? "done" : undefined}
+              >
+                <span className="script-index">{index + 1}</span>
+                <span>{beat.said}</span>
+              </li>
+            ))}
+          </ol>
+        </>
       ) : null}
     </section>
   );

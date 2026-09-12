@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLiveMic } from "../audio/useLiveMic";
-import { PARSER_CASES, runAllParserCases } from "../domain/parser.cases";
+import { runAllParserCases } from "../domain/parser.cases";
 import type { ParserCaseResult } from "../domain/parser.cases";
 import { DEMO1_LINES } from "../rehearsal/demo1";
 import { useExamStore } from "../store/examStore";
@@ -53,7 +53,6 @@ export function ClinicianView() {
           {rehearsal ? "Rehearsal · spacebar advances the script" : "Live mic"}
         </p>
         <div className="controls">
-          <ArchitectureLink />
           <button
             className="primary"
             type="button"
@@ -64,8 +63,11 @@ export function ClinicianView() {
           <button type="button" onClick={() => mic.publishUtterance(DEMO1_LINES[step.current++] ?? "let's wrap up")}>
             Next line
           </button>
+        </div>
+        <div className="header-tools">
+          <ArchitectureLink />
           <button type="button" onClick={() => setParserResults(runAllParserCases())}>
-            Parser {PARSER_CASES.length}
+            Test suite
           </button>
         </div>
       </header>

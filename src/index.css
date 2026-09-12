@@ -119,6 +119,13 @@ h1 {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+}
+
+.header-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
   margin-left: auto;
 }
 
@@ -162,6 +169,8 @@ h1 {
 
 .controls button,
 .controls select,
+.header-tools button,
+.header-tools select,
 .mic-bar button,
 .mic-bar select {
   background: var(--bg-elev);
@@ -172,6 +181,7 @@ h1 {
 }
 
 .controls button.primary,
+.header-tools button.primary,
 .mic-bar button.primary {
   background: #1f3d4d;
   border-color: #2d5d73;
@@ -216,6 +226,11 @@ h1 {
   flex: 1;
 }
 
+.patient-topbar .header-tools {
+  margin-left: 12px;
+  flex: 0 0 auto;
+}
+
 .patient-hello {
   margin: 0 0 0 auto;
   font-size: 18px;
@@ -240,9 +255,36 @@ h1 {
   padding: 3px 8px;
 }
 
-.mic-bar.compact button {
+.mic-bar.compact button:not(.mic-listen) {
   border-radius: 6px;
   padding: 3px 8px;
+}
+
+.mic-bar button.mic-listen {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.mic-listen img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: block;
+}
+
+.mic-listen.on img {
+  box-shadow: 0 0 0 3px rgba(61, 190, 134, 0.7);
+}
+
+.mic-listen.speaking img {
+  box-shadow: 0 0 0 4px rgba(126, 182, 214, 0.95);
 }
 
 .level {
@@ -285,6 +327,10 @@ h1 {
   min-width: 0;
 }
 
+.script-panel.collapsed {
+  padding: 4px 8px;
+}
+
 .script-head {
   display: flex;
   flex-wrap: wrap;
@@ -297,7 +343,8 @@ h1 {
   color: var(--text);
   border: 1px solid #2d5d73;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 4px 8px;
+  font-size: 12px;
 }
 
 .script-now {
@@ -988,8 +1035,15 @@ button:disabled {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 2px solid transparent;
-  pointer-events: none;
+  pointer-events: auto;
   box-sizing: border-box;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.jaw-hotspot.history {
+  opacity: 0.62;
 }
 
 .jaw-hotspot.green { border-color: rgba(61, 190, 134, 0.85); box-shadow: 0 0 0 4px rgba(61, 190, 134, 0.18); }
@@ -1073,6 +1127,15 @@ button:disabled {
   text-transform: capitalize;
 }
 
+.tooth-meaning .text-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: inherit;
+  font-weight: 600;
+}
+
 .tooth-status {
   display: inline-block;
   margin: 0 0 12px;
@@ -1114,10 +1177,77 @@ button:disabled {
   text-wrap: pretty;
 }
 
+.tooth-meaning-copy.worse {
+  color: #f0c4c4;
+}
+
+.tooth-meaning-copy.better {
+  color: #b7e4cf;
+}
+
+.tooth-meaning-live {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
 .tooth-meaning-sites {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.tooth-history-roster {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tooth-history-roster li {
+  margin: 0 0 6px;
+}
+
+.tooth-history-roster button {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 2px 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(21, 27, 34, 0.7);
+  color: inherit;
+  text-align: left;
+}
+
+.tooth-history-num {
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.tooth-history-name {
+  font-size: 12px;
+  text-transform: capitalize;
+  color: var(--text);
+}
+
+.tooth-history-line {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.tooth-history-line.worse {
+  color: #e7a8b0;
+}
+
+.tooth-history-line.better {
+  color: #8fd4b3;
 }
 
 .tooth-meaning-sites li {
