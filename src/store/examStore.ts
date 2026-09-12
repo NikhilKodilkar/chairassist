@@ -3,6 +3,8 @@ import { applyEvent } from "../domain/exam";
 import { DEMO_PATIENT_NAME, createPatientFile, createTodayExam } from "../domain/seed";
 import { captionForEvent, summarySentences } from "../domain/translator";
 import type { ChartEvent, Exam, Site } from "../domain/types";
+import { mockOpenDentalWritebacks, resetOpenDentalSession } from "../pms/opendental";
+import type { OpenDentalCall } from "../pms/opendental";
 
 const patient = createPatientFile();
 
@@ -13,7 +15,7 @@ export interface HeardItem {
 
 export interface WritebackItem {
   at: string;
-  payload: unknown;
+  payload: OpenDentalCall | unknown;
 }
 
 export interface LastMention {
@@ -115,47 +117,11 @@ export const useExamStore = create<ExamStore>((set, get) => ({
     const caption = captionForEvent(event, state.lastVisit);
     const nextHeard = [{ text: event.raw, confidence: event.confidence }, ...state.heard].slice(0, 6);
 
-    const writebacks = [...state.writebacks];
-    if (event.kind === "reading" && event.confidence === "high" && event.tooth) {
-      writebacks.unshift({
-        at: new Date().toISOString(),
-        payload: {
-          endpoint: "POST /mock/opendental/perio",
-          patientId: current.patientId,
-          tooth: event.tooth,
-          sites: event.sites,
-          readings: event.readings,
-          bopSites: event.bopSites,
-          rec: event.rec,
-          notes: event.notes,
-          examNotes: event.examNotes,
-          mobility: event.mobility,
-          furcation: event.furcation,
-        },
-      });
-    }
-    if (event.kind === "flag" && event.confidence === "high" && event.examNotes && event.examNotes.length > 0) {
-      writebacks.unshift({
-        at: new Date().toISOString(),
-        payload: {
-          endpoint: "POST /mock/opendental/perio",
-          action: "exam-note",
-          patientId: current.patientId,
-          examNotes: event.examNotes,
-        },
-      });
-    }
-    if (event.kind === "reset_tooth" && event.tooth) {
-      writebacks.unshift({
-        at: new Date().toISOString(),
-        payload: {
-          endpoint: "POST /mock/opendental/perio",
-          action: "clear-tooth",
-          patientId: current.patientId,
-          tooth: event.tooth,
-        },
-      });
-    }
+    const calls = mockOpenDentalWritebacks(event, current);
+    const writebacks = [
+      ...calls.map((call) => ({ at: call.at, payload: call })),
+      ...state.writebacks,
+    ].slice(0, 30);
 
     const focusTeeth =
       event.teeth && event.teeth.length > 0
@@ -185,7 +151,7 @@ export const useExamStore = create<ExamStore>((set, get) => ({
       lastMention,
       caption: caption ?? state.caption,
       heard: nextHeard,
-      writebacks: writebacks.slice(0, 20),
+      writebacks,
       summary: event.kind === "summary_request" ? summarySentences(current, state.lastVisit) : state.summary,
     });
   },
@@ -196,7 +162,8 @@ export const useExamStore = create<ExamStore>((set, get) => ({
     set((state) => ({
       writebacks: [{ at: new Date().toISOString(), payload }, ...state.writebacks].slice(0, 20),
     })),
-  resetExam: (exam) =>
+  resetExam: (exam) => {
+    resetOpenDentalSession();
     set({
       current: exam ?? createTodayExam(patient),
       caption: undefined,
@@ -208,6 +175,7 @@ export const useExamStore = create<ExamStore>((set, get) => ({
       focusTeeth: [],
       lastMention: undefined,
       helloName: get().helloName ?? DEMO_PATIENT_NAME,
-    }),
+    });
+  },
   setTimeline: (value) => set({ timeline: value }),
 }));

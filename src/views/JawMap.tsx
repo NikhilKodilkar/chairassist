@@ -57,7 +57,7 @@ function ToothHighlight({
           <RestorationIcon kind={restoration} />
         </span>
       ) : null}
-      {active ? <span className="jaw-hotspot-num">{spot.tooth}</span> : null}
+      <span className="jaw-hotspot-num">{spot.tooth}</span>
     </button>
   );
 }

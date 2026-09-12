@@ -147,8 +147,20 @@ export function useLiveMic() {
 
   const startMic = async () => {
     try {
+      const chosen = devices.find((device) => device.id === selectedId);
+      console.log("[mic] start", {
+        href: window.location.pathname,
+        selectedId,
+        selectedLabel: chosen?.label ?? "(none)",
+        deviceCount: devices.length,
+        otherTabsHint: "only one tab should Listen — the iPhone mic is exclusive",
+      });
       sessionRef.current?.load();
       const stream = await openMic(selectedId);
+      const track = stream.getAudioTracks()[0];
+      track?.addEventListener("mute", () => console.log("[mic] track muted while listening"));
+      track?.addEventListener("unmute", () => console.log("[mic] track unmuted"));
+      track?.addEventListener("ended", () => console.log("[mic] track ended — another app or tab likely took the iPhone"));
       streamRef.current = stream;
       setListening(true);
       setCaptureHint("Mic open — waiting for speech");

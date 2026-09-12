@@ -171,6 +171,7 @@ export function ToothMeaning({
               <RestorationIcon kind={restoration} />
             </span>
           ) : null}
+          <span className="tooth-zoom-num">#{tooth}</span>
         </div>
       ) : null}
       {restoration ? (

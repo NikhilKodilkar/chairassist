@@ -2,32 +2,19 @@ import type { HeardItem } from "../store/examStore";
 
 export function HeardTicker({
   items,
-  captureHint,
+  speaking = false,
 }: {
   items: HeardItem[];
-  captureHint?: string;
+  speaking?: boolean;
 }) {
   const latest = items[0];
+  if (!latest) {
+    return null;
+  }
 
   return (
-    <section className="panel heard-live">
-      <h2>Heard</h2>
-      {captureHint ? <p className="hint">{captureHint}</p> : null}
-      {latest ? (
-        <p className={`heard-latest ${latest.confidence}`}>{latest.text}</p>
-      ) : (
-        <p className="heard-latest muted">Say a line — the raw transcript lands here.</p>
-      )}
-      {items.length === 0 ? null : (
-        <div className="heard-log">
-          {items.map((item, index) => (
-            <div className="heard-item" key={`${item.text}-${index}`}>
-              <span>{item.text}</span>
-              <span className={item.confidence}>{item.confidence}</span>
-            </div>
-          ))}
-        </div>
-      )}
-    </section>
+    <p className="heard-compact">
+      {speaking ? "Hearing you…" : "Heard"} · {latest.text}
+    </p>
   );
 }

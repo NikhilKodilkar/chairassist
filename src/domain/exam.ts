@@ -111,6 +111,16 @@ export function toothHasTodayReading(tooth: ToothState | undefined): boolean {
   return toothHasBleeding(tooth) || worstPd(tooth) !== undefined;
 }
 
+export function chartedToothCount(exam: Exam): number {
+  let count = 0;
+  for (let tooth = 1; tooth <= 32; tooth += 1) {
+    if (toothHasTodayReading(exam.teeth[tooth])) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
 export function displayToothColor(
   current: Exam,
   lastVisit: Exam,

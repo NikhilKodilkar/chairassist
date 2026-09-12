@@ -94,5 +94,29 @@ export async function openMic(deviceId?: string): Promise<MediaStream> {
   if (deviceId) {
     audio.deviceId = { exact: deviceId };
   }
-  return navigator.mediaDevices.getUserMedia({ audio });
+  console.log("[mic] getUserMedia request", {
+    requestedId: deviceId ?? "(default)",
+    exact: Boolean(deviceId),
+  });
+  const stream = await navigator.mediaDevices.getUserMedia({ audio });
+  const track = stream.getAudioTracks()[0];
+  const settings = track?.getSettings();
+  console.log("[mic] getUserMedia granted", {
+    requestedId: deviceId ?? "(default)",
+    trackLabel: track?.label,
+    trackDeviceId: settings?.deviceId,
+    muted: track?.muted,
+    enabled: track?.enabled,
+    readyState: track?.readyState,
+    sampleRate: settings?.sampleRate,
+    channelCount: settings?.channelCount,
+    echoCancellation: settings?.echoCancellation,
+  });
+  if (deviceId && settings?.deviceId && settings.deviceId !== deviceId) {
+    console.log("[mic] device mismatch — browser opened a different input than the iPhone we asked for");
+  }
+  if (track?.muted) {
+    console.log("[mic] track is muted at open — Continuity/iPhone often does this when the phone is locked, far away, or in use by another tab");
+  }
+  return stream;
 }

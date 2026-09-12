@@ -82,6 +82,17 @@ export function toothEverydayName(tooth: number): string {
   return `${toothArch(tooth)} ${toothSide(tooth)} ${pretty}`;
 }
 
+function titleCase(text: string): string {
+  return text
+    .split(" ")
+    .map((word) => (word.length === 0 ? word : `${word[0].toUpperCase()}${word.slice(1)}`))
+    .join(" ");
+}
+
+export function toothClinicalTitle(tooth: number): string {
+  return titleCase(toothEverydayName(tooth));
+}
+
 export function toothHeaderLabel(tooth: number): string {
   const side = toothSide(tooth) === "right" ? "R" : "L";
   const arch = toothArch(tooth) === "upper" ? "U" : "L";

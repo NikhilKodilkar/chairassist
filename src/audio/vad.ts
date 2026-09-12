@@ -24,6 +24,9 @@ export function attachEnergyVad(stream: MediaStream, options: VadOptions) {
   let silenceStarted = 0;
   let speechStarted = 0;
   let lastLog = 0;
+  let heardLoud = false;
+  let warnedNoAudio = false;
+  const listeningStarted = performance.now();
 
   processor.onaudioprocess = (event) => {
     try {
@@ -41,9 +44,16 @@ export function attachEnergyVad(stream: MediaStream, options: VadOptions) {
       const rms = Math.sqrt(sum / input.length);
       const now = performance.now();
       const isLoud = rms > options.threshold;
+      if (isLoud) {
+        heardLoud = true;
+      }
       if (now - lastLog > 1000) {
         lastLog = now;
         console.log("[vad] rms", rms.toFixed(4), "loud", isLoud, "speaking", speaking, "ctx", audioContext.state);
+        if (!heardLoud && !warnedNoAudio && now - listeningStarted > 5000) {
+          warnedNoAudio = true;
+          console.log("[vad] no speech above threshold for 5s — check that only one tab is Listening and the iPhone is unlocked");
+        }
       }
 
       if (isLoud) {

@@ -9,15 +9,16 @@ function wait(ms: number): Promise<void> {
 }
 
 export function HygienistScript({
+  open,
   onUtterance,
   onNarration,
   onReset,
 }: {
+  open: boolean;
   onUtterance: (raw: string) => void;
   onNarration: (text: string) => void;
   onReset: () => void;
 }) {
-  const [open, setOpen] = useState(true);
   const [playing, setPlaying] = useState(false);
   const [beatIndex, setBeatIndex] = useState(0);
   const activeRef = useRef<HTMLLIElement | null>(null);
@@ -100,9 +101,6 @@ export function HygienistScript({
   return (
     <section className={open ? "script-panel" : "script-panel collapsed"}>
       <div className="script-head">
-        <button type="button" className="script-toggle" onClick={() => setOpen((value) => !value)}>
-          {open ? "Hide script" : "Show script"}
-        </button>
         <strong>Cleaning visit — what she says</strong>
         <span className="hint">
           {done ? "Done" : `Line ${beatIndex + 1} of ${HYGIENIST_CLEANING.length}`}

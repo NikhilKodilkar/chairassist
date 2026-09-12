@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MolarMind Architecture</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --paper: #ffffff;
+      --band: #f3f4f6;
+      --navy: #1e3a5f;
+      --accent: #2563eb;
+      --warn: #9a3412;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 11.5pt/1.45 "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    @page {
+      size: letter;
+      margin: 0.7in 0.72in 0.75in;
+    }
+    .cover {
+      min-height: 9.4in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+      border-top: 10px solid var(--navy);
+      padding-top: 36px;
+    }
+    .eyebrow {
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 10pt;
+      color: var(--muted);
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: 32pt;
+      line-height: 1.1;
+      margin: 0 0 12px;
+      color: var(--navy);
+    }
+    h1.section {
+      font-size: 18pt;
+      page-break-before: always;
+      margin: 0 0 14px;
+      padding-top: 4px;
+    }
+    h1.section.first {
+      page-break-before: avoid;
+    }
+    h2 {
+      font-size: 13.5pt;
+      color: var(--navy);
+      margin: 22px 0 8px;
+    }
+    h3 {
+      font-size: 11.5pt;
+      margin: 16px 0 6px;
+    }
+    p, li { color: #1f2937; }
+    .lede {
+      font-size: 13.5pt;
+      color: var(--muted);
+      max-width: 38em;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 24px;
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      font-size: 10.5pt;
+    }
+    .meta strong { display: block; color: var(--navy); }
+    .toc { page-break-after: always; }
+    .toc ol { padding-left: 1.2em; }
+    .toc li { margin: 6px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10pt;
+      margin: 10px 0 16px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 6px 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th { background: var(--band); color: var(--navy); }
+    .callout {
+      background: #eff6ff;
+      border-left: 4px solid var(--accent);
+      padding: 10px 12px;
+      margin: 12px 0 16px;
+    }
+    .warn {
+      background: #fff7ed;
+      border-left: 4px solid var(--warn);
+      padding: 10px 12px;
+      margin: 12px 0 16px;
+    }
+    .figure {
+      margin: 14px 0 18px;
+      page-break-inside: avoid;
+    }
+    .figure img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .caption {
+      font-size: 9.5pt;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+    code, .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 9.5pt;
+    }
+    pre {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 12px 14px;
+      font: 8.5pt/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre-wrap;
+      page-break-inside: avoid;
+    }
+    ul, ol { margin: 6px 0 12px; padding-left: 1.25em; }
+    .footer-note {
+      font-size: 9pt;
+      color: var(--muted);
+      margin-top: 28px;
+    }
+    .decision {
+      background: var(--band);
+      padding: 10px 12px;
+      margin: 8px 0 14px;
+    }
+    .decision strong { color: var(--navy); }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div>
+      <p class="eyebrow">Enterprise and systems architecture</p>
+      <h1>MolarMind</h1>
+      <p class="lede">As-built architecture for an offline-first chairside agent that turns hygienist speech into a periodontal chart, patient-plain language, and mocked Open Dental write-back.</p>
+    </div>
+    <div class="meta">
+      <div><strong>System</strong>MolarMind (working title: Chairside Agent)</div>
+      <div><strong>Document</strong>04 Architecture, first issue</div>
+      <div><strong>Date</strong>12 September 2026</div>
+      <div><strong>Mode</strong>As-built, demo grade, pre-production</div>
+      <div><strong>Audience</strong>Product, engineering, and clinic IT</div>
+      <div><strong>Classification</strong>Internal architecture pack</div>
+    </div>
+  </section>
+
+  <section class="toc">
+    <p class="eyebrow">Contents</p>
+    <h1 style="font-size:22pt;margin-bottom:16px;">Contents</h1>
+    <ol>
+      <li>Decision summary</li>
+      <li>Context and constraints</li>
+      <li>Topology</li>
+      <li>Component decisions</li>
+      <li>Data architecture</li>
+      <li>Integration patterns</li>
+      <li>Identity, auth, and secrets</li>
+      <li>Observability</li>
+      <li>Cost shape</li>
+      <li>Failure modes and resilience</li>
+      <li>Migration and rollout</li>
+      <li>What implementation must respect</li>
+      <li>Open questions</li>
+      <li>Appendix A: Open Dental call map</li>
+      <li>Appendix B: As-built versus original BUILD spec</li>
+      <li>Appendix C: Source map</li>
+    </ol>
+    <div class="callout">
+      This pack describes the running system in the chairside-agent repository, not the abandoned FastAPI plus WebSocket sketch in the original BUILD note. Where those two diverge, the browser-only design is the decision.
+    </div>
+  </section>
+
+  <h1 class="section first">1. Decision summary</h1>
+  <p>MolarMind is a <strong>single-origin browser application</strong>. Capture, parse, chart, translate, and PMS preview all run in the clinician tab. A second tab on the same origin is the patient surface. They share state through <span class="mono">BroadcastChannel</span>, not a server.</p>
+  <p>Speech never leaves the operatory on the critical path. Whisper runs in a Web Worker via Transformers.js. Charting is a deterministic parser. Low-confidence transcripts appear in Heard and do not write the exam or the Open Dental mapper.</p>
+  <p>Practice-management integration is contracted against the public Open Dental REST API (perioexams, periomeasures, procedurelogs). Today those calls are <strong>built and displayed, not sent</strong>. That keeps the demo honest about the write-back shape without taking a network or HIPAA dependency.</p>
+  <p>The driving principle is <strong>stage safety and reversibility</strong>: boring local tech, a scripted rehearsal path, and a PMS adapter that can later point at a real clinic without rewriting the charting core.</p>
+
+  <h1 class="section">2. Context and constraints</h1>
+  <h2>What is being built</h2>
+  <p>A hands-free agent for the dental operatory. One voice stream serves two people: the hygienist gets a live perio grid and a detailed report; the patient gets plain-language captions, a jaw map, and March-to-today comparison. The business case is engagement, not another silent ceiling-tile cleaning.</p>
+  <p>The seeded patient is Andrew. Last visit is 12 March 2026. Today’s exam starts empty and fills as speech (or the rehearsal script) arrives. Watch and needs-care teeth, plus a crown on #30 and fillings on #15 and #19, are the demo story.</p>
+
+  <h2>Upstream constraints</h2>
+  <ul>
+    <li>Demo-grade product. It must not fail on stage. Offline is a feature, not a fallback.</li>
+    <li>No large language model on the charting path. Determinism beats warmer copy.</li>
+    <li>No real clinic credentials, no real PHI, no live PMS writes in this build.</li>
+    <li>Host, port, routes, Whisper model, and Open Dental keys come from environment files, not hardcoded loopback URLs in application code.</li>
+    <li>The original BUILD note assumed Python FastAPI, faster-whisper, and a mock HTTP server. The shipped system dropped the process boundary.</li>
+  </ul>
+
+  <h2>Non-goals</h2>
+  <ul>
+    <li>HIPAA program, clinic SSO, multi-tenant hosting, or audit export.</li>
+    <li>Live Open Dental or Dentrix writes.</li>
+    <li>Imaging, cameras, insurance, scheduling, or full treatment planning.</li>
+    <li>Photoreal 32-tooth 3D. The patient surface uses photographed arches plus focused meaning, not a full-mouth mesh.</li>
+  </ul>
+
+  <h1 class="section">3. Topology</h1>
+  <p>The system is a <strong>browser monolith with two peer windows</strong>. Vite serves static assets. There is no application server, no WebSocket hub, and no database process.</p>
+
+  <div class="figure">
+    <img src="diagrams/system-context.svg" alt="System context: hygienist speech through on-device Whisper, lingo and parser, exam store, clinician and patient surfaces, and Open Dental mock write-back" />
+    <p class="caption">Figure 1. System context. Speech stays in the operatory. Chart events fan out to clinician, patient, and the Open Dental mapper.</p>
+  </div>
+
+  <h2>Runtime boxes</h2>
+  <table>
+    <tr>
+      <th>Box</th>
+      <th>Where it runs</th>
+      <th>Job</th>
+    </tr>
+    <tr>
+      <td>Clinician window</td>
+      <td>Browser tab, clinician route</td>
+      <td>Mic, VAD, Whisper host, parser, store, grid, report, write-back panel, rehearsal script</td>
+    </tr>
+    <tr>
+      <td>Patient window</td>
+      <td>Browser tab, patient route, same origin</td>
+      <td>Jaw map, captions, meaning panel, March-to-today slider. Consumes the same Zustand store when it is the same tab; uses the bus when it is a second tab listening to chart-events</td>
+    </tr>
+    <tr>
+      <td>Architecture window</td>
+      <td>Browser tab, architecture route</td>
+      <td>Shows the public SVG. This PDF is the detailed companion.</td>
+    </tr>
+    <tr>
+      <td>Whisper worker</td>
+      <td>Web Worker in the clinician tab</td>
+      <td>Loads whisper-base.en (q8, WebGPU) and transcribes one utterance at a time</td>
+    </tr>
+    <tr>
+      <td>Open Dental</td>
+      <td>Not contacted</td>
+      <td>Contract only. Mapper emits method, path, headers, body, and a mocked 201 or 200</td>
+    </tr>
+  </table>
+
+  <h2>Why not the original three-process design</h2>
+  <div class="decision">
+    <strong>Choice:</strong> one Vite app, no FastAPI, no WebSocket.<br />
+    <strong>Rejected:</strong> Python STT service plus browser clients.<br />
+    <strong>Why:</strong> one fewer process to crash on stage, one fewer port to bind, no wifi, no Python toolchain on the demo laptop. The cost is that Whisper download and WebGPU quality now sit in the browser.
+  </div>
+
+  <h1 class="section">4. Component decisions</h1>
+
+  <h2>4.1 Application runtime</h2>
+  <div class="decision">
+    <strong>Choice:</strong> Vite 8 + React 19 + TypeScript + React Router.<br />
+    <strong>Alternatives:</strong> Next.js (rejected: server runtime we do not want); Electron (rejected: extra packaging for a two-window laptop demo); Python UI (rejected: patient visuals are web-native).
+    <strong>Tradeoff:</strong> COOP and COEP headers are required so Transformers.js can use the worker and WebGPU path.
+  </div>
+  <p>Routes are configurable: clinician, patient, and architecture paths come from <span class="mono">VITE_*</span> env. Default host and port also come from env. Application code must not hardcode loopback URLs.</p>
+
+  <h2>4.2 Capture and speech-to-text</h2>
+  <div class="decision">
+    <strong>Choice:</strong> getUserMedia + energy VAD + Transformers.js Whisper in a worker, model <span class="mono">onnx-community/whisper-base.en</span>, dtype q8, device WebGPU.<br />
+    <strong>Alternatives:</strong> faster-whisper in Python (original spec); cloud STT (rejected: wifi and PHI); whisper-small in-browser (heavier, only if base misses terms).
+    <strong>Tradeoff:</strong> first-load model fetch can hit the Hugging Face CDN unless the model is cached. After cache, the path is local. Demo laptops should warm the model once before the room goes dark.
+  </div>
+  <table>
+    <tr><th>Setting</th><th>Value</th><th>Why</th></tr>
+    <tr><td>VAD threshold</td><td>RMS 0.012</td><td>Cuts chairside water and suction better than a hair-trigger</td></tr>
+    <tr><td>Silence to cut</td><td>550 ms</td><td>Perio callouts are short phrases</td></tr>
+    <tr><td>Minimum speech</td><td>700 ms</td><td>Drops chair clatter</td></tr>
+    <tr><td>Transcribe timeout</td><td>20 s</td><td>Hard stop so a stuck worker cannot hang the exam</td></tr>
+    <tr><td>Resample</td><td>16 kHz</td><td>Whisper contract</td></tr>
+    <tr><td>Preferred mic</td><td>iPhone Continuity, then Shokz, then headset</td><td>Operatory: phone on a tray or bone-conduction mic, not the laptop fan</td></tr>
+  </table>
+  <p>Device classification is label-based (includes, not regular expressions). Only one tab should Listen. Continuity mics are exclusive and mute when the phone locks.</p>
+
+  <h2>4.3 Lingo and parser</h2>
+  <div class="decision">
+    <strong>Choice:</strong> two-pass deterministic pipeline. Lingo rewrites chairside slang and detects commands. The parser plus clinical extractor emit <span class="mono">ChartEvent</span> objects.<br />
+    <strong>Rejected:</strong> LLM slot filling on the live path (nondeterministic, latency, stage risk); a single giant regex (fragile, and this repo forbids regex-led parsing).
+    <strong>Tradeoff:</strong> new slang needs a lexicon entry. That is acceptable. Charting bugs are worse than a missed synonym.
+  </div>
+  <p>Parser rules that the architecture treats as load-bearing:</p>
+  <ul>
+    <li>Tooth navigation sets context ("tooth fourteen", "number 30").</li>
+    <li>Side words map facial or palatal onto buccal or lingual site triplets.</li>
+    <li>Triplets and named sites write PD. "Bleeding" sets BOP. Recession, mobility, and furcation are first-class fields.</li>
+    <li>Corrections replace the last write. They must keep working.</li>
+    <li>Exam-level negatives ("no bleeding") land as exam notes, not tooth PD.</li>
+    <li><span class="mono">confidence: "low"</span> never mutates pocket values in <span class="mono">applyEvent</span> and never enters the PMS mapper.</li>
+    <li>Table-driven tests (51 utterance cases at last count) are part of the contract, not optional coverage.</li>
+  </ul>
+
+  <h2>4.4 Exam store</h2>
+  <div class="decision">
+    <strong>Choice:</strong> Zustand in-memory store as the system of record for the visit.<br />
+    <strong>Rejected:</strong> disk database, remote session server, localStorage as source of truth (accidental PHI residue on a shared laptop).
+    <strong>Tradeoff:</strong> refresh loses today’s exam. Reset is explicit. Last visit reloads from Andrew’s seed JSON.
+  </div>
+  <p>The store holds last visit, current exam, Heard, captions, summary, focus tooth, timeline (0 to 1), and the Open Dental call list. <span class="mono">applyChartEvent</span> applies domain rules, then asks the PMS mapper for calls, then publishes UI state. <span class="mono">resetExam</span> clears the visit and the mock Open Dental session counters.</p>
+
+  <h2>4.5 Clinician and patient surfaces</h2>
+  <div class="decision">
+    <strong>Choice:</strong> two routes, two physical displays. Clinician is a dense dark grid. Patient is a calm jaw-photo map plus meaning copy.<br />
+    <strong>Rejected:</strong> one window with a split pane (too small on a laptop plus projector); a native iPad app (out of scope).
+    <strong>Tradeoff:</strong> the original 3D hero tooth is no longer the center of the patient story. Photographed arches plus restoration icons are clearer in a two-day demo and still read from 10 feet.
+  </div>
+  <p>Status colors are a product contract: green at or under 3 mm, amber at 4 mm, red at 5 mm and above. History teeth without a today reading show March color until measured.</p>
+
+  <h2>4.6 Practice management adapter</h2>
+  <div class="decision">
+    <strong>Choice:</strong> Open Dental public REST as the PMS contract. In-browser mapper builds real requests.<br />
+    <strong>Alternatives:</strong> Dentrix / Eaglesoft (partner-gated APIs, no public perio write spec we can mock honestly); a fictional <span class="mono">POST /mock/opendental/perio</span> blob (rejected: it does not teach the real write shape); live HTTPS from the demo laptop (rejected: keys, network, and accidental writes).
+    <strong>Tradeoff:</strong> Open Dental is not the majority US PMS. It is the one with documented perioexams and periomeasures. The mapper is isolated so a later Dentrix adapter can sit beside it.
+  </div>
+  <p>Base URL and demo keys are env: <span class="mono">VITE_OPENDENTAL_API_BASE</span>, developer and customer keys, PatNum, ProvNum. Defaults match Open Dental’s own examples (PatNum 20, ProvNum 3, API host <span class="mono">https://api.opendental.com/api/v1</span>).</p>
+
+  <h2>4.7 Rehearsal and script</h2>
+  <div class="decision">
+    <strong>Choice:</strong> hygienist cleaning script plus <span class="mono">?script=demo1</span> spacebar advance. Same parser, same store, same write-back.<br />
+    <strong>Rejected:</strong> recorded audio playback as the only fallback (rooms kill speakers; spacebar never does).
+  </div>
+
+  <h1 class="section">5. Data architecture</h1>
+  <h2>Stores</h2>
+  <table>
+    <tr>
+      <th>Store</th>
+      <th>Purpose</th>
+      <th>Lifetime</th>
+    </tr>
+    <tr>
+      <td><span class="mono">src/data/andrew.json</span></td>
+      <td>Seed last visit and identity for the demo patient</td>
+      <td>Repo, versioned. Fictional.</td>
+    </tr>
+    <tr>
+      <td>Zustand <span class="mono">useExamStore</span></td>
+      <td>Today’s exam, UI, write-back log</td>
+      <td>Tab memory. Gone on refresh or Reset chart.</td>
+    </tr>
+    <tr>
+      <td>Open Dental session module</td>
+      <td>PerioExamNum, measure ids, procedure dedupe</td>
+      <td>Module memory. Reset with the exam.</td>
+    </tr>
+    <tr>
+      <td>Browser cache for Whisper</td>
+      <td>ONNX weights</td>
+      <td>Origin cache. Not PHI.</td>
+    </tr>
+    <tr>
+      <td>BroadcastChannel <span class="mono">chairside-events</span></td>
+      <td>Fan-out of chart events to same-origin tabs</td>
+      <td>In flight only. Not durable.</td>
+    </tr>
+  </table>
+
+  <h2>Conceptual exam model</h2>
+  <pre>Exam
+  patientId, patientName, date
+  notes[]                          exam-level (including negatives)
+  teeth[1..32]
+    sites[MB,B,DB,ML,L,DL]
+      pd?, bop?, rec?
+    mobility?, furcation?
+    notes[], missing?
+
+ChartEvent
+  kind: reading | flag | navigation | summary_request
+        | reset_tooth | reset_all | set_name
+  tooth?, teeth[], side?, sites[], readings[]
+  bopSites[], rec?, recSites[]
+  mobility?, furcation?
+  note?, notes[], examNotes[]
+  raw, confidence: high | low</pre>
+
+  <h2>Consistency</h2>
+  <p><strong>Single writer:</strong> the clinician tab’s store after a parsed high-confidence event. Patient UI is a reader. There is no conflict resolver because there is no multi-writer clinic graph.</p>
+  <p><strong>PMS session consistency:</strong> first write of a visit creates one mocked PerioExam. Later surfaces on the same tooth PUT the existing PerioMeasure. That matches Open Dental’s "one SequenceType per tooth per exam" rule.</p>
+
+  <h2>Retention and regional strategy</h2>
+  <p>Demo retention is "until Reset or reload." There is no backup and no region. Production would invert this: durable visit records in a clinic-controlled store, regional residency matching the PMS, and no Whisper weights mixed with PHI.</p>
+
+  <h1 class="section">6. Integration patterns</h1>
+  <p>Internal integration is in-process function calls plus one same-origin bus. External integration is a typed mapper that pretends to be HTTPS.</p>
+
+  <div class="figure">
+    <img src="diagrams/writeback-sequence.svg" alt="Sequence from microphone through Whisper, parser, exam store, and Open Dental mapper" />
+    <p class="caption">Figure 2. Critical path. Low-confidence work stops at Heard. High-confidence work updates the exam, then the mapper.</p>
+  </div>
+
+  <h2>Sync versus async</h2>
+  <table>
+    <tr><th>Hop</th><th>Style</th><th>Contract</th></tr>
+    <tr><td>Mic to VAD</td><td>Async audio callback</td><td>Float32 frames, 4096-sample ScriptProcessor</td></tr>
+    <tr><td>VAD to Whisper</td><td>Async promise, 20 s timeout</td><td>PCM + sample rate</td></tr>
+    <tr><td>Transcript to parser</td><td>Sync</td><td>Raw string in, ChartEvent[] out</td></tr>
+    <tr><td>Parser to store</td><td>Sync, via bus publish that also loops local</td><td>ChartEvent</td></tr>
+    <tr><td>Store to PMS mapper</td><td>Sync, after applyEvent</td><td>Exam snapshot + event</td></tr>
+    <tr><td>Store to second tab</td><td>Async BroadcastChannel</td><td>chart-event messages</td></tr>
+    <tr><td>Future live Open Dental</td><td>HTTPS, not yet</td><td>Idempotent POST then PUT by measure id</td></tr>
+  </table>
+
+  <h2>Idempotency expectations (when the mock becomes live)</h2>
+  <ul>
+    <li>Creating a perio exam is once per visit. Store the returned PerioExamNum.</li>
+    <li>Creating a periomeasure is once per (exam, tooth, SequenceType). Duplicates should PUT.</li>
+    <li>Procedurelogs for an existing crown or filling are once per (tooth, procCode) per session.</li>
+    <li>Retries must not invent a second exam for the same chairside visit.</li>
+  </ul>
+
+  <h2>Mermaid (source of truth for the same flow)</h2>
+  <pre>sequenceDiagram
+  participant Mic
+  participant VAD
+  participant Whisper
+  participant Parser
+  participant Store
+  participant Mapper
+  participant UI
+  Mic-&gt;VAD: PCM
+  VAD-&gt;Whisper: utterance clip
+  Whisper-&gt;Parser: transcript
+  Parser-&gt;Store: ChartEvent
+  alt confidence low
+    Store-&gt;UI: Heard only
+  else confidence high
+    Store-&gt;Store: applyEvent
+    Store-&gt;Mapper: exam + event
+    Mapper-&gt;Store: mocked HTTP calls
+    Store-&gt;UI: grid, captions, write-back
+  end</pre>
+
+  <h1 class="section">7. Identity, auth, and secrets</h1>
+  <h2>AuthN today</h2>
+  <p>None. Anyone with the laptop can open the clinician route and chart Andrew. That is correct for a hackathon demo and wrong for a clinic.</p>
+
+  <h2>AuthZ today</h2>
+  <p>None. There is one role: demo operator. Reset all is gated only by a confirm dialog.</p>
+
+  <h2>Secrets today</h2>
+  <p>Open Dental demo keys live in <span class="mono">.env.example</span> as obvious fakes (<span class="mono">DEMODEVKEY</span> / <span class="mono">DEMOCUSTKEY</span>). They are painted into the write-back panel so the Authorization header looks real. They must never be replaced with a clinic production pair in a committed file.</p>
+
+  <h2>Target (not built)</h2>
+  <table>
+    <tr><th>Concern</th><th>Target</th></tr>
+    <tr><td>Clinic users</td><td>SSO against the practice IdP. No shared laptop password in the app.</td></tr>
+    <tr><td>Open Dental</td><td><span class="mono">Authorization: ODFHIR {DeveloperKey}/{CustomerKey}</span> from a secrets manager, injected at runtime, never in git.</td></tr>
+    <tr><td>Browser</td><td>No long-lived PHI in localStorage. Session cookie or memory only.</td></tr>
+    <tr><td>Least privilege</td><td>Write periomeasures and procedurelogs for one PatNum. No patient search from the chairside client if a BFF can do it.</td></tr>
+  </table>
+  <div class="warn">
+    HIPAA, BAAs, and clinic SSO are explicitly out of scope for this build. Do not describe the current app as a covered entity system. The mapper is a contract rehearsal, not a compliance control.
+  </div>
+
+  <h1 class="section">8. Observability</h1>
+  <h2>Logs</h2>
+  <p>Structured <span class="mono">console.log</span> prefixes are the current telemetry: <span class="mono">[mic]</span>, <span class="mono">[vad]</span>, <span class="mono">[stt]</span>, <span class="mono">[whisper-worker]</span>, <span class="mono">[clinician]</span>. They are for the operator’s DevTools, not a SIEM.</p>
+  <p>Heard is the human-visible log of raw transcripts and confidence. The write-back panel is the human-visible log of PMS intent.</p>
+
+  <h2>Metrics (what we would collect first in production)</h2>
+  <ul>
+    <li>Utterance to chart latency (target under 1.5 s).</li>
+    <li>Whisper empty / timeout / error rates.</li>
+    <li>Share of transcripts marked unusable versus low-confidence versus written.</li>
+    <li>Parser miss rate on rehearsal corpus (already unit-tested).</li>
+    <li>When live: Open Dental 4xx/5xx, retry count, time to first PerioExamNum.</li>
+  </ul>
+
+  <h2>Traces</h2>
+  <p>Not present. A future BFF should carry a visit id from utterance to PMS response. Do not invent a distributed tracer for a single tab.</p>
+
+  <h2>Alerts</h2>
+  <p>None. The operator watches Heard and the write-back panel. Production would page on PMS write failure after the hygienist leaves the room, not on a single low-confidence line.</p>
+
+  <h1 class="section">9. Cost shape</h1>
+  <table>
+    <tr><th>Horizon</th><th>Order of magnitude</th><th>Notes</th></tr>
+    <tr><td>Demo laptop, as built</td><td>$0 / month incremental</td><td>Local Vite, cached Whisper, no PMS traffic</td></tr>
+    <tr><td>Clinic pilot, still local STT</td><td>Workstation + IT time</td><td>Cost is people and Open Dental API access, not cloud inference</td></tr>
+    <tr><td>Hosted BFF + live OD</td><td>Low hundreds USD / month at one to three chairs</td><td>Tiny request volume. Do not buy a GPU fleet.</td></tr>
+  </table>
+  <p><strong>Top cost drivers later:</strong> (1) Open Dental developer program and clinic IT, not compute. (2) If STT moves to a server, GPU or reserved CPU for Whisper. (3) If a hosted model is used for patient copy, token spend. Keep that off the charting path.</p>
+  <p><strong>Scaling cliffs:</strong> BroadcastChannel and in-tab Zustand will not survive ten chairs and a central server. That is a one-way door only if someone starts writing PHI into the SPA. The reversible path is a thin BFF that owns PMS writes while the parser stays local.</p>
+
+  <h1 class="section">10. Failure modes and resilience</h1>
+  <table>
+    <tr>
+      <th>Failure</th>
+      <th>What the user sees</th>
+      <th>Blast radius</th>
+      <th>Recovery</th>
+    </tr>
+    <tr>
+      <td>No wifi / CDN cold start</td>
+      <td>Whisper stays loading</td>
+      <td>Live mic only</td>
+      <td>Warm model before the demo. Use rehearsal script.</td>
+    </tr>
+    <tr>
+      <td>WebGPU missing</td>
+      <td>Worker error or slow path</td>
+      <td>Live mic</td>
+      <td>Rehearsal. Later: WASM CPU fallback if we add it.</td>
+    </tr>
+    <tr>
+      <td>Wrong or locked iPhone mic</td>
+      <td>Heard empty, VAD never loud</td>
+      <td>Live mic</td>
+      <td>Unlock phone, one Listening tab, Refresh devices.</td>
+    </tr>
+    <tr>
+      <td>Junk transcript</td>
+      <td>Heard, amber, no chart write</td>
+      <td>None to PMS</td>
+      <td>Speak again or spacebar the script.</td>
+    </tr>
+    <tr>
+      <td>Low-confidence parse</td>
+      <td>Heard only</td>
+      <td>None to chart or PMS</td>
+      <td>Intended. Do not "helpfully" write.</td>
+    </tr>
+    <tr>
+      <td>Whisper timeout (20 s)</td>
+      <td>Heard shows the error</td>
+      <td>That utterance</td>
+      <td>Next utterance. Worker stays up unless dispose.</td>
+    </tr>
+    <tr>
+      <td>Tab refresh</td>
+      <td>Today’s exam gone</td>
+      <td>Current visit</td>
+      <td>Re-seed from Andrew. Rehearse again. No RPO.</td>
+    </tr>
+    <tr>
+      <td>Second tab Listen</td>
+      <td>Mic mute / exclusive device</td>
+      <td>Audio</td>
+      <td>Only clinician Listen. Patient is display-only.</td>
+    </tr>
+    <tr>
+      <td>Future live OD 400/404</td>
+      <td>Would need an error row in write-back</td>
+      <td>That measure</td>
+      <td>Keep chart local. Retry PUT. Never delete the exam because one tooth failed.</td>
+    </tr>
+  </table>
+  <p><strong>RTO / RPO (demo):</strong> RTO is "hit Reset and play the script" (under a minute). RPO is zero durable today-exam by design. <strong>Production targets (deferred):</strong> RPO near zero for accepted high-confidence writes (local queue). RTO of a chair: another workstation can open the same visit from the BFF.</p>
+  <p>The rehearsal script is the primary resilience control. Treat it as production-grade for the demo, not as a test toy.</p>
+
+  <h1 class="section">11. Migration and rollout</h1>
+  <h2>Phase 0 (current)</h2>
+  <p>Browser-only. Mock Open Dental. Fictional Andrew. Safe to show in a room with wifi off after Whisper is cached.</p>
+
+  <h2>Phase 1: contract lock</h2>
+  <p>Keep the mapper. Add a feature flag that still does not send. Record fixtures from a sandbox Open Dental customer. Expand tests for PUT identity and SkipTooth.</p>
+
+  <h2>Phase 2: outbound BFF</h2>
+  <p>Introduce a small server the clinic owns. The browser posts ChartEvents or already-mapped PMS bodies to the BFF. The BFF holds ODFHIR keys and performs HTTPS. The SPA never sees production keys. This is the first one-way door we should take; it is still reversible if the BFF only writes sandbox PatNums.</p>
+
+  <h2>Phase 3: live sandbox patient</h2>
+  <p>One non-production PatNum. Hygienist confirms the write-back panel, then a human taps Send. No auto-send on every pocket. Chart remains source of truth if OD is down.</p>
+
+  <h2>Phase 4: clinic pilot</h2>
+  <p>SSO, visit identity, durable store, audit log, BAA review. Only then discuss auto-send. Dentrix or other PMS adapters plug in beside the Open Dental mapper, they do not replace the parser.</p>
+
+  <div class="callout">
+    Do not migrate by "just pointing the current SPA at api.opendental.com." That would put clinic keys in a Vite bundle and write from an unmanaged laptop.
+  </div>
+
+  <h1 class="section">12. What implementation must respect</h1>
+  <ul>
+    <li>No LLM on the path from transcript to tooth cell.</li>
+    <li>Low confidence does not write PD, BOP, mobility, furcation, or PMS calls.</li>
+    <li>Do not hardcode loopback URLs. Host, port, routes, model, and OD base stay in env.</li>
+    <li>Do not start extra frontend or backend servers as part of this repo’s normal demo. The operator already runs Vite.</li>
+    <li>Parser and lingo stay function-based (includes, token lists). Do not regress to regex-led extraction.</li>
+    <li>Open Dental field names stay canonical: MBvalue, Bvalue, DBvalue, MLvalue, Lvalue, DLvalue, SequenceType values as documented, -1 for unmeasured.</li>
+    <li>BleedSupPlaqCalc uses flag sums (bleeding 1, suppuration 2, plaque 4, calculus 8). Today we only emit bleeding = 1.</li>
+    <li>Existing restorations use procedurelogs with ProcStatus EC and ADA codes D2740 (crown) or D2391 (posterior composite), once per tooth and code.</li>
+    <li>Reset tooth maps to SkipTooth (ToothValue 1), not a silent local-only clear if we are showing PMS intent.</li>
+    <li>COOP same-origin and COEP credentialless stay on the Vite server. Removing them can break the worker.</li>
+    <li>BroadcastChannel name <span class="mono">chairside-events</span> is part of the two-display contract.</li>
+    <li>Andrew’s March history is the comparison baseline. Do not "helpfully" seed today’s pockets with March values.</li>
+  </ul>
+
+  <h1 class="section">13. Open questions</h1>
+  <ol>
+    <li>When a BFF exists, is the chairside client allowed to hold any PHI at rest, or only in memory for the visit?</li>
+    <li>Does the first live clinic want Open Dental Cloud API or an on-prem Open Dental API service? The paths are the same; the hosting and firewall are not.</li>
+    <li>Should mobility and furcation also write commlog text, or only periomeasures?</li>
+    <li>Is there a clinic-standard recall write (<span class="mono">POST /recalls</span> Perio) at wrap-up, or is that front-desk work?</li>
+    <li>Do we restore a 3D hero tooth for #14, or is the photographed jaw the lasting patient surface?</li>
+    <li>Whisper model pin: stay on base.en, or offer small.en as an advanced setting after a measured latency test on the demo laptop?</li>
+    <li>Second PMS: is Dentrix Ascend a Phase 4 adapter, or a different product line?</li>
+  </ol>
+  <p>None of these block the current demo. All of them block calling this a clinic system.</p>
+
+  <h1 class="section">14. Appendix A: Open Dental call map</h1>
+  <p>Public docs used: PerioExams, PerioMeasures, ProcedureLogs. Auth header: <span class="mono">Authorization: ODFHIR {DeveloperKey}/{CustomerKey}</span>.</p>
+  <table>
+    <tr>
+      <th>Chairside event</th>
+      <th>Mocked call</th>
+      <th>Notes</th>
+    </tr>
+    <tr>
+      <td>First high-confidence write of the visit</td>
+      <td><span class="mono">POST /perioexams</span></td>
+      <td>PatNum, ExamDate, ProvNum, Note. 201. Stores PerioExamNum (demo starts at 31).</td>
+    </tr>
+    <tr>
+      <td>Pocket depths</td>
+      <td><span class="mono">POST /periomeasures</span> then <span class="mono">PUT /periomeasures/{id}</span></td>
+      <td>SequenceType Probing. Six surfaces, -1 if unknown.</td>
+    </tr>
+    <tr>
+      <td>Bleeding on probing</td>
+      <td>Same, SequenceType BleedSupPlaqCalc</td>
+      <td>1 on bleeding sites, 0 on measured quiet sites.</td>
+    </tr>
+    <tr>
+      <td>Recession</td>
+      <td>SequenceType GingMargin</td>
+      <td>Millimetres as surface values.</td>
+    </tr>
+    <tr>
+      <td>Mobility 0 to 3</td>
+      <td>SequenceType Mobility</td>
+      <td>ToothValue only. Surfaces -1.</td>
+    </tr>
+    <tr>
+      <td>Furcation 0 to 3</td>
+      <td>SequenceType Furcation</td>
+      <td>Usually Bvalue unless sites named.</td>
+    </tr>
+    <tr>
+      <td>Exam note ("no bleeding")</td>
+      <td><span class="mono">PUT /perioexams/{id}</span></td>
+      <td>Note overwrites. Create exam first if needed.</td>
+    </tr>
+    <tr>
+      <td>Reset tooth</td>
+      <td>SequenceType SkipTooth</td>
+      <td>ToothValue 1.</td>
+    </tr>
+    <tr>
+      <td>Note contains crown</td>
+      <td><span class="mono">POST /procedurelogs</span></td>
+      <td>procCode D2740, ProcStatus EC, ToothNum string.</td>
+    </tr>
+    <tr>
+      <td>Note contains filling or composite</td>
+      <td><span class="mono">POST /procedurelogs</span></td>
+      <td>procCode D2391, ProcStatus EC.</td>
+    </tr>
+  </table>
+  <p>The clinician panel titled "Open Dental write-back" is the operator view of this map. It shows method, path, URL, headers, request JSON, and a mocked response. Nothing is transmitted.</p>
+
+  <h1 class="section">15. Appendix B: As-built versus original BUILD spec</h1>
+  <table>
+    <tr><th>BUILD spec</th><th>As built</th><th>Decision</th></tr>
+    <tr><td>FastAPI + WebSocket + faster-whisper</td><td>Browser-only Whisper worker</td><td>Fewer moving parts</td></tr>
+    <tr><td>Patient Rita Shah</td><td>Patient Andrew, March 2026 history</td><td>Demo narrative change</td></tr>
+    <tr><td>3D hero tooth #14</td><td>Photographed upper and lower arches + meaning panel</td><td>Readable at distance; 3D remains optional later</td></tr>
+    <tr><td>Mock HTTP <span class="mono">POST /mock/opendental/perio</span></td><td>Typed Open Dental REST shapes in the panel</td><td>Honest contract</td></tr>
+    <tr><td>Python webrtcvad / Silero</td><td>In-tab energy VAD</td><td>No native addon</td></tr>
+    <tr><td>Disk persistence of the visit</td><td>Memory only</td><td>Avoid leftover PHI on a shared laptop</td></tr>
+  </table>
+
+  <h1 class="section">16. Appendix C: Source map</h1>
+  <table>
+    <tr><th>Path</th><th>Role</th></tr>
+    <tr><td><span class="mono">src/audio/useLiveMic.ts</span></td><td>Capture loop, lingo, publish</td></tr>
+    <tr><td><span class="mono">src/audio/vad.ts</span></td><td>Energy VAD</td></tr>
+    <tr><td><span class="mono">src/audio/stt.ts</span> / <span class="mono">whisper.worker.ts</span></td><td>Whisper host and worker</td></tr>
+    <tr><td><span class="mono">src/audio/devices.ts</span></td><td>Mic pick (iPhone, Shokz)</td></tr>
+    <tr><td><span class="mono">src/domain/lingo.ts</span></td><td>Slang and commands</td></tr>
+    <tr><td><span class="mono">src/domain/parser.ts</span> / <span class="mono">clinicalParse.ts</span></td><td>ChartEvent extraction</td></tr>
+    <tr><td><span class="mono">src/domain/exam.ts</span></td><td>Apply events, colors, restorations</td></tr>
+    <tr><td><span class="mono">src/domain/translator.ts</span></td><td>Patient captions</td></tr>
+    <tr><td><span class="mono">src/store/examStore.ts</span></td><td>Visit state</td></tr>
+    <tr><td><span class="mono">src/pms/opendental.ts</span></td><td>PMS mapper</td></tr>
+    <tr><td><span class="mono">src/bus/channel.ts</span></td><td>BroadcastChannel</td></tr>
+    <tr><td><span class="mono">src/views/ClinicianView.tsx</span></td><td>Grid, script, write-back</td></tr>
+    <tr><td><span class="mono">src/views/PatientView.tsx</span></td><td>Jaw and meaning</td></tr>
+    <tr><td><span class="mono">src/views/WritebackDrawer.tsx</span></td><td>HTTP-shaped mock log</td></tr>
+    <tr><td><span class="mono">src/data/andrew.json</span></td><td>Seed</td></tr>
+    <tr><td><span class="mono">.env.example</span></td><td>Host, routes, Whisper, OD keys</td></tr>
+  </table>
+
+  <p class="footer-note">MolarMind architecture pack. First issue, 12 September 2026. Companion to the in-app Architecture route. This document is as-built architecture, not a promise of clinic compliance.</p>
+</body>
+</html>

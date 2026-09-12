@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useLiveMic } from "../audio/useLiveMic";
 import { runAllParserCases } from "../domain/parser.cases";
 import type { ParserCaseResult } from "../domain/parser.cases";
 import { DEMO1_LINES } from "../rehearsal/demo1";
 import { useExamStore } from "../store/examStore";
+import { clinicianNeoPath } from "../config/paths";
 import { AppLogo } from "./AppLogo";
 import { ArchitectureLink } from "./ArchitectureLink";
 import { DetailedReport } from "./DetailedReport";
@@ -25,6 +27,7 @@ export function ClinicianView() {
   const rehearsal = script === "demo1";
   const step = useRef(0);
   const [parserResults, setParserResults] = useState<ParserCaseResult[]>();
+  const [scriptOpen, setScriptOpen] = useState(false);
   const mic = useLiveMic();
 
   useEffect(() => {
@@ -49,9 +52,6 @@ export function ClinicianView() {
       <header className="topbar">
         <AppLogo compact />
         <h1>{store.current.patientName}</h1>
-        <p className="hint">
-          {rehearsal ? "Rehearsal · spacebar advances the script" : "Live mic"}
-        </p>
         <div className="controls">
           <button
             className="primary"
@@ -63,8 +63,27 @@ export function ClinicianView() {
           <button type="button" onClick={() => mic.publishUtterance(DEMO1_LINES[step.current++] ?? "let's wrap up")}>
             Next line
           </button>
+          <button type="button" onClick={() => setScriptOpen((value) => !value)}>
+            {scriptOpen ? "Hide script" : "Show script"}
+          </button>
         </div>
+        <MicBar
+          devices={mic.devices}
+          selectedId={mic.selectedId}
+          onSelect={mic.setSelectedId}
+          onStart={() => void mic.startMic()}
+          onStop={mic.stopMic}
+          onRefresh={() => void mic.refreshDevices()}
+          listening={mic.listening}
+          level={mic.level}
+          speaking={mic.speaking}
+          status={mic.status}
+          statusDetail={mic.statusDetail}
+        />
         <div className="header-tools">
+          <Link className="header-link" to={clinicianNeoPath}>
+            Neo
+          </Link>
           <ArchitectureLink />
           <button type="button" onClick={() => setParserResults(runAllParserCases())}>
             Test suite
@@ -72,23 +91,10 @@ export function ClinicianView() {
         </div>
       </header>
 
-      <MicBar
-        devices={mic.devices}
-        selectedId={mic.selectedId}
-        onSelect={mic.setSelectedId}
-        onStart={() => void mic.startMic()}
-        onStop={mic.stopMic}
-        onRefresh={() => void mic.refreshDevices()}
-        listening={mic.listening}
-        level={mic.level}
-        speaking={mic.speaking}
-        status={mic.status}
-        statusDetail={mic.statusDetail}
-      />
-
+      <HeardTicker items={store.heard} speaking={mic.speaking} />
       <div className="heard-and-script">
-        <HeardTicker items={store.heard} captureHint={mic.captureHint} />
         <HygienistScript
+          open={scriptOpen}
           onUtterance={mic.publishUtterance}
           onNarration={(text) => useExamStore.getState().setHeard({ text, confidence: "high" })}
           onReset={() => {
