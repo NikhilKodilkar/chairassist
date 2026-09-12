@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { HYGIENIST_CLEANING } from "../rehearsal/hygienistCleaning";
+import { JUDGE_LINES } from "../rehearsal/judgeLines";
 
 function wait(ms: number): Promise<void> {
   return new Promise((resolve) => {
@@ -126,6 +127,15 @@ export function HygienistScript({
       </div>
 
       <p className="script-now">{done ? "Exam complete." : current?.said}</p>
+
+      <div className="judge-lines">
+        <span className="hint">Speak-test lines</span>
+        {JUDGE_LINES.map((line) => (
+          <button key={line.label} type="button" onClick={() => onUtterance(line.said)}>
+            {line.label}
+          </button>
+        ))}
+      </div>
 
       {open ? (
         <ol className="script-list">

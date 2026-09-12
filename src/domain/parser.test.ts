@@ -3,7 +3,7 @@ import { PARSER_CASES, runParserCase } from "./parser.cases";
 
 describe("perio parser", () => {
   it("covers the utterance cases", () => {
-    expect(PARSER_CASES.length).toBe(40);
+    expect(PARSER_CASES.length).toBe(51);
   });
 
   PARSER_CASES.forEach((parserCase) => {

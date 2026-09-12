@@ -1,53 +1,70 @@
-import { useEffect, useRef, useState } from "react";
-import { createBus } from "../bus/channel";
+import { useState } from "react";
+import { useLiveMic } from "../audio/useLiveMic";
 import { PARSER_CASES, runAllParserCases } from "../domain/parser.cases";
 import type { ParserCaseResult } from "../domain/parser.cases";
 import { useExamStore } from "../store/examStore";
-import { ArchStrip } from "./ArchStrip";
-import { CaptionBand } from "./CaptionBand";
-import { HeroTooth } from "./HeroTooth";
+import { AppLogo } from "./AppLogo";
+import { ArchitectureLink } from "./ArchitectureLink";
+import { JawMap } from "./JawMap";
+import { MicBar } from "./MicBar";
 import { ParserResults } from "./ParserResults";
 import { TakeHomeCard } from "./TakeHomeCard";
-import { TimelineScrubber } from "./TimelineScrubber";
+import { ToothMeaning } from "./ToothMeaning";
 
 export function PatientView() {
   const store = useExamStore();
-  const busRef = useRef<ReturnType<typeof createBus> | null>(null);
+  const mic = useLiveMic();
   const [parserResults, setParserResults] = useState<ParserCaseResult[]>();
-
-  useEffect(() => {
-    const bus = createBus((message) => {
-      if (message.type === "chart-event") {
-        useExamStore.getState().applyChartEvent(message.event);
-      }
-    });
-    busRef.current = bus;
-    return () => bus.close();
-  }, []);
 
   return (
     <main className="screen patient">
-      <header className="topbar" style={{ padding: "20px 24px 0" }}>
-        <div>
+      <header className="topbar patient-topbar">
+        <AppLogo compact />
+        <div className="patient-title">
           <p className="eyebrow">Patient view</p>
           <h1>Your checkup, in plain language</h1>
-          <div className="controls" style={{ marginTop: 12 }}>
-            <button className="primary" type="button" onClick={() => setParserResults(runAllParserCases())}>
-              Run {PARSER_CASES.length} parser cases
-            </button>
-          </div>
+        </div>
+        <div className="controls">
+          <ArchitectureLink />
+          <button className="primary" type="button" onClick={() => setParserResults(runAllParserCases())}>
+            Parser {PARSER_CASES.length}
+          </button>
+          <MicBar
+            compact
+            devices={mic.devices}
+            selectedId={mic.selectedId}
+            onSelect={mic.setSelectedId}
+            onStart={() => void mic.startMic()}
+            onStop={mic.stopMic}
+            onRefresh={() => void mic.refreshDevices()}
+            listening={mic.listening}
+            level={mic.level}
+            speaking={mic.speaking}
+            status={mic.status}
+            statusDetail={mic.statusDetail}
+          />
+          {store.helloName ? <p className="patient-hello">Hello {store.helloName}</p> : null}
         </div>
       </header>
-      <HeroTooth
-        current={store.current}
-        lastVisit={store.lastVisit}
-        timeline={store.timeline}
-        activeTooth={store.activeTooth}
-        lastMention={store.lastMention}
-      />
-      <CaptionBand text={store.caption} />
-      <ArchStrip exam={store.current} activeTooth={store.activeTooth} />
-      <TimelineScrubber value={store.timeline} onChange={store.setTimeline} />
+      {store.heard[0] ? (
+        <p className="patient-heard">
+          {mic.speaking ? "Hearing you…" : "Heard"} · {store.heard[0].text}
+        </p>
+      ) : null}
+      <div className="patient-body">
+        <JawMap
+          exam={store.current}
+          activeTooth={store.activeTooth}
+          focusTeeth={store.focusTeeth}
+          lastMention={store.lastMention}
+        />
+        <ToothMeaning
+          exam={store.current}
+          activeTooth={store.activeTooth}
+          lastMention={store.lastMention}
+          caption={store.caption}
+        />
+      </div>
       {parserResults ? (
         <div className="parser-overlay">
           <ParserResults results={parserResults} onClose={() => setParserResults(undefined)} />
@@ -55,6 +72,22 @@ export function PatientView() {
       ) : null}
       {store.summary ? (
         <TakeHomeCard name={store.current.patientName} date={store.current.date} sentences={store.summary} />
+      ) : null}
+      {mic.pendingResetAll ? (
+        <div className="confirm-overlay">
+          <section className="panel confirm-dialog">
+            <h2>Reset all charted data?</h2>
+            <p className="hint">This clears today’s perio chart for {store.current.patientName}. Last-visit values stay.</p>
+            <div className="controls">
+              <button type="button" onClick={mic.cancelResetAll}>
+                Cancel
+              </button>
+              <button className="primary" type="button" onClick={mic.confirmResetAll}>
+                Reset all
+              </button>
+            </div>
+          </section>
+        </div>
       ) : null}
     </main>
   );

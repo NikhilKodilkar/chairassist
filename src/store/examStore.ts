@@ -19,6 +19,7 @@ export interface WritebackItem {
 export interface LastMention {
   id: number;
   tooth: number;
+  teeth?: number[];
   sites: Site[];
   readings?: number[];
   bopSites?: Site[];
@@ -31,10 +32,12 @@ interface ExamStore {
   lastVisit: Exam;
   current: Exam;
   activeTooth?: number;
+  focusTeeth: number[];
   lastMention?: LastMention;
   caption?: string;
   summary?: string[];
   heard: HeardItem[];
+  helloName?: string;
   writebacks: WritebackItem[];
   timeline: number;
   applyChartEvent: (event: ChartEvent) => void;
@@ -52,7 +55,17 @@ export const useExamStore = create<ExamStore>((set, get) => ({
   heard: [],
   writebacks: [],
   timeline: 1,
+  focusTeeth: [],
   applyChartEvent: (event) => {
+    if (event.kind === "set_name" && event.note) {
+      const state = get();
+      set({
+        current: { ...state.current, patientName: event.note },
+        helloName: event.note,
+        heard: [{ text: event.raw, confidence: event.confidence }, ...state.heard].slice(0, 6),
+      });
+      return;
+    }
     const state = get();
     const willWritePd =
       event.kind === "reading" && event.confidence === "high" && Boolean(event.tooth) && Boolean(event.readings?.length);
@@ -90,20 +103,54 @@ export const useExamStore = create<ExamStore>((set, get) => ({
           sites: event.sites,
           readings: event.readings,
           bopSites: event.bopSites,
+          rec: event.rec,
+          notes: event.notes,
+          examNotes: event.examNotes,
+          mobility: event.mobility,
+          furcation: event.furcation,
+        },
+      });
+    }
+    if (event.kind === "flag" && event.confidence === "high" && event.examNotes && event.examNotes.length > 0) {
+      writebacks.unshift({
+        at: new Date().toISOString(),
+        payload: {
+          endpoint: "POST /mock/opendental/perio",
+          action: "exam-note",
+          patientId: current.patientId,
+          examNotes: event.examNotes,
+        },
+      });
+    }
+    if (event.kind === "reset_tooth" && event.tooth) {
+      writebacks.unshift({
+        at: new Date().toISOString(),
+        payload: {
+          endpoint: "POST /mock/opendental/perio",
+          action: "clear-tooth",
+          patientId: current.patientId,
+          tooth: event.tooth,
         },
       });
     }
 
+    const focusTeeth =
+      event.teeth && event.teeth.length > 0
+        ? event.teeth
+        : event.tooth
+          ? [event.tooth]
+          : state.focusTeeth;
     const lastMention =
       event.tooth && event.confidence === "high"
         ? {
             id: (state.lastMention?.id ?? 0) + 1,
             tooth: event.tooth,
-            sites: event.sites ?? event.bopSites ?? [],
-            readings: event.readings,
-            bopSites: event.bopSites,
-            rec: event.rec,
-            note: event.note,
+            teeth: event.kind === "reset_tooth" ? [event.tooth] : focusTeeth,
+            sites: event.kind === "reset_tooth" ? [] : event.sites ?? event.bopSites ?? [],
+            readings: event.kind === "reset_tooth" ? undefined : event.readings,
+            bopSites: event.kind === "reset_tooth" ? undefined : event.bopSites,
+            rec: event.kind === "reset_tooth" ? undefined : event.rec,
+            note: event.kind === "reset_tooth" ? "cleared" : event.note,
             kind: event.kind,
           }
         : state.lastMention;
@@ -111,6 +158,7 @@ export const useExamStore = create<ExamStore>((set, get) => ({
     set({
       current,
       activeTooth: event.tooth ?? state.activeTooth,
+      focusTeeth,
       lastMention,
       caption: caption ?? state.caption,
       heard: nextHeard,
@@ -134,6 +182,7 @@ export const useExamStore = create<ExamStore>((set, get) => ({
       writebacks: [],
       timeline: 1,
       activeTooth: undefined,
+      focusTeeth: [],
       lastMention: undefined,
     }),
   setTimeline: (value) => set({ timeline: value }),

@@ -1,0 +1,2963 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Dental clinician lingo mapped to brief patient-friendly meanings.",
+  "constraints": {
+    "patient_meaning_max_words": 10,
+    "patient_meaning_style": "plain language, non-alarming, one sentence or phrase",
+    "intended_use": "live chairside transcription and patient education"
+  },
+  "entries": [
+    {
+      "id": "universal_numbering",
+      "term": "Universal numbering system",
+      "aliases": [
+        "tooth number",
+        "tooth #"
+      ],
+      "category": "tooth_identification",
+      "patient_meaning": "Standard numbers used to identify each adult tooth."
+    },
+    {
+      "id": "primary_lettering",
+      "term": "Primary tooth lettering",
+      "aliases": [
+        "baby tooth letters"
+      ],
+      "category": "tooth_identification",
+      "patient_meaning": "Letters identify each baby tooth."
+    },
+    {
+      "id": "maxillary",
+      "term": "Maxillary",
+      "aliases": [
+        "upper arch",
+        "upper jaw"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The upper jaw or upper set of teeth."
+    },
+    {
+      "id": "mandibular",
+      "term": "Mandibular",
+      "aliases": [
+        "lower arch",
+        "lower jaw"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The lower jaw or lower set of teeth."
+    },
+    {
+      "id": "anterior",
+      "term": "Anterior",
+      "aliases": [
+        "front teeth"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "Teeth or areas toward the front of the mouth."
+    },
+    {
+      "id": "posterior",
+      "term": "Posterior",
+      "aliases": [
+        "back teeth"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "Teeth or areas toward the back of the mouth."
+    },
+    {
+      "id": "mesial",
+      "term": "Mesial",
+      "aliases": [
+        "M"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The tooth surface facing toward the center line."
+    },
+    {
+      "id": "distal",
+      "term": "Distal",
+      "aliases": [
+        "D"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The tooth surface facing away from the center line."
+    },
+    {
+      "id": "buccal",
+      "term": "Buccal",
+      "aliases": [
+        "B"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The tooth surface facing the cheek."
+    },
+    {
+      "id": "facial",
+      "term": "Facial",
+      "aliases": [
+        "F"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The tooth surface facing the lips or cheek."
+    },
+    {
+      "id": "labial",
+      "term": "Labial",
+      "aliases": [
+        "labial surface"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The tooth surface facing the lips."
+    },
+    {
+      "id": "lingual",
+      "term": "Lingual",
+      "aliases": [
+        "L"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The tooth surface facing the tongue."
+    },
+    {
+      "id": "palatal",
+      "term": "Palatal",
+      "aliases": [
+        "palatal surface"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The upper tooth surface facing the palate."
+    },
+    {
+      "id": "occlusal",
+      "term": "Occlusal",
+      "aliases": [
+        "O",
+        "biting surface"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The chewing surface of a back tooth."
+    },
+    {
+      "id": "incisal",
+      "term": "Incisal",
+      "aliases": [
+        "incisal edge"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The biting edge of a front tooth."
+    },
+    {
+      "id": "proximal",
+      "term": "Proximal",
+      "aliases": [
+        "interproximal"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The surface where two neighboring teeth touch."
+    },
+    {
+      "id": "contact",
+      "term": "Contact point",
+      "aliases": [
+        "contact area"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The spot where neighboring teeth touch each other."
+    },
+    {
+      "id": "gingival_third",
+      "term": "Gingival third",
+      "aliases": [
+        "cervical third"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The tooth area closest to the gumline."
+    },
+    {
+      "id": "middle_third",
+      "term": "Middle third",
+      "aliases": [],
+      "category": "directions_surfaces",
+      "patient_meaning": "The middle section of the visible tooth."
+    },
+    {
+      "id": "incisal_third",
+      "term": "Incisal third",
+      "aliases": [],
+      "category": "directions_surfaces",
+      "patient_meaning": "The front-tooth section closest to its biting edge."
+    },
+    {
+      "id": "occlusal_third",
+      "term": "Occlusal third",
+      "aliases": [],
+      "category": "directions_surfaces",
+      "patient_meaning": "The back-tooth section closest to its chewing surface."
+    },
+    {
+      "id": "cervical",
+      "term": "Cervical",
+      "aliases": [
+        "neck of tooth"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The narrow tooth area near the gumline."
+    },
+    {
+      "id": "apical",
+      "term": "Apical",
+      "aliases": [
+        "apex area"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The area near the tip of a tooth root."
+    },
+    {
+      "id": "coronal",
+      "term": "Coronal",
+      "aliases": [],
+      "category": "directions_surfaces",
+      "patient_meaning": "The area toward the crown of the tooth."
+    },
+    {
+      "id": "quadrant",
+      "term": "Quadrant",
+      "aliases": [
+        "quad"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "One quarter of the mouth."
+    },
+    {
+      "id": "sextant",
+      "term": "Sextant",
+      "aliases": [],
+      "category": "directions_surfaces",
+      "patient_meaning": "One of six sections used for gum assessment."
+    },
+    {
+      "id": "arch",
+      "term": "Arch",
+      "aliases": [
+        "dental arch"
+      ],
+      "category": "directions_surfaces",
+      "patient_meaning": "The curved row of teeth in one jaw."
+    },
+    {
+      "id": "midline",
+      "term": "Midline",
+      "aliases": [],
+      "category": "directions_surfaces",
+      "patient_meaning": "The center line dividing the mouth into halves."
+    },
+    {
+      "id": "enamel",
+      "term": "Enamel",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The hard outer covering of the tooth."
+    },
+    {
+      "id": "dentin",
+      "term": "Dentin",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The softer tooth layer beneath enamel."
+    },
+    {
+      "id": "pulp",
+      "term": "Pulp",
+      "aliases": [
+        "nerve"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The inner tooth tissue containing nerves and blood vessels."
+    },
+    {
+      "id": "pulp_chamber",
+      "term": "Pulp chamber",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The central space containing the tooth's pulp."
+    },
+    {
+      "id": "root_canal_space",
+      "term": "Root canal space",
+      "aliases": [
+        "canal"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The narrow passage inside a tooth root."
+    },
+    {
+      "id": "cementum",
+      "term": "Cementum",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The thin outer covering of a tooth root."
+    },
+    {
+      "id": "periodontal_ligament",
+      "term": "Periodontal ligament",
+      "aliases": [
+        "PDL"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "Fibers attaching the tooth root to surrounding bone."
+    },
+    {
+      "id": "alveolar_bone",
+      "term": "Alveolar bone",
+      "aliases": [
+        "supporting bone"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "Jawbone that surrounds and supports the teeth."
+    },
+    {
+      "id": "crown_anatomical",
+      "term": "Anatomical crown",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The enamel-covered portion of a tooth."
+    },
+    {
+      "id": "clinical_crown",
+      "term": "Clinical crown",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The part of the tooth visible in the mouth."
+    },
+    {
+      "id": "root",
+      "term": "Root",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The part of the tooth anchored below the gum."
+    },
+    {
+      "id": "apex",
+      "term": "Root apex",
+      "aliases": [
+        "apex"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The tip of a tooth root."
+    },
+    {
+      "id": "furcation",
+      "term": "Furcation",
+      "aliases": [
+        "furca"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "The area where a multi-rooted tooth's roots divide."
+    },
+    {
+      "id": "cusp",
+      "term": "Cusp",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A raised point on a chewing tooth."
+    },
+    {
+      "id": "fossa",
+      "term": "Fossa",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A natural shallow depression on a tooth surface."
+    },
+    {
+      "id": "pit",
+      "term": "Pit",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A tiny natural depression on a tooth surface."
+    },
+    {
+      "id": "fissure",
+      "term": "Fissure",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A narrow natural groove on a chewing surface."
+    },
+    {
+      "id": "groove",
+      "term": "Developmental groove",
+      "aliases": [
+        "groove"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A natural line between tooth cusps."
+    },
+    {
+      "id": "marginal_ridge",
+      "term": "Marginal ridge",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A raised border along part of the chewing surface."
+    },
+    {
+      "id": "oblique_ridge",
+      "term": "Oblique ridge",
+      "aliases": [],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A raised ridge across an upper molar."
+    },
+    {
+      "id": "cusp_carabelli",
+      "term": "Cusp of Carabelli",
+      "aliases": [
+        "Carabelli"
+      ],
+      "category": "tooth_anatomy",
+      "patient_meaning": "A small extra bump sometimes found on upper molars."
+    },
+    {
+      "id": "pd",
+      "term": "Probing depth",
+      "aliases": [
+        "PD",
+        "pocket depth",
+        "probing"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The measured depth between the gum and tooth."
+    },
+    {
+      "id": "cal",
+      "term": "Clinical attachment loss",
+      "aliases": [
+        "CAL",
+        "attachment loss"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "Measures how much gum support has been lost."
+    },
+    {
+      "id": "bop",
+      "term": "Bleeding on probing",
+      "aliases": [
+        "BOP",
+        "bleeding"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The gums bleed gently when measured."
+    },
+    {
+      "id": "recession",
+      "term": "Gingival recession",
+      "aliases": [
+        "recession",
+        "REC"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The gumline has moved away from the tooth crown."
+    },
+    {
+      "id": "gingival_margin",
+      "term": "Gingival margin",
+      "aliases": [
+        "GM"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The edge of the gum around a tooth."
+    },
+    {
+      "id": "pocket",
+      "term": "Periodontal pocket",
+      "aliases": [
+        "pocket"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "A deeper-than-normal space between tooth and gum."
+    },
+    {
+      "id": "pseudo_pocket",
+      "term": "Pseudopocket",
+      "aliases": [
+        "false pocket"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "A deep measurement caused mainly by swollen gums."
+    },
+    {
+      "id": "healthy_sulcus",
+      "term": "Gingival sulcus",
+      "aliases": [
+        "sulcus"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The normal shallow space between tooth and gum."
+    },
+    {
+      "id": "mobility_0",
+      "term": "Mobility grade 0",
+      "aliases": [
+        "no mobility"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The tooth has normal firmness."
+    },
+    {
+      "id": "mobility_1",
+      "term": "Mobility grade 1",
+      "aliases": [
+        "class I mobility",
+        "grade 1 mobility"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The tooth moves slightly more than normal."
+    },
+    {
+      "id": "mobility_2",
+      "term": "Mobility grade 2",
+      "aliases": [
+        "class II mobility",
+        "grade 2 mobility"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The tooth has moderate side-to-side movement."
+    },
+    {
+      "id": "mobility_3",
+      "term": "Mobility grade 3",
+      "aliases": [
+        "class III mobility",
+        "grade 3 mobility"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The tooth moves significantly and may move vertically."
+    },
+    {
+      "id": "furcation_1",
+      "term": "Furcation grade I",
+      "aliases": [
+        "class I furcation"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "Early bone loss exists where the roots divide."
+    },
+    {
+      "id": "furcation_2",
+      "term": "Furcation grade II",
+      "aliases": [
+        "class II furcation"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "Moderate bone loss exists between the tooth roots."
+    },
+    {
+      "id": "furcation_3",
+      "term": "Furcation grade III",
+      "aliases": [
+        "class III furcation"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "Bone loss passes completely through the root division."
+    },
+    {
+      "id": "gingivitis",
+      "term": "Gingivitis",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "Gums are inflamed without permanent supporting-bone loss."
+    },
+    {
+      "id": "periodontitis",
+      "term": "Periodontitis",
+      "aliases": [
+        "periodontal disease",
+        "gum disease"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "Gum disease has damaged supporting tissues or bone."
+    },
+    {
+      "id": "localized_periodontitis",
+      "term": "Localized periodontitis",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "Gum disease affects only limited areas of the mouth."
+    },
+    {
+      "id": "generalized_periodontitis",
+      "term": "Generalized periodontitis",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "Gum disease affects many areas of the mouth."
+    },
+    {
+      "id": "stage_1_perio",
+      "term": "Stage I periodontitis",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "Early gum disease with limited supporting-tissue loss."
+    },
+    {
+      "id": "stage_2_perio",
+      "term": "Stage II periodontitis",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "Moderate gum disease with measurable supporting-tissue loss."
+    },
+    {
+      "id": "stage_3_perio",
+      "term": "Stage III periodontitis",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "Advanced gum disease with significant support loss."
+    },
+    {
+      "id": "stage_4_perio",
+      "term": "Stage IV periodontitis",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "Severe gum disease threatening tooth stability and function."
+    },
+    {
+      "id": "grade_a_perio",
+      "term": "Periodontitis Grade A",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "The gum disease appears to be progressing slowly."
+    },
+    {
+      "id": "grade_b_perio",
+      "term": "Periodontitis Grade B",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "The gum disease appears to be progressing moderately."
+    },
+    {
+      "id": "grade_c_perio",
+      "term": "Periodontitis Grade C",
+      "aliases": [],
+      "category": "periodontal",
+      "patient_meaning": "The gum disease appears to be progressing rapidly."
+    },
+    {
+      "id": "keratinized_tissue",
+      "term": "Keratinized tissue",
+      "aliases": [
+        "KT"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "Firm protective gum tissue around the teeth."
+    },
+    {
+      "id": "mucogingival_defect",
+      "term": "Mucogingival defect",
+      "aliases": [
+        "MG defect"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The protective gum tissue is reduced or positioned unusually."
+    },
+    {
+      "id": "gingival_inflammation",
+      "term": "Gingival inflammation",
+      "aliases": [
+        "inflamed gingiva"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The gums look irritated, swollen, or red."
+    },
+    {
+      "id": "edema",
+      "term": "Edema",
+      "aliases": [
+        "edematous"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The gum tissue is swollen from extra fluid."
+    },
+    {
+      "id": "erythema",
+      "term": "Erythema",
+      "aliases": [
+        "redness"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "The gum tissue appears unusually red."
+    },
+    {
+      "id": "suppuration",
+      "term": "Suppuration",
+      "aliases": [
+        "pus",
+        "purulence"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "Pus is coming from an infected gum area."
+    },
+    {
+      "id": "abscess_periodontal",
+      "term": "Periodontal abscess",
+      "aliases": [
+        "gum abscess"
+      ],
+      "category": "periodontal",
+      "patient_meaning": "A localized pocket of infection has formed in the gums."
+    },
+    {
+      "id": "plaque",
+      "term": "Plaque",
+      "aliases": [
+        "biofilm"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A sticky bacterial film is collecting on the teeth."
+    },
+    {
+      "id": "biofilm",
+      "term": "Dental biofilm",
+      "aliases": [
+        "biofilm"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A thin community of bacteria coats the teeth."
+    },
+    {
+      "id": "calculus",
+      "term": "Calculus",
+      "aliases": [
+        "tartar"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Hardened plaque is attached to the tooth."
+    },
+    {
+      "id": "supragingival_calculus",
+      "term": "Supragingival calculus",
+      "aliases": [
+        "supra calculus"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Hardened plaque is visible above the gumline."
+    },
+    {
+      "id": "subgingival_calculus",
+      "term": "Subgingival calculus",
+      "aliases": [
+        "sub calculus"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Hardened plaque is present below the gumline."
+    },
+    {
+      "id": "stain",
+      "term": "Extrinsic stain",
+      "aliases": [
+        "staining"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Surface discoloration is present on the tooth."
+    },
+    {
+      "id": "heavy_stain",
+      "term": "Heavy stain",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "There is significant surface discoloration on the teeth."
+    },
+    {
+      "id": "light_plaque",
+      "term": "Light plaque",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A small amount of plaque is present."
+    },
+    {
+      "id": "moderate_plaque",
+      "term": "Moderate plaque",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A noticeable amount of plaque is present."
+    },
+    {
+      "id": "heavy_plaque",
+      "term": "Heavy plaque",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A large amount of plaque is present."
+    },
+    {
+      "id": "light_calculus",
+      "term": "Light calculus",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A small amount of hardened plaque is present."
+    },
+    {
+      "id": "moderate_calculus",
+      "term": "Moderate calculus",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A noticeable amount of hardened plaque is present."
+    },
+    {
+      "id": "heavy_calculus",
+      "term": "Heavy calculus",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A large amount of hardened plaque is present."
+    },
+    {
+      "id": "debridement",
+      "term": "Full-mouth debridement",
+      "aliases": [
+        "FMD",
+        "debridement"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Heavy buildup is removed before a complete gum evaluation."
+    },
+    {
+      "id": "prophy",
+      "term": "Prophylaxis",
+      "aliases": [
+        "prophy",
+        "cleaning"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A routine professional cleaning removes plaque and tartar."
+    },
+    {
+      "id": "srp",
+      "term": "Scaling and root planing",
+      "aliases": [
+        "SRP",
+        "deep cleaning"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Deep cleaning removes buildup below the gumline."
+    },
+    {
+      "id": "scaling",
+      "term": "Scaling",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "Plaque and hardened deposits are removed from teeth."
+    },
+    {
+      "id": "root_planing",
+      "term": "Root planing",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "Root surfaces are smoothed and cleaned below the gums."
+    },
+    {
+      "id": "ultrasonic_scaler",
+      "term": "Ultrasonic scaler",
+      "aliases": [
+        "Cavitron",
+        "ultrasonic"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A vibrating water-cooled tool removes hardened buildup."
+    },
+    {
+      "id": "hand_scaler",
+      "term": "Hand scaler",
+      "aliases": [
+        "scaler"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A small hand instrument removes deposits from teeth."
+    },
+    {
+      "id": "curette",
+      "term": "Curette",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A hand instrument cleans tooth roots below the gums."
+    },
+    {
+      "id": "polish",
+      "term": "Polishing",
+      "aliases": [
+        "polish"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "The tooth surfaces are smoothed after cleaning."
+    },
+    {
+      "id": "prophy_paste",
+      "term": "Prophy paste",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "A polishing paste helps remove surface stains."
+    },
+    {
+      "id": "fluoride_varnish",
+      "term": "Fluoride varnish",
+      "aliases": [
+        "varnish"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A fluoride coating helps strengthen enamel and prevent cavities."
+    },
+    {
+      "id": "fluoride_treatment",
+      "term": "Fluoride treatment",
+      "aliases": [
+        "fluoride"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Fluoride is applied to strengthen and protect enamel."
+    },
+    {
+      "id": "sealant",
+      "term": "Dental sealant",
+      "aliases": [
+        "sealant"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A protective coating fills deep grooves to prevent cavities."
+    },
+    {
+      "id": "ohi",
+      "term": "Oral hygiene instruction",
+      "aliases": [
+        "OHI"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Guidance is given for better home mouth care."
+    },
+    {
+      "id": "homecare",
+      "term": "Home care",
+      "aliases": [
+        "oral home care"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Your daily brushing and cleaning routine at home."
+    },
+    {
+      "id": "interdental_cleaning",
+      "term": "Interdental cleaning",
+      "aliases": [
+        "between-teeth cleaning"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "Cleaning removes plaque from spaces between teeth."
+    },
+    {
+      "id": "flossing",
+      "term": "Flossing",
+      "aliases": [],
+      "category": "hygiene",
+      "patient_meaning": "Floss removes plaque between teeth and under gum edges."
+    },
+    {
+      "id": "water_flosser",
+      "term": "Water flosser",
+      "aliases": [
+        "oral irrigator"
+      ],
+      "category": "hygiene",
+      "patient_meaning": "A water stream cleans between teeth and around gums."
+    },
+    {
+      "id": "caries",
+      "term": "Dental caries",
+      "aliases": [
+        "caries",
+        "cavity",
+        "decay"
+      ],
+      "category": "caries",
+      "patient_meaning": "Tooth structure has been damaged by decay."
+    },
+    {
+      "id": "incipient_caries",
+      "term": "Incipient caries",
+      "aliases": [
+        "incipient lesion",
+        "early decay"
+      ],
+      "category": "caries",
+      "patient_meaning": "Very early decay is beginning in the enamel."
+    },
+    {
+      "id": "recurrent_caries",
+      "term": "Recurrent caries",
+      "aliases": [
+        "recurrent decay"
+      ],
+      "category": "caries",
+      "patient_meaning": "New decay has formed beside an existing restoration."
+    },
+    {
+      "id": "interproximal_caries",
+      "term": "Interproximal caries",
+      "aliases": [
+        "between-teeth cavity"
+      ],
+      "category": "caries",
+      "patient_meaning": "Decay is present between neighboring teeth."
+    },
+    {
+      "id": "occlusal_caries",
+      "term": "Occlusal caries",
+      "aliases": [
+        "pit and fissure caries"
+      ],
+      "category": "caries",
+      "patient_meaning": "Decay is present on the chewing surface."
+    },
+    {
+      "id": "root_caries",
+      "term": "Root caries",
+      "aliases": [
+        "root decay"
+      ],
+      "category": "caries",
+      "patient_meaning": "Decay is present on an exposed tooth root."
+    },
+    {
+      "id": "demineralization",
+      "term": "Demineralization",
+      "aliases": [
+        "white spot lesion"
+      ],
+      "category": "caries",
+      "patient_meaning": "Minerals are leaving enamel, making it weaker."
+    },
+    {
+      "id": "remineralization",
+      "term": "Remineralization",
+      "aliases": [],
+      "category": "caries",
+      "patient_meaning": "Minerals are being restored to weakened enamel."
+    },
+    {
+      "id": "cavitation",
+      "term": "Cavitation",
+      "aliases": [],
+      "category": "caries",
+      "patient_meaning": "The weakened tooth surface has developed a physical hole."
+    },
+    {
+      "id": "watch_area",
+      "term": "Watch area",
+      "aliases": [
+        "watch",
+        "monitor"
+      ],
+      "category": "caries",
+      "patient_meaning": "This area will be monitored for future changes."
+    },
+    {
+      "id": "arrested_caries",
+      "term": "Arrested caries",
+      "aliases": [
+        "inactive decay"
+      ],
+      "category": "caries",
+      "patient_meaning": "The decay appears inactive and is not currently progressing."
+    },
+    {
+      "id": "abrasion",
+      "term": "Abrasion",
+      "aliases": [],
+      "category": "tooth_wear",
+      "patient_meaning": "Tooth structure has worn from repeated outside friction."
+    },
+    {
+      "id": "attrition",
+      "term": "Attrition",
+      "aliases": [],
+      "category": "tooth_wear",
+      "patient_meaning": "Teeth have worn from rubbing against other teeth."
+    },
+    {
+      "id": "erosion",
+      "term": "Erosion",
+      "aliases": [
+        "acid erosion"
+      ],
+      "category": "tooth_wear",
+      "patient_meaning": "Acid has chemically worn away tooth structure."
+    },
+    {
+      "id": "abfraction",
+      "term": "Abfraction",
+      "aliases": [],
+      "category": "tooth_wear",
+      "patient_meaning": "A notch has formed near the gumline."
+    },
+    {
+      "id": "wear_facets",
+      "term": "Wear facets",
+      "aliases": [],
+      "category": "tooth_wear",
+      "patient_meaning": "Flat worn areas show where teeth repeatedly contact."
+    },
+    {
+      "id": "hypersensitivity",
+      "term": "Dentinal hypersensitivity",
+      "aliases": [
+        "sensitivity"
+      ],
+      "category": "tooth_wear",
+      "patient_meaning": "Exposed dentin is causing brief sensitivity."
+    },
+    {
+      "id": "cracked_tooth",
+      "term": "Cracked tooth",
+      "aliases": [
+        "crack"
+      ],
+      "category": "tooth_wear",
+      "patient_meaning": "A crack is present within the tooth."
+    },
+    {
+      "id": "craze_line",
+      "term": "Craze line",
+      "aliases": [
+        "enamel craze line"
+      ],
+      "category": "tooth_wear",
+      "patient_meaning": "A tiny superficial enamel line is visible."
+    },
+    {
+      "id": "fracture",
+      "term": "Tooth fracture",
+      "aliases": [
+        "broken tooth"
+      ],
+      "category": "tooth_wear",
+      "patient_meaning": "Part of the tooth has cracked or broken."
+    },
+    {
+      "id": "chipped_tooth",
+      "term": "Chipped tooth",
+      "aliases": [
+        "chip"
+      ],
+      "category": "tooth_wear",
+      "patient_meaning": "A small piece of the tooth has broken away."
+    },
+    {
+      "id": "restoration",
+      "term": "Restoration",
+      "aliases": [
+        "filling",
+        "restoration"
+      ],
+      "category": "restorative",
+      "patient_meaning": "Material has been placed to repair the tooth."
+    },
+    {
+      "id": "composite",
+      "term": "Composite restoration",
+      "aliases": [
+        "composite",
+        "tooth-colored filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A tooth-colored material repairs the damaged area."
+    },
+    {
+      "id": "amalgam",
+      "term": "Amalgam restoration",
+      "aliases": [
+        "silver filling",
+        "amalgam"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A metal-colored filling repairs the damaged area."
+    },
+    {
+      "id": "glass_ionomer",
+      "term": "Glass ionomer restoration",
+      "aliases": [
+        "GI",
+        "GIC"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A fluoride-releasing material repairs part of the tooth."
+    },
+    {
+      "id": "temporary_filling",
+      "term": "Temporary restoration",
+      "aliases": [
+        "temp filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A short-term filling protects the tooth temporarily."
+    },
+    {
+      "id": "mo",
+      "term": "MO restoration",
+      "aliases": [
+        "MO filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling covers the mesial and chewing surfaces."
+    },
+    {
+      "id": "do",
+      "term": "DO restoration",
+      "aliases": [
+        "DO filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling covers the distal and chewing surfaces."
+    },
+    {
+      "id": "mod",
+      "term": "MOD restoration",
+      "aliases": [
+        "MOD filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling covers both sides and the chewing surface."
+    },
+    {
+      "id": "ob",
+      "term": "OB restoration",
+      "aliases": [
+        "OB filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling covers the chewing and cheek surfaces."
+    },
+    {
+      "id": "ol",
+      "term": "OL restoration",
+      "aliases": [
+        "OL filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling covers the chewing and tongue-side surfaces."
+    },
+    {
+      "id": "class_1",
+      "term": "Class I restoration",
+      "aliases": [
+        "Class 1"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling repairs grooves or pits on chewing surfaces."
+    },
+    {
+      "id": "class_2",
+      "term": "Class II restoration",
+      "aliases": [
+        "Class 2"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling repairs between surfaces of back teeth."
+    },
+    {
+      "id": "class_3",
+      "term": "Class III restoration",
+      "aliases": [
+        "Class 3"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling repairs between surfaces of front teeth."
+    },
+    {
+      "id": "class_4",
+      "term": "Class IV restoration",
+      "aliases": [
+        "Class 4"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling repairs a front tooth corner or edge."
+    },
+    {
+      "id": "class_5",
+      "term": "Class V restoration",
+      "aliases": [
+        "Class 5"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A filling repairs the tooth near the gumline."
+    },
+    {
+      "id": "crown",
+      "term": "Crown",
+      "aliases": [
+        "cap"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A protective covering surrounds most of the visible tooth."
+    },
+    {
+      "id": "temporary_crown",
+      "term": "Temporary crown",
+      "aliases": [
+        "temp crown"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A short-term crown protects the tooth while healing."
+    },
+    {
+      "id": "bridge",
+      "term": "Dental bridge",
+      "aliases": [
+        "bridge"
+      ],
+      "category": "restorative",
+      "patient_meaning": "Connected teeth replace one or more missing teeth."
+    },
+    {
+      "id": "pontic",
+      "term": "Pontic",
+      "aliases": [],
+      "category": "restorative",
+      "patient_meaning": "The artificial tooth portion of a dental bridge."
+    },
+    {
+      "id": "abutment",
+      "term": "Abutment tooth",
+      "aliases": [
+        "bridge abutment"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A supporting tooth holds part of a dental bridge."
+    },
+    {
+      "id": "veneer",
+      "term": "Veneer",
+      "aliases": [],
+      "category": "restorative",
+      "patient_meaning": "A thin shell covers the front of a tooth."
+    },
+    {
+      "id": "inlay",
+      "term": "Inlay",
+      "aliases": [],
+      "category": "restorative",
+      "patient_meaning": "A custom restoration fits inside the tooth's chewing surface."
+    },
+    {
+      "id": "onlay",
+      "term": "Onlay",
+      "aliases": [],
+      "category": "restorative",
+      "patient_meaning": "A custom restoration covers part of the chewing surface."
+    },
+    {
+      "id": "overlay",
+      "term": "Overlay restoration",
+      "aliases": [],
+      "category": "restorative",
+      "patient_meaning": "A custom restoration covers most of the chewing surface."
+    },
+    {
+      "id": "core_build_up",
+      "term": "Core buildup",
+      "aliases": [
+        "buildup",
+        "core"
+      ],
+      "category": "restorative",
+      "patient_meaning": "Material rebuilds the tooth before placing a crown."
+    },
+    {
+      "id": "post_core",
+      "term": "Post and core",
+      "aliases": [
+        "post/core"
+      ],
+      "category": "restorative",
+      "patient_meaning": "Internal support helps rebuild a heavily damaged tooth."
+    },
+    {
+      "id": "open_margin",
+      "term": "Open margin",
+      "aliases": [
+        "open crown margin"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A gap exists between a restoration and the tooth."
+    },
+    {
+      "id": "overhang",
+      "term": "Restoration overhang",
+      "aliases": [
+        "overhang"
+      ],
+      "category": "restorative",
+      "patient_meaning": "Filling material extends beyond the natural tooth edge."
+    },
+    {
+      "id": "defective_restoration",
+      "term": "Defective restoration",
+      "aliases": [
+        "failing filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "An existing filling or crown is no longer ideal."
+    },
+    {
+      "id": "fractured_restoration",
+      "term": "Fractured restoration",
+      "aliases": [
+        "broken filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "Part of an existing filling or crown has broken."
+    },
+    {
+      "id": "missing_restoration",
+      "term": "Missing restoration",
+      "aliases": [
+        "lost filling"
+      ],
+      "category": "restorative",
+      "patient_meaning": "A previous filling or restoration is no longer present."
+    },
+    {
+      "id": "rct",
+      "term": "Root canal treatment",
+      "aliases": [
+        "RCT",
+        "root canal"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "Infected or damaged pulp is removed from the tooth."
+    },
+    {
+      "id": "pulpitis",
+      "term": "Pulpitis",
+      "aliases": [],
+      "category": "endodontics",
+      "patient_meaning": "The nerve tissue inside the tooth is inflamed."
+    },
+    {
+      "id": "reversible_pulpitis",
+      "term": "Reversible pulpitis",
+      "aliases": [],
+      "category": "endodontics",
+      "patient_meaning": "The tooth nerve is irritated but can recover."
+    },
+    {
+      "id": "irreversible_pulpitis",
+      "term": "Irreversible pulpitis",
+      "aliases": [],
+      "category": "endodontics",
+      "patient_meaning": "The tooth nerve is too inflamed to recover."
+    },
+    {
+      "id": "pulp_necrosis",
+      "term": "Pulp necrosis",
+      "aliases": [
+        "necrotic pulp",
+        "nonvital"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "The nerve tissue inside the tooth has died."
+    },
+    {
+      "id": "vital",
+      "term": "Vital tooth",
+      "aliases": [
+        "vital"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "The tooth's nerve tissue is alive."
+    },
+    {
+      "id": "non_vital",
+      "term": "Non-vital tooth",
+      "aliases": [
+        "nonvital"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "The tooth's nerve tissue is no longer alive."
+    },
+    {
+      "id": "periapical_lesion",
+      "term": "Periapical lesion",
+      "aliases": [
+        "PA lesion"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "An abnormal area exists near the root tip."
+    },
+    {
+      "id": "periapical_abscess",
+      "term": "Periapical abscess",
+      "aliases": [
+        "apical abscess"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "An infection has formed near the root tip."
+    },
+    {
+      "id": "apical_periodontitis",
+      "term": "Apical periodontitis",
+      "aliases": [
+        "symptomatic apical periodontitis"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "Tissue around the root tip is inflamed."
+    },
+    {
+      "id": "endo_access",
+      "term": "Endodontic access",
+      "aliases": [
+        "access opening"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "An opening is made to reach the tooth's pulp."
+    },
+    {
+      "id": "obturation",
+      "term": "Obturation",
+      "aliases": [
+        "canal fill"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "The cleaned root canal space is sealed with material."
+    },
+    {
+      "id": "gutta_percha",
+      "term": "Gutta-percha",
+      "aliases": [
+        "GP"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "A rubber-like material seals cleaned root canals."
+    },
+    {
+      "id": "retreatment",
+      "term": "Root canal retreatment",
+      "aliases": [
+        "endo retreat"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "A previous root canal is cleaned and treated again."
+    },
+    {
+      "id": "apicoectomy",
+      "term": "Apicoectomy",
+      "aliases": [
+        "root-end surgery"
+      ],
+      "category": "endodontics",
+      "patient_meaning": "The infected root tip is surgically removed."
+    },
+    {
+      "id": "extraction",
+      "term": "Extraction",
+      "aliases": [
+        "EXT",
+        "pull tooth"
+      ],
+      "category": "oral_surgery",
+      "patient_meaning": "The tooth is removed from the mouth."
+    },
+    {
+      "id": "simple_extraction",
+      "term": "Simple extraction",
+      "aliases": [],
+      "category": "oral_surgery",
+      "patient_meaning": "A visible tooth is removed without surgical exposure."
+    },
+    {
+      "id": "surgical_extraction",
+      "term": "Surgical extraction",
+      "aliases": [],
+      "category": "oral_surgery",
+      "patient_meaning": "A tooth is removed using a surgical approach."
+    },
+    {
+      "id": "impacted_tooth",
+      "term": "Impacted tooth",
+      "aliases": [
+        "impaction"
+      ],
+      "category": "oral_surgery",
+      "patient_meaning": "A tooth cannot fully erupt into the mouth."
+    },
+    {
+      "id": "partially_impacted",
+      "term": "Partially impacted tooth",
+      "aliases": [],
+      "category": "oral_surgery",
+      "patient_meaning": "Only part of the tooth has erupted."
+    },
+    {
+      "id": "unerupted",
+      "term": "Unerupted tooth",
+      "aliases": [],
+      "category": "oral_surgery",
+      "patient_meaning": "The tooth has not emerged into the mouth."
+    },
+    {
+      "id": "missing_tooth",
+      "term": "Missing tooth",
+      "aliases": [
+        "edentulous space"
+      ],
+      "category": "oral_surgery",
+      "patient_meaning": "A natural tooth is absent from this location."
+    },
+    {
+      "id": "edentulous",
+      "term": "Edentulous",
+      "aliases": [],
+      "category": "oral_surgery",
+      "patient_meaning": "One or more areas have no natural teeth."
+    },
+    {
+      "id": "socket",
+      "term": "Extraction socket",
+      "aliases": [
+        "socket"
+      ],
+      "category": "oral_surgery",
+      "patient_meaning": "The bone opening where a tooth was removed."
+    },
+    {
+      "id": "dry_socket",
+      "term": "Dry socket",
+      "aliases": [
+        "alveolar osteitis"
+      ],
+      "category": "oral_surgery",
+      "patient_meaning": "The extraction site has lost its protective blood clot."
+    },
+    {
+      "id": "bone_graft",
+      "term": "Bone graft",
+      "aliases": [
+        "graft"
+      ],
+      "category": "oral_surgery",
+      "patient_meaning": "Added material helps rebuild or preserve jawbone."
+    },
+    {
+      "id": "sinus_lift",
+      "term": "Sinus lift",
+      "aliases": [],
+      "category": "oral_surgery",
+      "patient_meaning": "Bone is added beneath the sinus for implant support."
+    },
+    {
+      "id": "alveoloplasty",
+      "term": "Alveoloplasty",
+      "aliases": [],
+      "category": "oral_surgery",
+      "patient_meaning": "Jawbone is reshaped after tooth removal."
+    },
+    {
+      "id": "implant",
+      "term": "Dental implant",
+      "aliases": [
+        "implant"
+      ],
+      "category": "implants",
+      "patient_meaning": "A titanium replacement root supports a new tooth."
+    },
+    {
+      "id": "implant_crown",
+      "term": "Implant crown",
+      "aliases": [],
+      "category": "implants",
+      "patient_meaning": "A crown is attached to a dental implant."
+    },
+    {
+      "id": "implant_abutment",
+      "term": "Implant abutment",
+      "aliases": [
+        "abutment"
+      ],
+      "category": "implants",
+      "patient_meaning": "A connector joins the implant to its crown."
+    },
+    {
+      "id": "healing_abutment",
+      "term": "Healing abutment",
+      "aliases": [],
+      "category": "implants",
+      "patient_meaning": "A temporary connector shapes the gum during healing."
+    },
+    {
+      "id": "osseointegration",
+      "term": "Osseointegration",
+      "aliases": [],
+      "category": "implants",
+      "patient_meaning": "Bone is bonding firmly to the implant surface."
+    },
+    {
+      "id": "peri_implant_mucositis",
+      "term": "Peri-implant mucositis",
+      "aliases": [],
+      "category": "implants",
+      "patient_meaning": "Gum inflammation surrounds an implant without bone loss."
+    },
+    {
+      "id": "peri_implantitis",
+      "term": "Peri-implantitis",
+      "aliases": [],
+      "category": "implants",
+      "patient_meaning": "Inflammation around an implant has caused supporting-bone loss."
+    },
+    {
+      "id": "implant_mobility",
+      "term": "Implant mobility",
+      "aliases": [],
+      "category": "implants",
+      "patient_meaning": "The implant is moving when it should remain stable."
+    },
+    {
+      "id": "xray",
+      "term": "Dental radiograph",
+      "aliases": [
+        "x-ray",
+        "radiograph"
+      ],
+      "category": "imaging",
+      "patient_meaning": "An image shows teeth and structures hidden from view."
+    },
+    {
+      "id": "bwx",
+      "term": "Bitewing radiographs",
+      "aliases": [
+        "BWX",
+        "bitewings",
+        "BW"
+      ],
+      "category": "imaging",
+      "patient_meaning": "X-rays show crowns and bone between back teeth."
+    },
+    {
+      "id": "pa",
+      "term": "Periapical radiograph",
+      "aliases": [
+        "PA"
+      ],
+      "category": "imaging",
+      "patient_meaning": "An X-ray shows the entire tooth and root."
+    },
+    {
+      "id": "fmx",
+      "term": "Full-mouth series",
+      "aliases": [
+        "FMX",
+        "FMS"
+      ],
+      "category": "imaging",
+      "patient_meaning": "A complete set of detailed dental X-rays."
+    },
+    {
+      "id": "pano",
+      "term": "Panoramic radiograph",
+      "aliases": [
+        "PAN",
+        "panorex",
+        "pano"
+      ],
+      "category": "imaging",
+      "patient_meaning": "A wide X-ray shows both jaws and surrounding structures."
+    },
+    {
+      "id": "cbct",
+      "term": "CBCT",
+      "aliases": [
+        "cone beam",
+        "3D scan"
+      ],
+      "category": "imaging",
+      "patient_meaning": "A three-dimensional scan shows teeth, bone, and nearby structures."
+    },
+    {
+      "id": "radiolucency",
+      "term": "Radiolucency",
+      "aliases": [
+        "radiolucent"
+      ],
+      "category": "imaging",
+      "patient_meaning": "A darker X-ray area may indicate less dense tissue."
+    },
+    {
+      "id": "radiopacity",
+      "term": "Radiopacity",
+      "aliases": [
+        "radiopaque"
+      ],
+      "category": "imaging",
+      "patient_meaning": "A lighter X-ray area indicates denser material or tissue."
+    },
+    {
+      "id": "bone_loss_horizontal",
+      "term": "Horizontal bone loss",
+      "aliases": [],
+      "category": "imaging",
+      "patient_meaning": "Supporting bone has lowered fairly evenly around teeth."
+    },
+    {
+      "id": "bone_loss_vertical",
+      "term": "Vertical bone loss",
+      "aliases": [
+        "angular defect"
+      ],
+      "category": "imaging",
+      "patient_meaning": "Supporting bone has dropped unevenly beside a tooth."
+    },
+    {
+      "id": "lamina_dura",
+      "term": "Lamina dura",
+      "aliases": [],
+      "category": "imaging",
+      "patient_meaning": "A thin dense bone line surrounds the tooth root."
+    },
+    {
+      "id": "pdl_widening",
+      "term": "PDL widening",
+      "aliases": [
+        "widened PDL"
+      ],
+      "category": "imaging",
+      "patient_meaning": "The space around the tooth root appears wider."
+    },
+    {
+      "id": "caries_xray",
+      "term": "Radiographic caries",
+      "aliases": [
+        "x-ray decay"
+      ],
+      "category": "imaging",
+      "patient_meaning": "An X-ray suggests decay inside or between teeth."
+    },
+    {
+      "id": "calculus_xray",
+      "term": "Radiographic calculus",
+      "aliases": [],
+      "category": "imaging",
+      "patient_meaning": "Hardened deposits are visible on the X-ray."
+    },
+    {
+      "id": "wnl",
+      "term": "Within normal limits",
+      "aliases": [
+        "WNL"
+      ],
+      "category": "imaging",
+      "patient_meaning": "No concerning abnormality is seen in this area."
+    },
+    {
+      "id": "nrf",
+      "term": "No radiographic findings",
+      "aliases": [
+        "NRF"
+      ],
+      "category": "imaging",
+      "patient_meaning": "No notable abnormality is visible on the X-ray."
+    },
+    {
+      "id": "occlusion",
+      "term": "Occlusion",
+      "aliases": [
+        "bite"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "How the upper and lower teeth fit together."
+    },
+    {
+      "id": "malocclusion",
+      "term": "Malocclusion",
+      "aliases": [
+        "bad bite"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "The upper and lower teeth do not align ideally."
+    },
+    {
+      "id": "overbite",
+      "term": "Overbite",
+      "aliases": [
+        "deep bite"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "Upper front teeth vertically overlap the lower front teeth."
+    },
+    {
+      "id": "overjet",
+      "term": "Overjet",
+      "aliases": [],
+      "category": "occlusion",
+      "patient_meaning": "Upper front teeth extend horizontally ahead of lower teeth."
+    },
+    {
+      "id": "crossbite",
+      "term": "Crossbite",
+      "aliases": [],
+      "category": "occlusion",
+      "patient_meaning": "Some upper teeth bite inside the lower teeth."
+    },
+    {
+      "id": "open_bite",
+      "term": "Open bite",
+      "aliases": [],
+      "category": "occlusion",
+      "patient_meaning": "Some upper and lower teeth do not meet."
+    },
+    {
+      "id": "edge_to_edge",
+      "term": "Edge-to-edge bite",
+      "aliases": [],
+      "category": "occlusion",
+      "patient_meaning": "Upper and lower front teeth meet directly edge-to-edge."
+    },
+    {
+      "id": "class_1_occlusion",
+      "term": "Class I occlusion",
+      "aliases": [
+        "Angle Class I"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "The back teeth have a generally normal bite relationship."
+    },
+    {
+      "id": "class_2_occlusion",
+      "term": "Class II occlusion",
+      "aliases": [
+        "Angle Class II"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "The upper teeth sit relatively forward of lower teeth."
+    },
+    {
+      "id": "class_3_occlusion",
+      "term": "Class III occlusion",
+      "aliases": [
+        "Angle Class III"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "The lower teeth sit relatively forward of upper teeth."
+    },
+    {
+      "id": "bruxism",
+      "term": "Bruxism",
+      "aliases": [
+        "grinding",
+        "clenching"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "You grind or clench your teeth."
+    },
+    {
+      "id": "clenching",
+      "term": "Clenching",
+      "aliases": [],
+      "category": "occlusion",
+      "patient_meaning": "You squeeze your teeth together with extra force."
+    },
+    {
+      "id": "parafunction",
+      "term": "Parafunction",
+      "aliases": [],
+      "category": "occlusion",
+      "patient_meaning": "The teeth are used in repetitive non-chewing habits."
+    },
+    {
+      "id": "high_spot",
+      "term": "High spot",
+      "aliases": [
+        "high bite"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "One area contacts too early when you bite."
+    },
+    {
+      "id": "occlusal_adjustment",
+      "term": "Occlusal adjustment",
+      "aliases": [
+        "bite adjustment"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "Small tooth areas are reshaped to improve the bite."
+    },
+    {
+      "id": "night_guard",
+      "term": "Night guard",
+      "aliases": [
+        "occlusal guard"
+      ],
+      "category": "occlusion",
+      "patient_meaning": "A removable appliance protects teeth from grinding or clenching."
+    },
+    {
+      "id": "crowding",
+      "term": "Crowding",
+      "aliases": [],
+      "category": "orthodontics",
+      "patient_meaning": "There is not enough space for teeth to align."
+    },
+    {
+      "id": "spacing",
+      "term": "Spacing",
+      "aliases": [
+        "gaps"
+      ],
+      "category": "orthodontics",
+      "patient_meaning": "Extra spaces exist between some teeth."
+    },
+    {
+      "id": "rotation",
+      "term": "Tooth rotation",
+      "aliases": [
+        "rotated tooth"
+      ],
+      "category": "orthodontics",
+      "patient_meaning": "A tooth is turned from its ideal position."
+    },
+    {
+      "id": "diastema",
+      "term": "Diastema",
+      "aliases": [
+        "gap"
+      ],
+      "category": "orthodontics",
+      "patient_meaning": "A noticeable space exists between two teeth."
+    },
+    {
+      "id": "orthodontic_retainer",
+      "term": "Retainer",
+      "aliases": [],
+      "category": "orthodontics",
+      "patient_meaning": "An appliance helps teeth stay in their corrected positions."
+    },
+    {
+      "id": "braces",
+      "term": "Braces",
+      "aliases": [
+        "fixed orthodontics"
+      ],
+      "category": "orthodontics",
+      "patient_meaning": "Brackets and wires gradually move teeth into alignment."
+    },
+    {
+      "id": "clear_aligners",
+      "term": "Clear aligners",
+      "aliases": [
+        "aligners"
+      ],
+      "category": "orthodontics",
+      "patient_meaning": "Removable clear trays gradually move teeth into alignment."
+    },
+    {
+      "id": "attachment_ortho",
+      "term": "Aligner attachment",
+      "aliases": [
+        "attachment"
+      ],
+      "category": "orthodontics",
+      "patient_meaning": "A small tooth-colored bump helps an aligner move teeth."
+    },
+    {
+      "id": "debond",
+      "term": "Debond",
+      "aliases": [
+        "remove braces"
+      ],
+      "category": "orthodontics",
+      "patient_meaning": "Orthodontic brackets are being removed from the teeth."
+    },
+    {
+      "id": "primary_tooth",
+      "term": "Primary tooth",
+      "aliases": [
+        "baby tooth",
+        "deciduous tooth"
+      ],
+      "category": "pediatric",
+      "patient_meaning": "A temporary childhood tooth that will eventually fall out."
+    },
+    {
+      "id": "permanent_tooth",
+      "term": "Permanent tooth",
+      "aliases": [
+        "adult tooth"
+      ],
+      "category": "pediatric",
+      "patient_meaning": "A lasting adult tooth replacing a baby tooth."
+    },
+    {
+      "id": "mixed_dentition",
+      "term": "Mixed dentition",
+      "aliases": [],
+      "category": "pediatric",
+      "patient_meaning": "Both baby and adult teeth are present."
+    },
+    {
+      "id": "eruption",
+      "term": "Eruption",
+      "aliases": [
+        "erupting"
+      ],
+      "category": "pediatric",
+      "patient_meaning": "A tooth is moving into the mouth."
+    },
+    {
+      "id": "exfoliation",
+      "term": "Exfoliation",
+      "aliases": [
+        "shedding"
+      ],
+      "category": "pediatric",
+      "patient_meaning": "A baby tooth is naturally becoming loose and falling out."
+    },
+    {
+      "id": "space_maintainer",
+      "term": "Space maintainer",
+      "aliases": [],
+      "category": "pediatric",
+      "patient_meaning": "An appliance preserves room for an incoming adult tooth."
+    },
+    {
+      "id": "pulpotomy",
+      "term": "Pulpotomy",
+      "aliases": [
+        "baby root canal"
+      ],
+      "category": "pediatric",
+      "patient_meaning": "Inflamed pulp is removed from the tooth crown."
+    },
+    {
+      "id": "stainless_steel_crown",
+      "term": "Stainless steel crown",
+      "aliases": [
+        "SSC"
+      ],
+      "category": "pediatric",
+      "patient_meaning": "A metal crown protects a badly damaged baby tooth."
+    },
+    {
+      "id": "lesion",
+      "term": "Oral lesion",
+      "aliases": [
+        "lesion"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "An area of mouth tissue looks different than normal."
+    },
+    {
+      "id": "ulcer",
+      "term": "Oral ulcer",
+      "aliases": [
+        "sore"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "A small open sore is present in the mouth."
+    },
+    {
+      "id": "aphthous_ulcer",
+      "term": "Aphthous ulcer",
+      "aliases": [
+        "canker sore"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "A common painful canker sore is present."
+    },
+    {
+      "id": "fibroma",
+      "term": "Fibroma",
+      "aliases": [],
+      "category": "oral_pathology",
+      "patient_meaning": "A usually harmless firm tissue bump is present."
+    },
+    {
+      "id": "mucocele",
+      "term": "Mucocele",
+      "aliases": [],
+      "category": "oral_pathology",
+      "patient_meaning": "A mucus-filled bump has formed from a blocked gland."
+    },
+    {
+      "id": "leukoplakia",
+      "term": "Leukoplakia",
+      "aliases": [],
+      "category": "oral_pathology",
+      "patient_meaning": "A persistent white patch needs professional evaluation."
+    },
+    {
+      "id": "erythroplakia",
+      "term": "Erythroplakia",
+      "aliases": [],
+      "category": "oral_pathology",
+      "patient_meaning": "A persistent red patch needs professional evaluation."
+    },
+    {
+      "id": "oral_cancer_screening",
+      "term": "Oral cancer screening",
+      "aliases": [
+        "OCS"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "The mouth is checked for unusual or concerning tissue."
+    },
+    {
+      "id": "palpation",
+      "term": "Palpation",
+      "aliases": [],
+      "category": "oral_pathology",
+      "patient_meaning": "The clinician gently feels tissues for unusual changes."
+    },
+    {
+      "id": "lymph_nodes",
+      "term": "Lymph node exam",
+      "aliases": [
+        "nodes"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "Neck glands are checked for swelling or tenderness."
+    },
+    {
+      "id": "tori",
+      "term": "Tori",
+      "aliases": [
+        "torus"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "Harmless extra bone growths are present inside the mouth."
+    },
+    {
+      "id": "mandibular_tori",
+      "term": "Mandibular tori",
+      "aliases": [],
+      "category": "oral_pathology",
+      "patient_meaning": "Harmless bone bumps are present inside the lower jaw."
+    },
+    {
+      "id": "palatal_torus",
+      "term": "Palatal torus",
+      "aliases": [],
+      "category": "oral_pathology",
+      "patient_meaning": "A harmless bone bump is present on the palate."
+    },
+    {
+      "id": "xerostomia",
+      "term": "Xerostomia",
+      "aliases": [
+        "dry mouth"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "The mouth feels dry from reduced saliva."
+    },
+    {
+      "id": "halitosis",
+      "term": "Halitosis",
+      "aliases": [
+        "bad breath"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "Persistent unpleasant breath odor is present."
+    },
+    {
+      "id": "candidiasis",
+      "term": "Oral candidiasis",
+      "aliases": [
+        "thrush"
+      ],
+      "category": "oral_pathology",
+      "patient_meaning": "A yeast infection is affecting the mouth tissues."
+    },
+    {
+      "id": "comprehensive_exam",
+      "term": "Comprehensive oral evaluation",
+      "aliases": [
+        "COE",
+        "comprehensive exam"
+      ],
+      "category": "exam",
+      "patient_meaning": "A full examination reviews teeth, gums, bite, and tissues."
+    },
+    {
+      "id": "periodic_exam",
+      "term": "Periodic oral evaluation",
+      "aliases": [
+        "POE",
+        "recall exam"
+      ],
+      "category": "exam",
+      "patient_meaning": "A routine check reviews changes since the previous visit."
+    },
+    {
+      "id": "limited_exam",
+      "term": "Limited oral evaluation",
+      "aliases": [
+        "problem-focused exam",
+        "LOE"
+      ],
+      "category": "exam",
+      "patient_meaning": "A focused exam evaluates one specific concern."
+    },
+    {
+      "id": "emergency_exam",
+      "term": "Emergency exam",
+      "aliases": [
+        "emergency visit"
+      ],
+      "category": "exam",
+      "patient_meaning": "A focused exam evaluates an urgent dental problem."
+    },
+    {
+      "id": "recall",
+      "term": "Recall",
+      "aliases": [
+        "recare"
+      ],
+      "category": "exam",
+      "patient_meaning": "A scheduled return visit for routine dental care."
+    },
+    {
+      "id": "six_month_recall",
+      "term": "Six-month recall",
+      "aliases": [],
+      "category": "exam",
+      "patient_meaning": "A routine follow-up visit is planned in six months."
+    },
+    {
+      "id": "three_month_recare",
+      "term": "Three-month periodontal maintenance",
+      "aliases": [
+        "3-month recare"
+      ],
+      "category": "exam",
+      "patient_meaning": "Gum-maintenance visits are scheduled every three months."
+    },
+    {
+      "id": "perio_maintenance",
+      "term": "Periodontal maintenance",
+      "aliases": [
+        "PM",
+        "perio maintenance"
+      ],
+      "category": "exam",
+      "patient_meaning": "Ongoing cleaning helps control previously treated gum disease."
+    },
+    {
+      "id": "treatment_plan",
+      "term": "Treatment plan",
+      "aliases": [
+        "TX plan"
+      ],
+      "category": "exam",
+      "patient_meaning": "A recommended sequence of care is being proposed."
+    },
+    {
+      "id": "chief_complaint",
+      "term": "Chief complaint",
+      "aliases": [
+        "CC"
+      ],
+      "category": "exam",
+      "patient_meaning": "The main reason you came for today's visit."
+    },
+    {
+      "id": "medical_history",
+      "term": "Medical history",
+      "aliases": [
+        "MHx"
+      ],
+      "category": "exam",
+      "patient_meaning": "Your health information helps guide safe dental care."
+    },
+    {
+      "id": "dental_history",
+      "term": "Dental history",
+      "aliases": [
+        "DHx"
+      ],
+      "category": "exam",
+      "patient_meaning": "Your past dental care and concerns are reviewed."
+    },
+    {
+      "id": "no_changes_medical",
+      "term": "No changes in medical history",
+      "aliases": [
+        "NCMH"
+      ],
+      "category": "exam",
+      "patient_meaning": "Your reported health history has not changed."
+    },
+    {
+      "id": "blood_pressure",
+      "term": "Blood pressure",
+      "aliases": [
+        "BP"
+      ],
+      "category": "exam",
+      "patient_meaning": "Your blood pressure is being checked before treatment."
+    },
+    {
+      "id": "intraoral_exam",
+      "term": "Intraoral exam",
+      "aliases": [
+        "IO exam"
+      ],
+      "category": "exam",
+      "patient_meaning": "The clinician examines tissues and structures inside your mouth."
+    },
+    {
+      "id": "extraoral_exam",
+      "term": "Extraoral exam",
+      "aliases": [
+        "EO exam"
+      ],
+      "category": "exam",
+      "patient_meaning": "The clinician examines your face, jaw, and neck."
+    },
+    {
+      "id": "tmj",
+      "term": "TMJ",
+      "aliases": [
+        "temporomandibular joint"
+      ],
+      "category": "exam",
+      "patient_meaning": "The jaw joint connecting your lower jaw to skull."
+    },
+    {
+      "id": "tmj_click",
+      "term": "TMJ click",
+      "aliases": [
+        "clicking"
+      ],
+      "category": "exam",
+      "patient_meaning": "The jaw joint makes a clicking sound during movement."
+    },
+    {
+      "id": "range_of_motion",
+      "term": "Range of motion",
+      "aliases": [
+        "ROM"
+      ],
+      "category": "exam",
+      "patient_meaning": "How far and smoothly your jaw can move."
+    },
+    {
+      "id": "within_normal_limits",
+      "term": "Within normal limits",
+      "aliases": [
+        "WNL"
+      ],
+      "category": "exam",
+      "patient_meaning": "The finding appears normal."
+    },
+    {
+      "id": "no_significant_findings",
+      "term": "No significant findings",
+      "aliases": [
+        "NSF"
+      ],
+      "category": "exam",
+      "patient_meaning": "Nothing concerning was found in this area."
+    },
+    {
+      "id": "monitor",
+      "term": "Monitor",
+      "aliases": [
+        "watch"
+      ],
+      "category": "exam",
+      "patient_meaning": "This area will be checked again at future visits."
+    },
+    {
+      "id": "refer",
+      "term": "Referral",
+      "aliases": [
+        "refer out"
+      ],
+      "category": "exam",
+      "patient_meaning": "A specialist is recommended for further evaluation or treatment."
+    },
+    {
+      "id": "local_anesthetic",
+      "term": "Local anesthetic",
+      "aliases": [
+        "local",
+        "numbing"
+      ],
+      "category": "procedures",
+      "patient_meaning": "Medicine temporarily numbs a specific area."
+    },
+    {
+      "id": "topical_anesthetic",
+      "term": "Topical anesthetic",
+      "aliases": [
+        "topical"
+      ],
+      "category": "procedures",
+      "patient_meaning": "Numbing gel is placed on the gum surface."
+    },
+    {
+      "id": "infiltration",
+      "term": "Local infiltration",
+      "aliases": [
+        "infiltration"
+      ],
+      "category": "procedures",
+      "patient_meaning": "Numbing medicine is placed near a specific tooth."
+    },
+    {
+      "id": "nerve_block",
+      "term": "Nerve block",
+      "aliases": [
+        "block"
+      ],
+      "category": "procedures",
+      "patient_meaning": "Numbing medicine temporarily blocks sensation from a larger area."
+    },
+    {
+      "id": "nitrous",
+      "term": "Nitrous oxide",
+      "aliases": [
+        "laughing gas",
+        "N2O"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A calming gas helps reduce anxiety during treatment."
+    },
+    {
+      "id": "rubber_dam",
+      "term": "Rubber dam",
+      "aliases": [
+        "dental dam"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A protective sheet isolates the tooth being treated."
+    },
+    {
+      "id": "isolation",
+      "term": "Isolation",
+      "aliases": [],
+      "category": "procedures",
+      "patient_meaning": "The treatment area is kept clean and dry."
+    },
+    {
+      "id": "matrix_band",
+      "term": "Matrix band",
+      "aliases": [
+        "matrix"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A temporary band shapes a new filling."
+    },
+    {
+      "id": "wedge",
+      "term": "Dental wedge",
+      "aliases": [
+        "wedge"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A small wedge helps shape a filling between teeth."
+    },
+    {
+      "id": "etch",
+      "term": "Etch",
+      "aliases": [
+        "acid etch"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A conditioning gel prepares enamel for bonding."
+    },
+    {
+      "id": "bond",
+      "term": "Bonding agent",
+      "aliases": [
+        "bond"
+      ],
+      "category": "procedures",
+      "patient_meaning": "An adhesive helps restorative material stick to the tooth."
+    },
+    {
+      "id": "cure_light",
+      "term": "Curing light",
+      "aliases": [
+        "light cure"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A bright light hardens tooth-colored dental material."
+    },
+    {
+      "id": "impression",
+      "term": "Dental impression",
+      "aliases": [
+        "impression"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A mold records the shape of your teeth."
+    },
+    {
+      "id": "digital_scan",
+      "term": "Digital intraoral scan",
+      "aliases": [
+        "scan"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A camera creates a three-dimensional model of your teeth."
+    },
+    {
+      "id": "shade",
+      "term": "Shade selection",
+      "aliases": [
+        "shade"
+      ],
+      "category": "procedures",
+      "patient_meaning": "A color is matched to your natural teeth."
+    },
+    {
+      "id": "bleaching",
+      "term": "Teeth whitening",
+      "aliases": [
+        "bleaching",
+        "whitening"
+      ],
+      "category": "cosmetic",
+      "patient_meaning": "A treatment lightens the color of natural teeth."
+    },
+    {
+      "id": "bonding_cosmetic",
+      "term": "Cosmetic bonding",
+      "aliases": [
+        "bonding"
+      ],
+      "category": "cosmetic",
+      "patient_meaning": "Tooth-colored material reshapes or improves a tooth's appearance."
+    },
+    {
+      "id": "enameloplasty",
+      "term": "Enameloplasty",
+      "aliases": [
+        "recontouring"
+      ],
+      "category": "cosmetic",
+      "patient_meaning": "Small amounts of enamel are reshaped for appearance."
+    },
+    {
+      "id": "smile_design",
+      "term": "Smile design",
+      "aliases": [],
+      "category": "cosmetic",
+      "patient_meaning": "Dental changes are planned to improve smile appearance."
+    },
+    {
+      "id": "four_mm_pocket",
+      "term": "Four-millimeter pocket",
+      "aliases": [
+        "4 mm pocket",
+        "four millimeter"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The gum space measures four millimeters deep."
+    },
+    {
+      "id": "five_mm_pocket",
+      "term": "Five-millimeter pocket",
+      "aliases": [
+        "5 mm pocket",
+        "five millimeter"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The gum space measures five millimeters deep."
+    },
+    {
+      "id": "six_mm_pocket",
+      "term": "Six-millimeter pocket",
+      "aliases": [
+        "6 mm pocket",
+        "six millimeter"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The gum space measures six millimeters deep."
+    },
+    {
+      "id": "seven_mm_pocket",
+      "term": "Seven-millimeter pocket",
+      "aliases": [
+        "7 mm pocket",
+        "seven millimeter"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The gum space measures seven millimeters deep."
+    },
+    {
+      "id": "bleeding_site",
+      "term": "Bleeding site",
+      "aliases": [
+        "bleeds here"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The gum bleeds at this measured spot."
+    },
+    {
+      "id": "no_bleeding",
+      "term": "No bleeding",
+      "aliases": [
+        "negative BOP"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The gum did not bleed when gently measured."
+    },
+    {
+      "id": "localized_recession",
+      "term": "Localized recession",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Gum recession is limited to one or few areas."
+    },
+    {
+      "id": "generalized_recession",
+      "term": "Generalized recession",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Gum recession affects many areas of the mouth."
+    },
+    {
+      "id": "generalized_inflammation",
+      "term": "Generalized inflammation",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Gum inflammation affects many areas of the mouth."
+    },
+    {
+      "id": "localized_inflammation",
+      "term": "Localized inflammation",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Gum inflammation is limited to certain areas."
+    },
+    {
+      "id": "moderate_bop",
+      "term": "Moderate bleeding on probing",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Several gum areas bleed when gently measured."
+    },
+    {
+      "id": "generalized_bop",
+      "term": "Generalized bleeding on probing",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Many gum areas bleed when gently measured."
+    },
+    {
+      "id": "plaque_retentive",
+      "term": "Plaque-retentive area",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "This shape or surface makes plaque easier to collect."
+    },
+    {
+      "id": "food_trap",
+      "term": "Food trap",
+      "aliases": [
+        "food impaction"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "Food commonly gets stuck in this area."
+    },
+    {
+      "id": "open_contact",
+      "term": "Open contact",
+      "aliases": [
+        "open interproximal contact"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "Neighboring teeth do not touch tightly enough."
+    },
+    {
+      "id": "tight_contact",
+      "term": "Tight contact",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Neighboring teeth touch more tightly than usual."
+    },
+    {
+      "id": "floss_shreds",
+      "term": "Floss shreds",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "Floss catches on a rough tooth or restoration edge."
+    },
+    {
+      "id": "rough_margin",
+      "term": "Rough margin",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "A restoration edge feels rough."
+    },
+    {
+      "id": "subgingival_margin",
+      "term": "Subgingival margin",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "The restoration edge extends below the gumline."
+    },
+    {
+      "id": "supragingival_margin",
+      "term": "Supragingival margin",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "The restoration edge sits above the gumline."
+    },
+    {
+      "id": "gingival_margin_crown",
+      "term": "Crown margin",
+      "aliases": [
+        "margin"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The edge where the crown meets natural tooth."
+    },
+    {
+      "id": "distal_open_margin",
+      "term": "Distal open margin",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "A gap exists on the back side of a restoration."
+    },
+    {
+      "id": "mesial_open_margin",
+      "term": "Mesial open margin",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "A gap exists on the front-facing side of restoration."
+    },
+    {
+      "id": "fracture_line",
+      "term": "Fracture line",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "A visible line suggests a crack in the tooth."
+    },
+    {
+      "id": "cold_sensitive",
+      "term": "Cold sensitivity",
+      "aliases": [
+        "sensitive to cold"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The tooth reacts to cold temperature."
+    },
+    {
+      "id": "percussion_sensitive",
+      "term": "Tender to percussion",
+      "aliases": [
+        "TTP",
+        "percussion positive"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The tooth hurts when gently tapped."
+    },
+    {
+      "id": "palpation_sensitive",
+      "term": "Tender to palpation",
+      "aliases": [
+        "palpation positive"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The tissue hurts when gently pressed."
+    },
+    {
+      "id": "bite_sensitive",
+      "term": "Sensitive to biting",
+      "aliases": [
+        "bite pain"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The tooth hurts when biting or chewing."
+    },
+    {
+      "id": "asymptomatic",
+      "term": "Asymptomatic",
+      "aliases": [
+        "no symptoms"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "No symptoms are currently being felt."
+    },
+    {
+      "id": "symptomatic",
+      "term": "Symptomatic",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "The area is currently causing noticeable symptoms."
+    },
+    {
+      "id": "stable",
+      "term": "Stable",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "The condition appears unchanged and controlled."
+    },
+    {
+      "id": "progressing",
+      "term": "Progressing",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "The condition appears to be getting worse over time."
+    },
+    {
+      "id": "improved",
+      "term": "Improved",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "The condition appears better than previously."
+    },
+    {
+      "id": "no_change",
+      "term": "No change",
+      "aliases": [],
+      "category": "spoken_charting",
+      "patient_meaning": "The condition appears unchanged since the previous visit."
+    },
+    {
+      "id": "healing_wnl",
+      "term": "Healing within normal limits",
+      "aliases": [
+        "healing WNL"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "The area appears to be healing normally."
+    },
+    {
+      "id": "poor_oral_hygiene",
+      "term": "Poor oral hygiene",
+      "aliases": [
+        "poor OH"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "Plaque control at home needs significant improvement."
+    },
+    {
+      "id": "fair_oral_hygiene",
+      "term": "Fair oral hygiene",
+      "aliases": [
+        "fair OH"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "Home plaque control is adequate but could improve."
+    },
+    {
+      "id": "good_oral_hygiene",
+      "term": "Good oral hygiene",
+      "aliases": [
+        "good OH"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "Home plaque control is generally effective."
+    },
+    {
+      "id": "excellent_oral_hygiene",
+      "term": "Excellent oral hygiene",
+      "aliases": [
+        "excellent OH"
+      ],
+      "category": "spoken_charting",
+      "patient_meaning": "Home plaque control is very effective."
+    }
+  ]
+}

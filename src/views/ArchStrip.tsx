@@ -1,4 +1,4 @@
-import { statusColor, worstPd } from "../domain/exam";
+import { toothStatusColor } from "../domain/exam";
 import { toothFullName, toothHeaderLabel } from "../domain/teeth";
 import type { Exam } from "../domain/types";
 
@@ -16,7 +16,7 @@ function ToothMark({
   lower?: boolean;
   active: boolean;
 }) {
-  const color = statusColor(worstPd(exam.teeth[tooth]));
+  const color = toothStatusColor(exam.teeth[tooth]);
   const classes = ["arch-tooth", color];
   if (lower) {
     classes.push("lower");

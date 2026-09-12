@@ -1,5 +1,5 @@
 import { statusColor } from "./exam";
-import { toothArch } from "./teeth";
+import { patientMeaning, patientPocketMeaning, patientSitePhrase } from "./lexicon";
 import { HERO_TOOTH, SITES } from "./types";
 import type { Exam, Site, SiteReading, ToothState } from "./types";
 
@@ -15,23 +15,7 @@ export const SITE_ANCHORS: Record<Site, { x: number; y: number }> = {
 export const FURCATION_ANCHOR = { x: 50, y: 59 };
 
 function siteTitle(site: Site, tooth: number): string {
-  const tongue = toothArch(tooth) === "lower";
-  if (site === "MB") {
-    return "Mesial";
-  }
-  if (site === "B") {
-    return "Cheek side";
-  }
-  if (site === "DB") {
-    return "Distal";
-  }
-  if (site === "ML") {
-    return tongue ? "Tongue mesial" : "Palate mesial";
-  }
-  if (site === "L") {
-    return tongue ? "Tongue side" : "Palate";
-  }
-  return tongue ? "Tongue distal" : "Palate distal";
+  return patientSitePhrase(site, tooth, false);
 }
 
 export interface HeroSiteView {
@@ -125,31 +109,31 @@ export function heroToothView(
     if (site.pd !== undefined && site.pd >= 5) {
       callouts.push({
         id: `${site.site}-pocket`,
-        title: `${site.title} pocket`,
-        detail: `${site.previousPd ?? site.pd} mm → ${site.pd} mm. The gum is pulling away here.`,
+        title: patientSitePhrase(site.site, tooth),
+        detail: patientPocketMeaning(site.pd) ?? `${site.previousPd ?? site.pd} mm → ${site.pd} mm.`,
         tone: "red",
       });
     } else if (site.pd === 4) {
       callouts.push({
         id: `${site.site}-watch-depth`,
-        title: `${site.title} is a little deep`,
-        detail: "4 mm — worth keeping an eye on.",
+        title: patientSitePhrase(site.site, tooth),
+        detail: patientPocketMeaning(4) ?? "4 mm — worth keeping an eye on.",
         tone: "amber",
       });
     }
     if (site.bop) {
       callouts.push({
         id: `${site.site}-bleed`,
-        title: `${site.title} is bleeding`,
-        detail: "Inflamed gum — it is asking for help.",
+        title: patientSitePhrase(site.site, tooth),
+        detail: patientMeaning("bleeding_site") ?? "The gum bleeds at this measured spot.",
         tone: "red",
       });
     }
     if (site.rec !== undefined && site.rec > 0) {
       callouts.push({
         id: `${site.site}-rec`,
-        title: `${site.title} recession`,
-        detail: `The gum has pulled back ${site.rec} mm.`,
+        title: patientSitePhrase(site.site, tooth),
+        detail: patientMeaning("recession") ?? `The gum has pulled back ${site.rec} mm.`,
         tone: "amber",
       });
     }
@@ -159,7 +143,7 @@ export function heroToothView(
   if (furcation > 0) {
     callouts.push({
       id: "furcation",
-      title: "Space between the roots",
+      title: patientMeaning("furcation") ?? "Space between the roots",
       detail: `Furcation class ${furcation}.`,
       tone: furcation >= 2 ? "red" : "amber",
     });
@@ -169,7 +153,12 @@ export function heroToothView(
   if (mobility > 0) {
     callouts.push({
       id: "mobility",
-      title: "This tooth is a little loose",
+      title:
+        (mobility === 1
+          ? patientMeaning("mobility_1")
+          : mobility === 2
+            ? patientMeaning("mobility_2")
+            : patientMeaning("mobility_3")) ?? "This tooth is a little loose",
       detail: `Mobility ${mobility}.`,
       tone: mobility >= 2 ? "red" : "amber",
     });

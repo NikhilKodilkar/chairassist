@@ -18,7 +18,7 @@ export const HYGIENIST_CLEANING: HygienistBeat[] = [
   },
   {
     said: "Tooth two. Facial two one two. Palatal two two two. No bleeding.",
-    utterances: ["tooth two", "facial", "two one two", "palatal", "two two two"],
+    utterances: ["Tooth two. Facial two one two. Palatal two two two. No bleeding."],
   },
   {
     said: "Here's the six-year molar, tooth three. Facial three two three. Distal's a four — little extra inflammation. Bleeding on that distal.",
@@ -124,7 +124,7 @@ export const HYGIENIST_CLEANING: HygienistBeat[] = [
   },
   {
     said: "Tooth nineteen, the lower left six-year molar. This one was a four in March. Facial: four three four. Still a four on the mesial and distal. No bleeding today though — that's a good sign.",
-    utterances: ["tooth nineteen", "facial", "four three four"],
+    utterances: ["tooth nineteen", "facial", "four three four", "no bleeding"],
   },
   {
     said: "Lingual on nineteen: three three four. I'll scale under that distal. Eighteen, two two three. Wisdom seventeen, two two two.",

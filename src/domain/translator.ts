@@ -1,3 +1,5 @@
+import { patientMeaning, patientPocketMeaning, patientSitePhrase } from "./lexicon";
+import { toothEverydayName } from "./teeth";
 import { SITES } from "./types";
 import type { ChartEvent, Exam, Site } from "./types";
 
@@ -21,7 +23,15 @@ export function captionForEvent(event: ChartEvent, lastVisit: Exam): string | un
   }
 
   if (event.kind === "flag") {
-    return TEMPLATES.watch;
+    return patientMeaning("watch_area") ?? TEMPLATES.watch;
+  }
+
+  if (event.kind === "navigation" && event.tooth) {
+    return `Now looking at your ${toothEverydayName(event.tooth)}.`;
+  }
+
+  if (event.kind === "reset_tooth" && event.tooth) {
+    return `Starting over on your ${toothEverydayName(event.tooth)}.`;
   }
 
   if (event.kind !== "reading" || !event.tooth) {
@@ -41,23 +51,25 @@ export function captionForEvent(event: ChartEvent, lastVisit: Exam): string | un
     return undefined;
   }
 
+  const place = patientSitePhrase(site, event.tooth);
+  const depth = patientPocketMeaning(now);
   const prev = previousPd(lastVisit, event.tooth, site);
   if (prev !== undefined && now > prev) {
-    return TEMPLATES.worse.replace("{prev}", String(prev)).replace("{now}", String(now));
+    return `${place}. ${TEMPLATES.worse.replace("{prev}", String(prev)).replace("{now}", String(now))}`;
   }
   if (prev !== undefined && now < prev) {
-    return TEMPLATES.better;
+    return `${place}. ${TEMPLATES.better}`;
   }
   if (event.bopSites && event.bopSites.length > 0 && now >= 4) {
-    return TEMPLATES.bop;
+    return `${place}. ${patientMeaning("bleeding_site") ?? TEMPLATES.bop}`;
   }
   if (now >= 5) {
-    return TEMPLATES.problem;
+    return `${place}. ${depth ?? TEMPLATES.problem}`;
   }
   if (now === 4) {
-    return TEMPLATES.warning;
+    return `${place}. ${depth ?? TEMPLATES.warning}`;
   }
-  return TEMPLATES.healthy;
+  return `${place}. ${depth ?? TEMPLATES.healthy}`;
 }
 
 export function summarySentences(current: Exam, lastVisit: Exam): string[] {

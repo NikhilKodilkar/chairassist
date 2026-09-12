@@ -1,4 +1,5 @@
-import { BUCCAL_SITES, LINGUAL_SITES } from "./types";
+import { parseClinical } from "./clinicalParse";
+import { BUCCAL_SITES, LINGUAL_SITES, SITES } from "./types";
 import type { ChartEvent, Side, Site } from "./types";
 import { indexOfPhrase, numberAt, phraseHas, tokenize, tokenToNumber } from "./numbers";
 
@@ -11,6 +12,7 @@ export interface ParserContext {
 
 export interface ParseResult {
   event: ChartEvent;
+  events?: ChartEvent[];
   context: ParserContext;
 }
 
@@ -26,9 +28,11 @@ const TOOTH_CUES = [
   "incisor",
   "upper",
   "lower",
+  "maxillary",
+  "mandibular",
 ];
 
-const SKIP_BEFORE_TOOTH = ["the", "left", "right", "upper", "lower"];
+const SKIP_BEFORE_TOOTH = ["the", "left", "right", "upper", "lower", "maxillary", "mandibular"];
 
 function skipArchWords(tokens: string[], start: number): number {
   let index = start;
@@ -75,7 +79,7 @@ function namedSite(token: string, side: Side): Site | undefined {
   if (token === "distal" || token === "distobuccal" || token === "db") {
     return side === "lingual" ? "DL" : "DB";
   }
-  if (token === "buccal" || token === "facial" || token === "mid") {
+  if (token === "buccal" || token === "facial" || token === "labial" || token === "mid") {
     return "B";
   }
   if (token === "lingual" || token === "palatal") {
@@ -88,7 +92,7 @@ function detectSide(tokens: string[]): Side | undefined {
   if (tokens.includes("lingual") || tokens.includes("palatal")) {
     return "lingual";
   }
-  if (tokens.includes("buccal") || tokens.includes("facial")) {
+  if (tokens.includes("buccal") || tokens.includes("facial") || tokens.includes("labial")) {
     return "buccal";
   }
   return undefined;
@@ -138,6 +142,13 @@ function collectSmallInts(tokens: string[]): number[] {
     }
   }
   return values;
+}
+
+function wantsBop(tokens: string[]): boolean {
+  if (phraseHas(tokens, ["no", "bleeding"])) {
+    return false;
+  }
+  return tokens.includes("bleeding");
 }
 
 function isSummary(tokens: string[]): boolean {
@@ -197,6 +208,16 @@ export function parseUtterance(raw: string, incoming: ParserContext): ParseResul
   }
 
   const activeSide = context.side ?? "buccal";
+
+  const clinical = parseClinical(tokens, context.tooth, activeSide, raw);
+  if (clinical && clinical.length > 0) {
+    const event = clinical[0];
+    const last = clinical[clinical.length - 1];
+    context.tooth = last.tooth ?? context.tooth;
+    context.lastSites = last.sites ?? event.sites ?? context.lastSites;
+    context.lastEvent = last;
+    return { event, events: clinical, context };
+  }
 
   if (isSummary(tokens)) {
     const event: ChartEvent = {
@@ -316,7 +337,7 @@ export function parseUtterance(raw: string, incoming: ParserContext): ParseResul
             side: activeSide,
             sites: [site],
             readings: [maybeNumber],
-            bopSites: tokens.includes("bleeding") ? [site] : undefined,
+            bopSites: wantsBop(tokens) ? [site] : undefined,
             raw,
             confidence: context.tooth ? "high" : "low",
           };
@@ -329,24 +350,50 @@ export function parseUtterance(raw: string, incoming: ParserContext): ParseResul
   }
 
   const numbers = collectSmallInts(tokens);
-  if (numbers.length === 3 && context.tooth) {
-    const sites = sitesForSide(activeSide);
+  if (numbers.length === 6 && context.tooth) {
+    const sites = [...SITES];
     const event: ChartEvent = {
       kind: "reading",
       tooth: context.tooth,
-      side: activeSide,
       sites,
       readings: numbers,
-      bopSites: tokens.includes("bleeding") ? sites : undefined,
+      bopSites: wantsBop(tokens) ? sites : undefined,
       raw,
       confidence: "high",
     };
+    context.side = "lingual";
     context.lastSites = sites;
     context.lastEvent = event;
     return { event, context };
   }
 
-  if (tokens.includes("bleeding") && context.tooth && context.lastSites.length > 0) {
+  if (numbers.length === 3 && context.tooth) {
+    const saidSide = side !== undefined;
+    const namedTooth = tooth !== undefined;
+    const lastWasBuccalTriplet =
+      incoming.lastEvent?.kind === "reading" &&
+      incoming.lastEvent.sites?.length === 3 &&
+      incoming.lastEvent.sites[0] === "MB";
+    const fillLingualNext = !saidSide && !namedTooth && lastWasBuccalTriplet;
+    const usedSide: Side = fillLingualNext ? "lingual" : activeSide;
+    const sites = sitesForSide(usedSide);
+    const event: ChartEvent = {
+      kind: "reading",
+      tooth: context.tooth,
+      side: usedSide,
+      sites,
+      readings: numbers,
+      bopSites: wantsBop(tokens) ? sites : undefined,
+      raw,
+      confidence: "high",
+    };
+    context.side = usedSide;
+    context.lastSites = sites;
+    context.lastEvent = event;
+    return { event, context };
+  }
+
+  if (wantsBop(tokens) && context.tooth && context.lastSites.length > 0) {
     const event: ChartEvent = {
       kind: "reading",
       tooth: context.tooth,

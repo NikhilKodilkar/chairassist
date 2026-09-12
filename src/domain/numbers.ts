@@ -88,6 +88,10 @@ export function tokenize(text: string): string[] {
       continue;
     }
     if (ch === "-") {
+      if (current.length > 0) {
+        tokens.push(current);
+        current = "";
+      }
       continue;
     }
     if (current.length > 0) {

@@ -76,6 +76,12 @@ export function toothFullName(tooth: number): string {
   return `${toothArch(tooth)} ${toothSide(tooth)} ${toothRole(tooth)}`;
 }
 
+export function toothEverydayName(tooth: number): string {
+  const role = toothRole(tooth);
+  const pretty = role === "third molar" ? "wisdom tooth" : role;
+  return `${toothArch(tooth)} ${toothSide(tooth)} ${pretty}`;
+}
+
 export function toothHeaderLabel(tooth: number): string {
   const side = toothSide(tooth) === "right" ? "R" : "L";
   const arch = toothArch(tooth) === "upper" ? "U" : "L";

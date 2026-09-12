@@ -41,6 +41,10 @@ const PERIO_WORDS = [
   "furcation",
   "correction",
   "on",
+  "reset",
+  "clear",
+  "upper",
+  "lower",
 ];
 
 function hasDigit(text: string): boolean {

@@ -22,19 +22,24 @@ export interface Exam {
   patientName: string;
   date: string;
   teeth: Record<number, ToothState>;
+  notes?: string[];
 }
 
 export interface ChartEvent {
-  kind: "reading" | "flag" | "navigation" | "summary_request";
+  kind: "reading" | "flag" | "navigation" | "summary_request" | "reset_tooth" | "reset_all" | "set_name";
   tooth?: number;
+  teeth?: number[];
   side?: Side;
   sites?: Site[];
   readings?: number[];
   bopSites?: Site[];
   rec?: number;
+  recSites?: Site[];
   mobility?: 0 | 1 | 2 | 3;
   furcation?: 0 | 1 | 2 | 3;
   note?: string;
+  notes?: string[];
+  examNotes?: string[];
   raw: string;
   confidence: "high" | "low";
 }

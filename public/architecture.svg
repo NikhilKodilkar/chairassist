@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" width="960" height="700">
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ea580c"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.4" flood-color="#111827" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <style>
+    text { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+  </style>
+  <rect width="960" height="700" fill="#ffffff"/>
+  <text x="480" y="32" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">Chairside Agent architecture</text>
+  <text x="480" y="52" text-anchor="middle" font-size="13" fill="#6b7280">Operatory speech becomes a perio chart, a detailed report, and patient language</text>
+  <rect x="40" y="68" width="880" height="108" rx="8" fill="#f8fafc" stroke="#e5e7eb" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="56" y="86" font-size="11" font-weight="600" fill="#6b7280" letter-spacing="0.06em">OPERATORY</text>
+  <rect x="40" y="192" width="880" height="118" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="56" y="206" font-size="11" font-weight="600" fill="#2563eb" letter-spacing="0.06em">CAPTURE</text>
+  <text x="56" y="218" font-size="11" font-weight="600" fill="#2563eb" letter-spacing="0.06em">ON-DEVICE</text>
+  <rect x="40" y="332" width="880" height="118" rx="8" fill="#faf5ff" stroke="#ddd6fe" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="56" y="350" font-size="11" font-weight="600" fill="#7c3aed" letter-spacing="0.06em">AGENT CORE</text>
+  <rect x="40" y="472" width="880" height="132" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="56" y="490" font-size="11" font-weight="600" fill="#16a34a" letter-spacing="0.06em">SURFACES</text>
+  <rect x="70" y="96" width="220" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="180.0" y="118" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Hygienist</text>
+  <text x="180.0" y="136" text-anchor="middle" font-size="11" fill="#6b7280">Hands-busy speech</text>
+  <rect x="370" y="96" width="220" height="60" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="480.0" y="118" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Patient</text>
+  <text x="480.0" y="136" text-anchor="middle" font-size="11" fill="#6b7280">Plain-language listen</text>
+  <rect x="70" y="226" width="220" height="60" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="180.0" y="248" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Phone mic</text>
+  <text x="180.0" y="266" text-anchor="middle" font-size="11" fill="#6b7280">Default: iPhone</text>
+  <rect x="370" y="226" width="220" height="60" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="480.0" y="248" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Energy VAD</text>
+  <text x="480.0" y="266" text-anchor="middle" font-size="11" fill="#6b7280">Utterance cuts</text>
+  <rect x="660" y="226" width="220" height="60" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="770.0" y="248" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Whisper (WebGPU)</text>
+  <text x="770.0" y="266" text-anchor="middle" font-size="11" fill="#6b7280">Local whisper-base.en</text>
+  <rect x="70" y="366" width="220" height="60" rx="8" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="180.0" y="388" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Lingo layer</text>
+  <text x="180.0" y="406" text-anchor="middle" font-size="11" fill="#6b7280">363 · facial · reset</text>
+  <rect x="370" y="366" width="220" height="60" rx="8" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="480.0" y="388" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Clinical parser</text>
+  <text x="480.0" y="406" text-anchor="middle" font-size="11" fill="#6b7280">Sites · BOP · notes</text>
+  <rect x="660" y="366" width="220" height="60" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="770.0" y="388" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Exam store</text>
+  <text x="770.0" y="406" text-anchor="middle" font-size="11" fill="#6b7280">Zustand chart state</text>
+  <rect x="70" y="510" width="220" height="72" rx="8" fill="#ccfbf1" stroke="#5eead4" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="180.0" y="534" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Clinician portal</text>
+  <text x="180.0" y="552" text-anchor="middle" font-size="11" fill="#6b7280">Grid · report · write-back</text>
+  <rect x="370" y="510" width="220" height="72" rx="8" fill="#ccfbf1" stroke="#5eead4" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="480.0" y="534" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Patient portal</text>
+  <text x="480.0" y="552" text-anchor="middle" font-size="11" fill="#6b7280">Hero tooth · captions</text>
+  <rect x="660" y="510" width="220" height="72" rx="8" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="770.0" y="532" text-anchor="middle" font-size="14" font-weight="600" fill="#111827">Open Dental</text>
+  <text x="770.0" y="550" text-anchor="middle" font-size="11" fill="#6b7280">Mock perio write-back</text>
+  <path d="M 290 256 H 370" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <rect x="312.5" y="232" width="35.0" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="330" y="242" text-anchor="middle" font-size="11" fill="#2563eb">audio</text>
+  <path d="M 590 256 H 660" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <rect x="608.0" y="232" width="34" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="625" y="242" text-anchor="middle" font-size="11" fill="#2563eb">clip</text>
+  <path d="M 180 156 V 226" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <rect x="187.0" y="182" width="40.8" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="207.4" y="192" text-anchor="middle" font-size="11" fill="#2563eb">speech</text>
+  <path d="M 770 286 V 318 H 180 V 366" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <rect x="448.0" y="294" width="64.0" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="480" y="304" text-anchor="middle" font-size="11" fill="#2563eb">transcript</text>
+  <path d="M 290 396 H 370" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <rect x="306.7" y="372" width="46.6" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="330" y="382" text-anchor="middle" font-size="11" fill="#2563eb">rewrite</text>
+  <path d="M 590 396 H 660" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <rect x="604.6" y="372" width="40.8" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="625" y="382" text-anchor="middle" font-size="11" fill="#2563eb">events</text>
+  <path d="M 770 426 V 510" fill="none" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+  <rect x="777.0" y="460" width="64.0" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="809.0" y="470" text-anchor="middle" font-size="11" fill="#ea580c">write-back</text>
+  <path d="M 660 426 V 456 H 480 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <rect x="533.8" y="460" width="52.4" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="560" y="470" text-anchor="middle" font-size="11" fill="#16a34a">captions</text>
+  <path d="M 660 426 V 444 H 180 V 510" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <rect x="282.5" y="420" width="35.0" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="300" y="430" text-anchor="middle" font-size="11" fill="#16a34a">chart</text>
+  <path d="M 290 546 H 370" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-gray)"/>
+  <rect x="313.0" y="522" width="34" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="330" y="532" text-anchor="middle" font-size="11" fill="#6b7280">sync</text>
+  <path d="M 420 582 V 618 H 22 V 62 H 480 V 96" fill="none" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <rect x="29.0" y="294" width="87.2" height="14" rx="3" fill="#ffffff" opacity="0.95"/>
+  <text x="72.6" y="304" text-anchor="middle" font-size="11" fill="#16a34a">plain language</text>
+  <g transform="translate(56, 630)">
+    <text x="0" y="0" font-size="12" font-weight="600" fill="#111827">Flows</text>
+    <line x1="0" y1="18" x2="28" y2="18" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <text x="36" y="22" font-size="12" fill="#6b7280">Speech to chart events</text>
+    <line x1="220" y1="18" x2="248" y2="18" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+    <text x="256" y="22" font-size="12" fill="#6b7280">State to screens</text>
+    <line x1="400" y1="18" x2="428" y2="18" stroke="#ea580c" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+    <text x="436" y="22" font-size="12" fill="#6b7280">PMS write-back</text>
+    <line x1="560" y1="18" x2="588" y2="18" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-gray)"/>
+    <text x="596" y="22" font-size="12" fill="#6b7280">BroadcastChannel</text>
+    <text x="0" y="48" font-size="12" fill="#6b7280">Nothing leaves the room for STT — Whisper runs in the clinician browser.</text>
+  </g>
+</svg>

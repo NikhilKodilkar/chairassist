@@ -59,45 +59,124 @@ export function statusColor(pd: number | undefined): "grey" | "green" | "amber" 
   return "green";
 }
 
+export function toothHasBleeding(tooth: ToothState | undefined): boolean {
+  if (!tooth) {
+    return false;
+  }
+  return SITES.some((site) => tooth.sites[site].bop === true);
+}
+
+export function toothStatusColor(tooth: ToothState | undefined): "grey" | "green" | "amber" | "red" {
+  if (!tooth) {
+    return "grey";
+  }
+  if (toothHasBleeding(tooth)) {
+    return "red";
+  }
+  return statusColor(worstPd(tooth));
+}
+
+function mergeNotes(existing: string[] | undefined, incoming: string[] | undefined): string[] {
+  const next = [...(existing ?? [])];
+  if (!incoming) {
+    return next;
+  }
+  for (const note of incoming) {
+    if (!next.includes(note)) {
+      next.push(note);
+    }
+  }
+  return next;
+}
+
 export function applyEvent(exam: Exam, event: ChartEvent): Exam {
   const next = cloneExam(exam);
-  if (!event.tooth || event.confidence === "low") {
+  if (event.examNotes && event.examNotes.length > 0) {
+    next.notes = mergeNotes(next.notes, event.examNotes);
+  }
+
+  if (event.confidence === "low") {
     return next;
   }
 
-  const tooth = next.teeth[event.tooth] ?? emptyTooth(event.tooth);
-
-  if (event.kind === "flag" && event.note && !tooth.notes.includes(event.note)) {
-    tooth.notes = [...tooth.notes, event.note];
+  const targets = event.teeth ?? (event.tooth ? [event.tooth] : []);
+  if (event.kind === "reset_tooth" && event.tooth) {
+    next.teeth[event.tooth] = emptyTooth(event.tooth);
+    return next;
   }
 
-  if (event.kind === "reading") {
-    if (event.mobility !== undefined) {
-      tooth.mobility = event.mobility;
+  if (targets.length === 0) {
+    return next;
+  }
+
+  for (const id of targets) {
+    const tooth = next.teeth[id] ?? emptyTooth(id);
+    const incomingNotes = [...(event.notes ?? [])];
+    if (event.note) {
+      incomingNotes.push(event.note);
     }
-    if (event.furcation !== undefined) {
-      tooth.furcation = event.furcation;
-    }
-    const sites = event.sites ?? [];
-    sites.forEach((site, index) => {
-      const reading = { ...tooth.sites[site] };
-      if (event.readings && event.readings[index] !== undefined) {
-        reading.pd = event.readings[index];
-      } else if (event.readings && event.readings.length === 1) {
-        reading.pd = event.readings[0];
+    tooth.notes = mergeNotes(tooth.notes, incomingNotes);
+
+    if (event.kind === "reading") {
+      if (event.mobility !== undefined) {
+        tooth.mobility = event.mobility;
       }
+      if (event.furcation !== undefined) {
+        tooth.furcation = event.furcation;
+      }
+      const sites = event.sites ?? [];
+      sites.forEach((site, index) => {
+        const reading = { ...tooth.sites[site] };
+        if (event.readings && event.readings[index] !== undefined) {
+          reading.pd = event.readings[index];
+        } else if (event.readings && event.readings.length === 1) {
+          reading.pd = event.readings[0];
+        }
+        if (event.bopSites && event.bopSites.includes(site)) {
+          reading.bop = true;
+        }
+        tooth.sites[site] = reading;
+      });
       if (event.rec !== undefined) {
-        reading.rec = event.rec;
+        const recAt = event.recSites ?? sites;
+        recAt.forEach((site) => {
+          tooth.sites[site] = { ...tooth.sites[site], rec: event.rec };
+        });
       }
-      if (event.bopSites && event.bopSites.includes(site)) {
-        reading.bop = true;
-      }
-      tooth.sites[site] = reading;
-    });
+    }
+
+    next.teeth[id] = tooth;
   }
 
-  next.teeth[event.tooth] = tooth;
   return next;
+}
+
+export function detailedReportLines(exam: Exam): string[] {
+  const toothLines: string[] = [];
+  const used = new Set<string>();
+  for (let id = 1; id <= 32; id += 1) {
+    const tooth = exam.teeth[id];
+    if (!tooth) {
+      continue;
+    }
+    for (const note of tooth.notes) {
+      toothLines.push(`#${id} · ${note}`);
+      used.add(note);
+    }
+    if (tooth.mobility !== undefined) {
+      toothLines.push(`#${id} · mobility ${tooth.mobility}`);
+    }
+    if (tooth.furcation !== undefined) {
+      toothLines.push(`#${id} · furcation ${tooth.furcation}`);
+    }
+  }
+  const lines: string[] = [];
+  for (const note of exam.notes ?? []) {
+    if (!used.has(note)) {
+      lines.push(note);
+    }
+  }
+  return [...lines, ...toothLines];
 }
 
 export function pdDelta(current: SiteReading, previous: SiteReading): number | undefined {

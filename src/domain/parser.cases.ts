@@ -1,3 +1,4 @@
+import { interpretLingo } from "./lingo";
 import { createParserContext, parseUtterance } from "./parser";
 import type { ChartEvent } from "./types";
 
@@ -17,11 +18,15 @@ export interface ParserCaseResult {
 
 function parseMany(lines: string[]): ChartEvent[] {
   let context = createParserContext();
-  return lines.map((line) => {
-    const result = parseUtterance(line, context);
+  const events: ChartEvent[] = [];
+  for (const line of lines) {
+    const lingo = interpretLingo(line);
+    const result = parseUtterance(lingo.text, context);
     context = result.context;
-    return result.event;
-  });
+    const batch = result.events && result.events.length > 0 ? result.events : [result.event];
+    events.push(...batch);
+  }
+  return events;
 }
 
 function samePrimitive(actual: unknown, expected: unknown): boolean {
@@ -40,6 +45,13 @@ function expectEqual(actual: unknown, expected: unknown, label: string): string 
     return undefined;
   }
   return `${label}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`;
+}
+
+function expectIncludes(actual: string[] | undefined, needed: string, label: string): string | undefined {
+  if (actual && actual.some((item) => item.includes(needed))) {
+    return undefined;
+  }
+  return `${label}: expected to include ${JSON.stringify(needed)}, got ${JSON.stringify(actual)}`;
 }
 
 function expectList(actual: unknown[] | undefined, expected: unknown[], label: string): string | undefined {
@@ -315,6 +327,172 @@ export const PARSER_CASES: ParserCase[] = [
     name: "reads upper 14 as tooth 14",
     lines: ["upper 14", "facial three two three"],
     check: (events) => firstFailure([expectEqual(events[0].tooth, 14, "tooth"), expectList(events[1].readings, [3, 2, 3], "readings")]),
+  },
+  {
+    name: "fills six pockets from top to bottom",
+    lines: ["upper 4", "3 6 3 2 2 2"],
+    check: (events) =>
+      firstFailure([
+        expectEqual(events[1].kind, "reading", "kind"),
+        expectEqual(events[1].tooth, 4, "tooth"),
+        expectList(events[1].sites, ["MB", "B", "DB", "ML", "L", "DL"], "sites"),
+        expectList(events[1].readings, [3, 6, 3, 2, 2, 2], "readings"),
+      ]),
+  },
+  {
+    name: "reads number 3 with six spoken pocket words",
+    lines: ["Number 3: three, two, four, three, three, five."],
+    check: (events) =>
+      firstFailure([
+        expectEqual(events[0].kind, "reading", "kind"),
+        expectEqual(events[0].tooth, 3, "tooth"),
+        expectList(events[0].sites, ["MB", "B", "DB", "ML", "L", "DL"], "sites"),
+        expectList(events[0].readings, [3, 2, 4, 3, 3, 5], "readings"),
+      ]),
+  },
+  {
+    name: "hygienist 1: number three site-by-site with BOP and recession",
+    lines: [
+      "Number three, MB is five with bleeding, buccal four, DB six with bleeding and moderate subgingival calculus; recession two on the buccal.",
+    ],
+    check: (events) => {
+      const event = events[0];
+      return firstFailure([
+        expectEqual(event.tooth, 3, "tooth"),
+        expectList(event.sites, ["MB", "B", "DB"], "sites"),
+        expectList(event.readings, [5, 4, 6], "readings"),
+        expectList(event.bopSites, ["MB", "DB"], "bop"),
+        expectEqual(event.rec, 2, "recession"),
+        expectIncludes(event.notes, "subgingival calculus", "calculus"),
+      ]);
+    },
+  },
+  {
+    name: "hygienist 2: fourteen DB pocket, furcation, mobility, calculus",
+    lines: [
+      "On fourteen I’ve got a six-millimeter pocket distobuccal with bleeding, class one furcation, moderate mobility, and heavy subgingival calculus on the lingual.",
+    ],
+    check: (events) => {
+      const event = events[0];
+      return firstFailure([
+        expectEqual(event.tooth, 14, "tooth"),
+        expectList(event.sites, ["DB"], "sites"),
+        expectList(event.readings, [6], "readings"),
+        expectList(event.bopSites, ["DB"], "bop"),
+        expectEqual(event.furcation, 1, "furcation"),
+        expectEqual(event.mobility, 2, "mobility"),
+        expectIncludes(event.notes, "subgingival calculus", "calculus"),
+      ]);
+    },
+  },
+  {
+    name: "hygienist 3: nineteen restoration, decay, MB/DB pockets",
+    lines: [
+      "Number nineteen has an existing MOD composite, recurrent decay on the distal margin, five-millimeter pockets MB and DB, bleeding on probing, and about two millimeters recession buccally.",
+    ],
+    check: (events) => {
+      const event = events[0];
+      return firstFailure([
+        expectEqual(event.tooth, 19, "tooth"),
+        expectList(event.sites, ["MB", "DB"], "sites"),
+        expectList(event.readings, [5, 5], "readings"),
+        expectList(event.bopSites, ["MB", "DB"], "bop"),
+        expectEqual(event.rec, 2, "recession"),
+        expectIncludes(event.notes, "MOD composite", "restoration"),
+        expectIncludes(event.notes, "recurrent decay", "decay"),
+      ]);
+    },
+  },
+  {
+    name: "hygienist 4: eight through eleven healthy with eleven recession",
+    lines: [
+      "Eight through eleven look healthy, two-to-three-millimeter probing throughout, no bleeding, minimal plaque; number eleven does have about one millimeter facial recession.",
+    ],
+    check: (events) => {
+      const range = events[0];
+      const exception = events.find((event) => event.tooth === 11 && event.rec === 1);
+      return firstFailure([
+        expectList(range.teeth, [8, 9, 10, 11], "range"),
+        expectList(range.readings, [3, 2, 3, 3, 2, 3], "2-3 throughout"),
+        expectEqual(exception?.rec, 1, "eleven recession"),
+      ]);
+    },
+  },
+  {
+    name: "hygienist 5: generalized findings and four problem teeth",
+    lines: [
+      "Generalized moderate plaque and localized heavy calculus lower anterior lingual, generalized bleeding on probing, with five-to-six-millimeter pockets around numbers three, fourteen, nineteen and thirty.",
+    ],
+    check: (events) => {
+      const reading = events.find((event) => event.kind === "reading" && event.teeth);
+      return firstFailure([
+        expectList(reading?.teeth, [3, 14, 19, 30], "teeth"),
+        expectList(reading?.bopSites, ["MB", "B", "DB", "ML", "L", "DL"], "generalized bop"),
+        expectEqual(reading?.readings?.[0], 6, "proximal pocket"),
+        expectIncludes(reading?.examNotes, "plaque", "plaque"),
+      ]);
+    },
+  },
+  {
+    name: "hygienist 6: thirty crown, margin, probing sequence, furcation",
+    lines: [
+      "Number thirty, existing crown, open distal margin with food impaction; probing is four MB, three B, six DB with bleeding, and there’s class two furcation on the buccal.",
+    ],
+    check: (events) => {
+      const event = events[0];
+      return firstFailure([
+        expectEqual(event.tooth, 30, "tooth"),
+        expectList(event.sites, ["MB", "B", "DB"], "sites"),
+        expectList(event.readings, [4, 3, 6], "readings"),
+        expectList(event.bopSites, ["DB"], "bop"),
+        expectEqual(event.furcation, 2, "furcation"),
+        expectIncludes(event.notes, "crown", "crown"),
+        expectIncludes(event.notes, "open distal margin", "margin"),
+        expectIncludes(event.notes, "food impaction", "food"),
+      ]);
+    },
+  },
+  {
+    name: "hygienist facial then palatal on tooth two with no bleeding",
+    lines: ["Tooth two. Facial two one two. Palatal two two two. No bleeding."],
+    check: (events) => {
+      const event = events[0];
+      return firstFailure([
+        expectEqual(event.tooth, 2, "tooth"),
+        expectList(event.sites, ["MB", "B", "DB", "ML", "L", "DL"], "sites"),
+        expectList(event.readings, [2, 1, 2, 2, 2, 2], "readings"),
+        expectEqual(event.bopSites, undefined, "no bop"),
+        expectIncludes(event.examNotes, "no bleeding", "exam note"),
+        expectIncludes(event.notes, "no bleeding", "tooth note"),
+      ]);
+    },
+  },
+  {
+    name: "hygienist tooth two spoken as four clauses then no bleeding",
+    lines: ["Tooth two.", "Facial two one two.", "Palatal two two two.", "No bleeding."],
+    check: (events) => {
+      const last = events[events.length - 1];
+      return firstFailure([
+        expectEqual(events[0].tooth, 2, "tooth"),
+        expectList(events[1].sites, ["MB", "B", "DB"], "facial"),
+        expectList(events[1].readings, [2, 1, 2], "facial readings"),
+        expectList(events[2].sites, ["ML", "L", "DL"], "palatal"),
+        expectList(events[2].readings, [2, 2, 2], "palatal readings"),
+        expectIncludes(last.examNotes, "no bleeding", "exam note"),
+        expectEqual(last.bopSites, undefined, "no bop"),
+      ]);
+    },
+  },
+  {
+    name: "fills the next three pockets on the lingual after a buccal triplet",
+    lines: ["upper 4", "3 6 3", "2 2 2"],
+    check: (events) =>
+      firstFailure([
+        expectList(events[1].sites, ["MB", "B", "DB"], "buccal"),
+        expectList(events[1].readings, [3, 6, 3], "buccal readings"),
+        expectList(events[2].sites, ["ML", "L", "DL"], "lingual"),
+        expectList(events[2].readings, [2, 2, 2], "lingual readings"),
+      ]),
   },
 ];
 
