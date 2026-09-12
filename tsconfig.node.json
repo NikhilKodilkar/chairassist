@@ -1,3 +1,5 @@
+// Typecheck for Vite's Node-side config only (vite.config.ts).
+// The app UI uses tsconfig.app.json instead.
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",

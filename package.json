@@ -2,6 +2,7 @@
   "name": "chairside",
   "private": true,
   "version": "0.1.0",
+  "description": "MolarMind: chairside perio listener. Charts for the clinician and explains findings to the patient. Scripts: npm run demo, npm test. Config is in .env, not this file.",
   "type": "module",
   "scripts": {
     "dev": "vite",

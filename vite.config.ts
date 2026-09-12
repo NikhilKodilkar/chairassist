@@ -1,3 +1,5 @@
+// Vite + Vitest config for the MolarMind demo.
+// Host, port, and routes come from .env — do not hard-code loopback URLs.
 import react from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
 import { defineConfig } from "vitest/config";
@@ -12,6 +14,7 @@ export default defineConfig(({ mode }) => {
     server: {
       host,
       port,
+      // Whisper's Web Worker and WebGPU need these isolation headers.
       headers: {
         "Cross-Origin-Opener-Policy": "same-origin",
         "Cross-Origin-Embedder-Policy": "credentialless",
@@ -21,6 +24,7 @@ export default defineConfig(({ mode }) => {
       host,
       port,
     },
+    // Transformers.js loads ONNX/WASM itself; pre-bundling it breaks the worker.
     optimizeDeps: {
       exclude: ["@huggingface/transformers"],
     },

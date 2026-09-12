@@ -1,3 +1,6 @@
+// Solution tsconfig for `tsc -b`.
+// The React app and the Vite Node config are typechecked separately
+// so browser DOM types do not leak into vite.config.ts.
 {
   "files": [],
   "references": [

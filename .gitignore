@@ -1,8 +1,17 @@
+# Installed packages and the production Vite build.
 node_modules
 dist
+
+# macOS folder metadata.
 .DS_Store
+
+# Local Vite overrides and secrets. Clinic Open Dental keys must never be committed.
 *.local
 .env
+
+# TypeScript incremental caches if they land at the repo root.
 tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
+
+# Local Pillow / diagram tooling cache.
 .tools-pillow
