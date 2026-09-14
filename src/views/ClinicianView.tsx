@@ -8,6 +8,7 @@ import { useExamStore } from "../store/examStore";
 import { clinicianNeoPath } from "../config/paths";
 import { AppLogo } from "./AppLogo";
 import { ArchitectureLink } from "./ArchitectureLink";
+import { DemoLegalNotice } from "./DemoLegalNotice";
 import { DetailedReport } from "./DetailedReport";
 import { HeardTicker } from "./HeardTicker";
 import { HygienistScript } from "./HygienistScript";
@@ -48,7 +49,7 @@ export function ClinicianView() {
   }, [rehearsal, mic.publishUtterance]);
 
   return (
-    <main className="screen clinician">
+    <main id="main" className="screen clinician">
       <header className="topbar">
         <AppLogo compact />
         <h1>{store.current.patientName}</h1>
@@ -90,6 +91,7 @@ export function ClinicianView() {
           </button>
         </div>
       </header>
+      <DemoLegalNotice tone="dark" />
 
       <HeardTicker items={store.heard} speaking={mic.speaking} />
       <div className="heard-and-script">

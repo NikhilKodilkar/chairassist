@@ -1,5 +1,14 @@
 export const landingPath = import.meta.env.VITE_LANDING_PATH || "/";
+export const aboutPath = import.meta.env.VITE_ABOUT_PATH || "/about";
 export const clinicianPath = import.meta.env.VITE_CLINICIAN_PATH || "/clinician";
 export const clinicianNeoPath = import.meta.env.VITE_CLINICIAN_NEO_PATH || "/clinician-neo";
 export const patientPath = import.meta.env.VITE_PATIENT_PATH || "/patient";
 export const architecturePath = import.meta.env.VITE_ARCHITECTURE_PATH || "/architecture";
+export const privacyPath = import.meta.env.VITE_PRIVACY_PATH || "/privacy";
+export const nppPath = import.meta.env.VITE_NPP_PATH || "/notice-of-privacy-practices";
+export const termsPath = import.meta.env.VITE_TERMS_PATH || "/terms";
+export const cookiesPath = import.meta.env.VITE_COOKIES_PATH || "/cookies";
+export const accessibilityPath = import.meta.env.VITE_ACCESSIBILITY_PATH || "/accessibility";
+export const disclaimerPath = import.meta.env.VITE_DISCLAIMER_PATH || "/disclaimer";
+export const hipaaPath = import.meta.env.VITE_HIPAA_PATH || "/hipaa";
+export const privacyChoicesPath = import.meta.env.VITE_PRIVACY_CHOICES_PATH || "/privacy-choices";

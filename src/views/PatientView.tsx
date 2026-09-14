@@ -5,6 +5,7 @@ import type { ParserCaseResult } from "../domain/parser.cases";
 import { useExamStore } from "../store/examStore";
 import { AppLogo } from "./AppLogo";
 import { ArchitectureLink } from "./ArchitectureLink";
+import { DemoLegalNotice } from "./DemoLegalNotice";
 import { JawMap } from "./JawMap";
 import { MicBar } from "./MicBar";
 import { ParserResults } from "./ParserResults";
@@ -17,7 +18,7 @@ export function PatientView() {
   const [parserResults, setParserResults] = useState<ParserCaseResult[]>();
 
   return (
-    <main className="screen patient">
+    <main id="main" className="screen patient">
       <header className="topbar patient-topbar">
         <AppLogo compact />
         <div className="patient-title">
@@ -48,6 +49,7 @@ export function PatientView() {
           </button>
         </div>
       </header>
+      <DemoLegalNotice tone="dark" />
       {store.heard[0] ? (
         <p className="patient-heard">
           {mic.speaking ? "Hearing you…" : "Heard"} · {store.heard[0].text}

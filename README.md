@@ -6,6 +6,8 @@ It is a two-screen chairside demo. One window is for the clinician. The other is
 
 **Listens. Charts. Clarifies.**
 
+**Read [About](#about) first.** If you open one screen in this demo, make it **`/about`**. That page is why MolarMind was built, and how it is meant to be used by the hygienist, the doctor, and the patient. Go there from the landing nav, or open `VITE_ABOUT_PATH` (default `/about`) once the app is running. Do not skip it.
+
 ## What you will see
 
 The seeded patient is **Andrew**. His last visit was 12 March 2026. Today’s exam starts empty and fills only as speech (or the rehearsal script) lands.
@@ -14,12 +16,18 @@ The seeded patient is **Andrew**. His last visit was 12 March 2026. Today’s ex
 
 | Screen | Default path | Who it is for |
 | --- | --- | --- |
+| **About** | `/about` | **Start here.** Why it was built; uses for hygienist, doctor, and patient |
 | Clinician | `/clinician` | Hygienist: live grid, detailed report, Open Dental preview, hygienist script |
 | Clinician Neo | `/clinician-neo` | Same live exam in a light product-style chart, with a tooth diagram and patient copy |
 | Patient | `/patient` | Andrew: jaw map, March-vs-today captions, take-home card |
 | Architecture | `/architecture` | One-page picture of the pipeline |
+| Legal | `/privacy`, `/notice-of-privacy-practices`, `/terms`, `/cookies`, `/accessibility`, `/disclaimer`, `/hipaa`, `/privacy-choices` | Privacy, HIPAA notice, terms, cookies, accessibility, dental disclaimer, BAA posture, and state privacy choices |
 
-Paths come from `.env`. Change `VITE_CLINICIAN_PATH`, `VITE_CLINICIAN_NEO_PATH`, `VITE_PATIENT_PATH`, and `VITE_ARCHITECTURE_PATH` if you need different routes. Do not hard-code loopback URLs in the app.
+Paths come from `.env`. Change `VITE_ABOUT_PATH`, `VITE_CLINICIAN_PATH`, `VITE_CLINICIAN_NEO_PATH`, `VITE_PATIENT_PATH`, `VITE_ARCHITECTURE_PATH`, and the `VITE_*` legal path variables if you need different routes. Do not hard-code loopback URLs in the app.
+
+### About
+
+Open **`/about`** before the clinician or patient windows. That is the About page: [src/views/AboutView.tsx](src/views/AboutView.tsx). It is the story of the product in one place: the gap in the operatory, then a card each for the hygienist, the doctor, and the person in the chair, with links into those live views. The words live in [`src/views/aboutCopy.ts`](src/views/aboutCopy.ts).
 
 ### Clinician
 
@@ -58,7 +66,7 @@ npm install
 
 Copy `.env.example` to `.env` and keep the demo keys as they are. Those Open Dental values are placeholders. They are never sent in this demo.
 
-If you already run the Vite app yourself, open the clinician and patient paths from your `.env` host and port. If you want the helper that starts Vite and opens both windows:
+If you already run the Vite app yourself, open **`/about` first**, then the clinician and patient paths from your `.env` host and port. If you want the helper that starts Vite and opens both windows:
 
 ```bash
 npm run demo
@@ -189,9 +197,10 @@ src/bus/            BroadcastChannel
 src/config/         Route env helpers
 src/data/           Andrew seed JSON
 src/domain/         Lingo, parser, exam, patient copy
+src/legal/          Privacy, HIPAA, terms, cookies, and related copy
 src/pms/            Open Dental request mapper
 src/store/          Zustand visit state
-src/views/          Clinician, Neo, patient, architecture
+src/views/          Landing, About, clinician, Neo, patient, architecture
 architecture/       Full architecture pack
 public/             Logos, jaw photos, architecture.svg
 ```
@@ -201,15 +210,41 @@ public/             Logos, jaw photos, architecture.svg
 | Variable | Role |
 | --- | --- |
 | `VITE_DEV_HOST` / `VITE_DEV_PORT` | Where Vite listens |
+| `VITE_ABOUT_PATH` | About page (default `/about`) — read this first |
 | `VITE_CLINICIAN_PATH` | Classic clinician |
 | `VITE_CLINICIAN_NEO_PATH` | Light clinician |
 | `VITE_PATIENT_PATH` | Patient screen |
 | `VITE_ARCHITECTURE_PATH` | Architecture page |
+| `VITE_PRIVACY_PATH` | Privacy Policy |
+| `VITE_NPP_PATH` | HIPAA Notice of Privacy Practices |
+| `VITE_TERMS_PATH` | Terms of Use |
+| `VITE_COOKIES_PATH` | Cookie Policy |
+| `VITE_ACCESSIBILITY_PATH` | Accessibility statement |
+| `VITE_DISCLAIMER_PATH` | Dental disclaimer |
+| `VITE_HIPAA_PATH` | HIPAA and Business Associate page |
+| `VITE_PRIVACY_CHOICES_PATH` | CCPA / do-not-sell choices |
+| `VITE_LEGAL_ENTITY` | Name on the legal pages |
+| `VITE_LEGAL_EFFECTIVE_DATE` | Effective date (`YYYY-MM-DD`) |
+| `VITE_LEGAL_JURISDICTION` | Governing-law label for Terms of Use |
+| `VITE_PRIVACY_EMAIL` | Privacy-officer mailbox (leave empty until you have one) |
 | `VITE_WHISPER_MODEL` / `VITE_WHISPER_DTYPE` | In-browser STT |
 | `VITE_OPENDENTAL_*` | Demo mapper only — not sent |
 
 Do not commit a real clinic developer/customer key pair.
 
+### Privacy, HIPAA, and legal
+
+The public site now ships the pages a dental product website is expected to have:
+
+- Privacy Policy, HIPAA Notice of Privacy Practices, Terms of Use, Cookie Policy, Accessibility Statement, Dental Disclaimer, HIPAA & BAA, and Your Privacy Choices (CCPA / do-not-sell).
+- A cookie banner that records Necessary only or Accept all in the browser. This build does not load advertising or analytics pixels.
+- A short demo notice on clinician, Neo, patient, and architecture screens: sample chart data stays in the session, it is not a live record, and it is not a substitute for care.
+- No Google Fonts request, so the marketing pages do not send visitor IPs to a third-party font CDN.
+
+These pages are operational notices for this website and demo. They are not a complete HIPAA Security Rule program and they are not legal advice. A treating dental practice remains the covered entity for its patients. Do not enter real patient identifiers into the public demo. A clinic needs a signed Business Associate Agreement, access control, audit logs, HTTPS hosting, and counsel review before live protected health information is used.
+
+Set `VITE_PRIVACY_EMAIL` when you have a privacy-officer mailbox so the legal pages can publish it. Set `VITE_LEGAL_ENTITY`, `VITE_LEGAL_EFFECTIVE_DATE`, and `VITE_LEGAL_JURISDICTION` to match the organization that operates the deployment.
+
 ### What this demo is not
 
-No login, no durable visit store, no live Open Dental writes, no LLM between transcript and tooth cell. HIPAA, SSO, and multi-chair hosting are out of scope. The architecture PDF lists the path from this mock to a clinic-owned backend if you take it further.
+No login, no durable visit store, no live Open Dental writes, no LLM between transcript and tooth cell. SSO and multi-chair hosting are still out of scope. The architecture pack lists the path from this mock to a clinic-owned backend if you take it further.

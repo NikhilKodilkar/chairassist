@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { clinicianPath, patientPath } from "../config/paths";
 import { AppLogo } from "./AppLogo";
+import { DemoLegalNotice } from "./DemoLegalNotice";
 
 export function ArchitectureView() {
   return (
-    <main className="screen architecture">
+    <main id="main" className="screen architecture">
       <header className="topbar">
         <AppLogo compact />
         <div>
@@ -20,6 +21,7 @@ export function ArchitectureView() {
           </Link>
         </div>
       </header>
+      <DemoLegalNotice tone="dark" />
       <section className="panel architecture-panel">
         <img
           className="architecture-diagram"

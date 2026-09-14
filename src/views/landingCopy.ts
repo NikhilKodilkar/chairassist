@@ -33,7 +33,7 @@ export const landingFeatures = [
     body: "Shows clear, easy-to-understand explanations.",
   },
   {
-    id: "about",
+    id: "better-outcomes",
     title: "Better Outcomes",
     body: "More informed patients. More accepted treatment. Healthier smiles.",
   },

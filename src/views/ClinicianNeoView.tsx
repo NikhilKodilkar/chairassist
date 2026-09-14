@@ -5,6 +5,7 @@ import { useLiveMic } from "../audio/useLiveMic";
 import { architecturePath, clinicianPath } from "../config/paths";
 import { chartedToothCount, toothHasTodayReading } from "../domain/exam";
 import { useExamStore } from "../store/examStore";
+import { DemoLegalNotice } from "./DemoLegalNotice";
 import { NeoPerioGrid } from "./neo/NeoPerioGrid";
 import { NeoToothPanel } from "./neo/NeoToothPanel";
 
@@ -124,7 +125,7 @@ export function ClinicianNeoView() {
   };
 
   return (
-    <main className="screen clinician-neo">
+    <main id="main" className="screen clinician-neo">
       <header className="neo-topbar">
         <div className="neo-brand">
           <img src={`${import.meta.env.BASE_URL}molarmind-favicon.png`} alt="" />
@@ -213,6 +214,7 @@ export function ClinicianNeoView() {
           </button>
         </div>
       </header>
+      <DemoLegalNotice tone="light" />
 
       <section className="neo-live">
         <div className="neo-transcript">

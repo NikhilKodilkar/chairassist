@@ -1,6 +1,3 @@
-import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { clinicianPath, landingPath } from "../config/paths";
 import {
   landingDemoLabel,
   landingEyebrow,
@@ -8,20 +5,12 @@ import {
   landingHeroAccent,
   landingHeroEnd,
   landingHeroLead,
-  landingNav,
   landingProof,
   landingSubtext,
-  landingTagline,
   landingVideoLabel,
 } from "./landingCopy";
-
-function demoHref(): string {
-  const fromEnv = import.meta.env.VITE_LANDING_DEMO_HREF;
-  if (typeof fromEnv === "string" && fromEnv.length > 0) {
-    return fromEnv;
-  }
-  return clinicianPath;
-}
+import { ActionLink, LandingHeader, landingDemoHref } from "./LandingShell";
+import { SiteFooter } from "./SiteFooter";
 
 function videoHref(): string {
   const fromEnv = import.meta.env.VITE_LANDING_VIDEO_HREF;
@@ -29,59 +18,6 @@ function videoHref(): string {
     return fromEnv;
   }
   return "#how-it-works";
-}
-
-function isExternalHref(href: string): boolean {
-  return href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:");
-}
-
-function LandingLogo() {
-  return (
-    <Link className="landing-logo" to={landingPath} aria-label="MolarMind home">
-      <img
-        className="landing-mark"
-        src={`${import.meta.env.BASE_URL}molarmind-favicon.png`}
-        alt=""
-      />
-      <span className="landing-brand-text">
-        <span className="landing-wordmark">
-          MolarMind
-          <sup>TM</sup>
-        </span>
-        <span className="landing-tagline">{landingTagline}</span>
-      </span>
-    </Link>
-  );
-}
-
-function ActionLink({
-  href,
-  className,
-  children,
-}: {
-  href: string;
-  className: string;
-  children: ReactNode;
-}) {
-  if (isExternalHref(href)) {
-    return (
-      <a className={className} href={href}>
-        {children}
-      </a>
-    );
-  }
-  if (href.startsWith("#")) {
-    return (
-      <a className={className} href={href}>
-        {children}
-      </a>
-    );
-  }
-  return (
-    <Link className={className} to={href}>
-      {children}
-    </Link>
-  );
 }
 
 function FeatureIcon({ title }: { title: string }) {
@@ -126,24 +62,12 @@ function FeatureIcon({ title }: { title: string }) {
 }
 
 export function LandingView() {
-  const demo = demoHref();
+  const demo = landingDemoHref();
   const video = videoHref();
 
   return (
-    <main className="screen landing">
-      <header className="landing-nav">
-        <LandingLogo />
-        <nav className="landing-links" aria-label="Primary">
-          {landingNav.map((item) => (
-            <a key={item.id} href={`#${item.id}`}>
-              {item.label}
-            </a>
-          ))}
-        </nav>
-        <ActionLink href={demo} className="landing-btn landing-btn-primary landing-nav-cta">
-          {landingDemoLabel}
-        </ActionLink>
-      </header>
+    <main id="main" className="screen landing">
+      <LandingHeader />
 
       <section className="landing-hero">
         <div className="landing-copy">
@@ -195,6 +119,7 @@ export function LandingView() {
           </article>
         ))}
       </section>
+      <SiteFooter />
     </main>
   );
 }
