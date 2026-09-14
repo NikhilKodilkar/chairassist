@@ -9,6 +9,8 @@ interface ImportMetaEnv {
   readonly VITE_DEV_HOST: string;
   readonly VITE_DEV_PORT: string;
   readonly VITE_LANDING_PATH: string;
+  readonly VITE_LANDING_DEMO_HREF: string;
+  readonly VITE_LANDING_VIDEO_HREF: string;
   readonly VITE_CLINICIAN_PATH: string;
   readonly VITE_CLINICIAN_NEO_PATH: string;
   readonly VITE_PATIENT_PATH: string;
