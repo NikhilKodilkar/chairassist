@@ -248,3 +248,5 @@ Set `VITE_PRIVACY_EMAIL` when you have a privacy-officer mailbox so the legal pa
 ### What this demo is not
 
 No login, no durable visit store, no live Open Dental writes, no LLM between transcript and tooth cell. SSO and multi-chair hosting are still out of scope. The architecture pack lists the path from this mock to a clinic-owned backend if you take it further.
+
+![MolarMind landing page: Turn Conversations into Better Care, with feature cards and legal links in the footer](docs/landing.png)
