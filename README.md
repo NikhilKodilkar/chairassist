@@ -14,6 +14,8 @@ The seeded patient is **Andrew**. His last visit was 12 March 2026. Today’s ex
 
 ![Patient view for Andrew: upper and lower jaws with tooth numbers, plus last-visit notes for needs care, watch, and crown](docs/demo-patient.png)
 
+![MolarMind landing page: Turn Conversations into Better Care, with feature cards and legal links in the footer](docs/landing.png)
+
 | Screen | Default path | Who it is for |
 | --- | --- | --- |
 | **About** | `/about` | **Start here.** Why it was built; uses for hygienist, doctor, and patient |
@@ -248,5 +250,3 @@ Set `VITE_PRIVACY_EMAIL` when you have a privacy-officer mailbox so the legal pa
 ### What this demo is not
 
 No login, no durable visit store, no live Open Dental writes, no LLM between transcript and tooth cell. SSO and multi-chair hosting are still out of scope. The architecture pack lists the path from this mock to a clinic-owned backend if you take it further.
-
-![MolarMind landing page: Turn Conversations into Better Care, with feature cards and legal links in the footer](docs/landing.png)
